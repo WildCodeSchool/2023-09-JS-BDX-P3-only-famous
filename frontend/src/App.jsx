@@ -1,13 +1,18 @@
-import "./App.css";
 import "./styles/_index.scss";
-import Connexion from "./pages/Connexion";
-import "./styles/_main.scss";
+import { Outlet } from "react-router-dom";
+import "./App.css";
+import Footer from "./components/Footer";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
-    <div>
-      <Connexion />
-    </div>
+    <>
+      <Navbar />
+      <div className="App">
+        <Outlet />
+      </div>
+      <Footer />
+    </>
   );
 }
 export default App;

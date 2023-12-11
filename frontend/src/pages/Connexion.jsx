@@ -35,7 +35,7 @@ function Connexion() {
           />
         </div>
       </div>
-      <button type="submit" className="button-co">
+      <button className="btn-co button-co" type="submit">
         CONNEXION
       </button>
       <div className="co-questions">
