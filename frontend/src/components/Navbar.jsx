@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   MDBNavbar,
@@ -14,6 +14,11 @@ import "./Navbar.css";
 
 export default function Navbar() {
   const [openNavColor, setOpenNavColor] = useState(false);
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      setOpenNavColor(false);
+    });
+  }, []);
 
   return (
     <>

@@ -1,12 +1,23 @@
 .text-center {
-  background-color: rgba(0, 0, 0, 0) !important;
+  background-color: #354d67 !important;
 }
 .footer-footer {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   margin: 0 auto;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
-#footer-icons {
-  margin: 0 auto !important;
+.footer-icons {
+}
+@media screen and (min-width: 600px) {
+  .footer-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+  }
 }
