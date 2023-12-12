@@ -33,6 +33,7 @@ function Upload() {
           <option value="option3">Seulement moi</option>
         </select>
       </ul>
+      <button type="button">Importer ma vidéo</button>
     </div>
   );
 }
