@@ -8,6 +8,7 @@ import App from "./App";
 import Register from "./pages/Register";
 import Connexion from "./pages/Connexion";
 import Upload from "./pages/Upload";
+import Home from "./pages/Home";
 
 // async function timeOut(time = 3000){
 //   setTimeout(() => {
@@ -21,12 +22,16 @@ const router = createBrowserRouter([
     path: "/",
     children: [
       {
+        path: "/Home",
+        element: <Home />,
+      },
+      {
         path: "/inscription",
         element: <Register />,
       },
       {
-        element: <Connexion />,
         path: "/connexion",
+        element: <Connexion />,
       },
       {
         element: <Upload />,
