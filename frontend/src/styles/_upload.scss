@@ -2,10 +2,11 @@
   text-align: center;
   margin: 0 auto;
   width: 100%;
-  background-color: red;
+  height: 1200px;
  
   h2 {
     color: white;
+    margin-top: 20px;
   }
 
   img {
@@ -37,6 +38,7 @@
     opacity: 70%;
     width: 100%;
     text-align: center;
+    margin: 10px 0;
   }
 
   ::placeholder {
@@ -51,6 +53,7 @@
     height: 130px;
     border-radius: 23px;
     opacity: 70%;
+    margin: 10px 0;
   }
   select {
     width: 100%;
@@ -59,6 +62,7 @@
     padding-left: 10px;
     color: white;
     opacity: 70%;
+    margin: 10px 0;
   }
 
   select:focus {
