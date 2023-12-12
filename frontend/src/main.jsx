@@ -7,6 +7,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import App from "./App";
 import Register from "./pages/Register";
 import Connexion from "./pages/Connexion";
+import Upload from "./pages/Upload";
 import Home from "./pages/Home";
 
 // async function timeOut(time = 3000){
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "/connexion",
         element: <Connexion />,
+      },
+      {
+        element: <Upload />,
+        path: "/upload",
       },
     ],
   },
