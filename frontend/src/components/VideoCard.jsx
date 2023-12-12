@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 function VideoCard({ address, title }) {
   return (
-    <div>
+    <div className="video_card">
       <iframe
         width="240"
         height="135"
