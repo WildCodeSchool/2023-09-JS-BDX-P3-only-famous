@@ -9,6 +9,7 @@ import Register from "./pages/Register";
 import Connexion from "./pages/Connexion";
 import Upload from "./pages/Upload";
 import Home from "./pages/Home";
+import Admin from "./pages/Admin";
 
 // async function timeOut(time = 3000){
 //   setTimeout(() => {
@@ -22,7 +23,7 @@ const router = createBrowserRouter([
     path: "/",
     children: [
       {
-        path: "/Home",
+        path: "/",
         element: <Home />,
       },
       {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
       {
         element: <Upload />,
         path: "/upload",
+      },
+      {
+        element: <Admin />,
+        path: "/admin",
       },
     ],
   },

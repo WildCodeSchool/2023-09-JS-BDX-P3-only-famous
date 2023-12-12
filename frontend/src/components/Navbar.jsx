@@ -48,15 +48,15 @@ export default function Navbar() {
           </MDBNavbarToggler>
           <MDBCollapse open={openNavColor} navbar>
             <MDBNavbarNav className="me-auto mb-2 mb-lg-0">
-              <Link to="/#">
+              <Link to="/">
                 <span className="active navbar-link">Accueil</span>
               </Link>
 
-              <Link to="/#">
+              <Link to="/connexion">
                 <span className="navbar-link">Connexion</span>
               </Link>
 
-              <Link to="/#">
+              <Link to="/admin">
                 <span className="navbar-link">Espace admin</span>
               </Link>
             </MDBNavbarNav>
