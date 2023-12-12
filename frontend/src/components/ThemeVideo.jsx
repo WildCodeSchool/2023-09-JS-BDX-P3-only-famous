@@ -14,7 +14,7 @@ function ThemeVideo({ videoItems }) {
             {videoItems
               .filter((item) => item.category === category)
               .map((item) => (
-                <VideoCard adress={item.adress} title={item.title} />
+                <VideoCard address={item.address} title={item.title} />
               ))}
           </div>
         </div>
