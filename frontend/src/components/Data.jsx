@@ -1,8 +1,7 @@
 const videoItems = [
   {
     title: "Visite en motoneige",
-    video:
-      "https://www.pexels.com/fr-fr/video/rhume-neige-nature-gens-6178163/",
+    address: "https://www.youtube.com/embed/mjoVJ5Lb1Sc?si=vjnJEtTmC6-WzzvP",
     pub_date: "22/12/22",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -14,8 +13,7 @@ const videoItems = [
   },
   {
     title: "Les chutes du Niagara",
-    video:
-      "https://www.pexels.com/fr-fr/video/nature-gens-touristes-celebre-9470639/",
+    address: "https://www.youtube.com/embed/1Qsaz4NFYjc?si=XG7d-IkJCttQyehM",
     pub_date: "13/12/20",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -27,34 +25,31 @@ const videoItems = [
   },
   {
     title: "Balade sur la côte espagnole",
-    video:
-      "https://pexels.com/fr-fr/video/paysage-nature-arbres-montagne-8729576/",
+    address: "https://www.youtube.com/embed/Y0MhP1HrcAQ?si=A9wgwY1Hc9OhAfa0",
     pub_date: "13/09/19",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     tags: "Espagne, Nature",
-    language: "all",
+    language: "français",
     category: "Nature",
     country: "Espagne",
     isFree: true,
   },
   {
     title: "Magnifique kangourou",
-    video:
-      "https://www.pexels.com/fr-fr/video/australie-animal-arbre-rapide-5739690/",
+    address: "https://www.youtube.com/embed/WCcLMNcWZOc?si=3n_EdnIqyxdN-AS8",
     pub_date: "26/05/22",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     tags: "Australie, Animaux",
-    language: "all",
+    language: "anglais",
     category: "Animaux",
     country: "Australie",
     isFree: true,
   },
   {
     title: "Un serpent dans les galets",
-    video:
-      "https://www.pexels.com/fr-fr/video/paysage-nature-rochers-animal-5246807/",
+    address: "https://www.youtube.com/embed/BVLrMwmS2ZU?si=y2UM_6xdXFCTl-wE",
     pub_date: "15/04/23",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -65,9 +60,8 @@ const videoItems = [
     isFree: true,
   },
   {
-    title: "Et si on baladait à cheval",
-    video:
-      "https://www.pexels.com/fr-fr/video/images-aeriennes-d-hommes-appreciant-l-equitation-le-long-du-bord-de-mer-2355570/",
+    title: "Arabian Stallion",
+    address: "https://www.youtube.com/embed/0wSwS7HQifo?si=z8wtK-VApEcpBSUc",
     pub_date: "18/04/21",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -79,8 +73,7 @@ const videoItems = [
   },
   {
     title: "Vue d'un drône à Melbourne",
-    video:
-      "https://www.pexels.com/fr-fr/video/ville-rue-batiments-construction-5673238/",
+    address: "https://www.youtube.com/embed/bmIDHGpX0bo?si=LbMrxRvDl4ubONkv",
     pub_date: "02/10/20",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -91,8 +84,8 @@ const videoItems = [
     isFree: true,
   },
   {
-    title: "La glace en ville",
-    video: "https://www.pexels.com/fr-fr/video/mer-hiver-glace-ile-10354740/",
+    title: "La Suède en drône",
+    address: "https://www.youtube.com/embed/HHTG_-We6AU?si=7rF0xeFd-N9m5GHn",
     pub_date: "27/09/19",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -103,9 +96,8 @@ const videoItems = [
     isFree: true,
   },
   {
-    title: "Singapore By Night",
-    video:
-      "https://www.pexels.com/fr-fr/video/ville-paysage-lumieres-nuit-5189561/",
+    title: "Singapore",
+    address: "https://www.youtube.com/embed/Psr4HZmWHnQ?si=U4m54NwC0imOGKgk",
     pub_date: "12/05/22",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
