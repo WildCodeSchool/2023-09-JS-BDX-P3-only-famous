@@ -1,4 +1,3 @@
-import "../styles/_connexion.scss";
 // import { useState } from "react";
 
 function Connexion() {
