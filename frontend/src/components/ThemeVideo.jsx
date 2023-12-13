@@ -8,7 +8,7 @@ function ThemeVideo({ videoItems }) {
   return (
     <div>
       {theCategory.map((category) => (
-        <div key={category}>
+        <div className="video-carroussel" key={category}>
           <h2>{category}</h2>
           <div className="video-list">
             {videoItems

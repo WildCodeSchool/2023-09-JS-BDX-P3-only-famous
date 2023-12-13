@@ -3,11 +3,14 @@ import PropTypes from "prop-types";
 
 function VideoCard({ address, title }) {
   return (
-    <div className="video_card">
+    <div className="video-card">
       <iframe
-        width="240"
-        height="135"
-        src={address}
+        width="220"
+        height="123"
+        src={
+          address ??
+          `https://www.youtube.com/embed/U2LGd8TLG9A?si=TRTjtM6Depk6Lf26`
+        }
         title="YouTube video player"
         frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
