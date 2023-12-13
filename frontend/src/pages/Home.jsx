@@ -1,8 +1,8 @@
 import videoItems from "../components/Data";
-import Carousel from "../components/Carousel";
+import Carroussel from "../components/Carroussel";
 
 function Home() {
-  return <Carousel videoItems={videoItems} titre="titre générique" />;
+  return <Carroussel videoItems={videoItems} titre="titre générique" />;
 }
 
 export default Home;

@@ -1,6 +1,5 @@
 import React from "react";
 import { MDBLightbox } from "mdb-react-ui-kit";
-// eslint-disable-next-line import/no-extraneous-dependencies
 import {
   MDBMultiCarousel,
   MDBMultiCarouselItem,

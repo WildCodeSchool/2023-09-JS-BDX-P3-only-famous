@@ -1,3 +1,5 @@
+import React from "react";
+import { Link } from "react-router-dom";
 // import { useState } from "react";
 
 function Connexion() {
@@ -38,7 +40,9 @@ function Connexion() {
         CONNEXION
       </button>
       <div className="co-questions">
-        <p>Pas encore de compte?</p>
+        <p>
+          Pas encore de compte? <Link to="/inscription">Créer un compte</Link>
+        </p>
         <p>Mot de passe oublié?</p>
       </div>
     </div>
