@@ -61,3 +61,22 @@
     background-color: #354d67;
   }
 }
+
+@media screen and (min-width: 768px) {
+
+  .inscription_container {
+    background-color: #354d67;
+    margin: 0 auto;
+    height: 1100px;
+    width: 40%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    color: white;
+}
+
+li {
+  margin: 30px 0;
+}
+
+}
