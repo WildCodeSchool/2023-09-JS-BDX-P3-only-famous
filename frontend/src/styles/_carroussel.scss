@@ -1,4 +1,22 @@
 .video-carroussel {
+  padding: 0 30px;
+  .btn-car {
+    position: relative;
+  }
+  .button-left {
+    position: absolute;
+    left: -30px;
+  }
+  .button-right {
+    position: absolute;
+    right: -30px;
+  }
+  .button-left,
+  .button-right {
+    width: 20px;
+    height: 100%;
+  }
+
   h2 {
     color: white;
     background-color: #223045;
@@ -22,7 +40,7 @@
   .video-list {
     display: flex;
     flex-wrap: nowrap;
-    overflow: scroll;
+    overflow-x: scroll;
     gap: 20px;
     scroll-snap-type: x mandatory;
   }
