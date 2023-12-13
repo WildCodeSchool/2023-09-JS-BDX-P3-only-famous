@@ -1,0 +1,62 @@
+.admin_container {
+  color: white;
+
+
+.filtre_recherche {
+text-align: center;
+width: 70%;
+height: 100px;
+
+ ul {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  gap: 50px;
+  margin-left: 50px;
+
+  button {
+    height: 40px;
+    border-radius: 23px;
+    width: 150px;
+    text-align: center;
+    margin: 0 auto;
+    border: none;
+    border: 1px solid #cd853f;
+    color: white;
+    background-color: #354d67;
+  }
+
+  input {
+    background-color: #7889a2;
+    height: 40px;
+    border-radius: 23px;
+    opacity: 70%;
+    width: 300px;
+    text-align: center;
+  }
+}
+}
+.users_container {
+
+  background-color: blue;
+  height: 800px;
+  width: 100%;
+  
+  list-style: none;
+
+.users_infos {
+  height: 200px;
+  width: 100%;
+
+  ul {
+   display: flex;
+   flex-direction: row;
+   list-style: none;
+   gap: 80px;
+   justify-content: end;
+   margin-right: 100px;
+  }
+}
+}
+}
