@@ -10,7 +10,6 @@ import {
   MDBCollapse,
 } from "mdb-react-ui-kit";
 import logo from "../assets/Logo.png";
-import "./Navbar.css";
 
 export default function Navbar() {
   const [openNavColor, setOpenNavColor] = useState(false);

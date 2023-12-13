@@ -1,8 +1,8 @@
-import ThemeVideo from "../components/ThemeVideo";
 import videoItems from "../components/Data";
+import Carroussel from "../components/Carroussel";
 
 function Home() {
-  return <ThemeVideo videoItems={videoItems} />;
+  return <Carroussel videoItems={videoItems} titre="titre générique" />;
 }
 
 export default Home;

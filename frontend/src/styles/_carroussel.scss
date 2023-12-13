@@ -1,0 +1,53 @@
+.video-carroussel {
+  padding: 0 30px;
+  .btn-car {
+    position: relative;
+  }
+  .button-left {
+    position: absolute;
+    left: -30px;
+  }
+  .button-right {
+    position: absolute;
+    right: -30px;
+  }
+  .button-left,
+  .button-right {
+    width: 20px;
+    height: 100%;
+  }
+
+  h2 {
+    color: white;
+    background-color: #223045;
+    padding: 15px;
+    border-top-right-radius: 23px;
+    border-bottom-right-radius: 23px;
+    color: white;
+    font-family: "PT Sans", sans-serif;
+    font-size: 20px;
+    padding-left: 5%;
+    margin: 10% 50% 8% 0;
+  }
+  h3 {
+    color: white;
+    font-size: 12px;
+    font-family: "Raleway", sans-serif;
+  }
+  iframe {
+    border-radius: 10px;
+  }
+  .video-list {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+    gap: 20px;
+    scroll-snap-type: x mandatory;
+  }
+}
+
+.video-card {
+  text-align: center;
+  scroll-snap-align: start;
+  flex: none;
+}
