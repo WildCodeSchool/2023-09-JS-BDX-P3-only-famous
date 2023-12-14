@@ -28,7 +28,7 @@ function Connexion() {
         <div className="co-pass-container">
           <h1>MOT DE PASSE</h1>
           <input
-            type="text"
+            type="password"
             name="password"
             id="password"
             // onChange={handlePassCoChange}
