@@ -7,4 +7,10 @@
 .App {
   position: relative;
   min-height: 100vh;
+  margin: 0 auto;
+}
+:root {
+  --primary-me: #344d67;
+  --secondary-me: #cd853f;
+  --middle-me: gray;
 }

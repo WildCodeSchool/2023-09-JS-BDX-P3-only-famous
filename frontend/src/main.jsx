@@ -10,6 +10,7 @@ import Connexion from "./pages/Connexion";
 import Upload from "./pages/Upload";
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
+import OneVideo from "./pages/OneVideo";
 
 // async function timeOut(time = 3000){
 //   setTimeout(() => {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/onevideo",
+        element: <OneVideo />,
       },
       {
         path: "/inscription",
