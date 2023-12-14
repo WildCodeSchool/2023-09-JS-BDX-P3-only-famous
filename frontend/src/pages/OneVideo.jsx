@@ -1,7 +1,11 @@
 import PropTypes from "prop-types";
 import Accordion from "../components/Accordion";
 
-export default function OneVideo({ title, date, videoUrl }) {
+export default function OneVideo({
+  title = "my title",
+  date = "21-04-1986",
+  videoUrl = "https://www.youtube.com/embed/N5VlFzWVvK0?si=iUwoNff9mgIlXDZ-",
+}) {
   return (
     <div className="SingleVideo">
       <div className="ratio ratio-16x9 center-middle">
@@ -26,7 +30,7 @@ export default function OneVideo({ title, date, videoUrl }) {
   );
 }
 OneVideo.propTypes = {
-  title: PropTypes.string.isRequired,
-  date: PropTypes.string.isRequired,
-  videoUrl: PropTypes.string.isRequired,
+  title: PropTypes.string,
+  date: PropTypes.string,
+  videoUrl: PropTypes.string,
 };

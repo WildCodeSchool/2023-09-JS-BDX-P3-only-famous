@@ -18,8 +18,10 @@ function Carroussel({ videoItems, titre }) {
     }
   };
 
+  function handleScroll(e) {}
+
   return (
-    <div className="video-carroussel">
+    <div className="video-carroussel" onWheel={handleScroll}>
       <h2>{titre ?? "titre générique"}</h2>
       <div className="btn-car">
         <button type="button" className="button-left" onClick={scrollLeft}>

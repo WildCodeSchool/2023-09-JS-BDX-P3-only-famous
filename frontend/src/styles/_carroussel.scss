@@ -1,20 +1,27 @@
 .video-carroussel {
-  padding: 0 30px;
+  padding: 0 0px;
   .btn-car {
     position: relative;
   }
   .button-left {
     position: absolute;
-    left: -30px;
+    left: -0px;
   }
   .button-right {
     position: absolute;
-    right: -30px;
+    right: -0px;
   }
   .button-left,
   .button-right {
-    width: 20px;
+    width: 30px;
     height: 100%;
+    opacity: 0.5;
+    outline: none;
+    border: none;
+  }
+  .button-left:active,
+  .button-right:active {
+    opacity: 0.75;
   }
 
   h2 {

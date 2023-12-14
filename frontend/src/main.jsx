@@ -29,7 +29,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/onevideo",
-        element: <OneVideo />,
+        element: <OneVideo title="my title" date="21-04-1986" />,
       },
       {
         path: "/inscription",
