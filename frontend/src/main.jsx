@@ -11,6 +11,7 @@ import Upload from "./pages/Upload";
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
 import OneVideo from "./pages/OneVideo";
+import SingleVideoPage from "./pages/SingleVideoPage";
 
 // async function timeOut(time = 3000){
 //   setTimeout(() => {
@@ -29,7 +30,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/onevideo",
-        element: <OneVideo title="my title" date="21-04-1986" />,
+        element: <SingleVideoPage />,
       },
       {
         path: "/inscription",
