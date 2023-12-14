@@ -1,7 +1,8 @@
 import { useState } from "react";
 import Tag from "./Tag";
+
 export default function Accordion() {
-  let [isChecked, setIschecked] = useState(true);
+  const [isChecked, setIschecked] = useState(true);
   return (
     <div className="accordion tab">
       <div className="tab">

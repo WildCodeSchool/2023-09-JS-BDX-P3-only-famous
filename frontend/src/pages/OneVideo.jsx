@@ -1,6 +1,7 @@
-import { MDBAccordion, MDBAccordionItem } from "mdb-react-ui-kit";
+import PropTypes from "prop-types";
 import Accordion from "../components/Accordion";
-export default function OneVideo({ title, date, videoUrl, description }) {
+
+export default function OneVideo({ title, date, videoUrl }) {
   return (
     <div className="SingleVideo">
       <div className="ratio ratio-16x9 center-middle">
@@ -12,7 +13,7 @@ export default function OneVideo({ title, date, videoUrl, description }) {
           title="YouTube video player"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowFullScreen
-        ></iframe>
+        />
       </div>
       <div className="SingleVideo-details">
         <div className="SingleVideo-title-date">
@@ -24,3 +25,8 @@ export default function OneVideo({ title, date, videoUrl, description }) {
     </div>
   );
 }
+OneVideo.propTypes = {
+  title: PropTypes.string.isRequired,
+  date: PropTypes.string.isRequired,
+  videoUrl: PropTypes.string.isRequired,
+};
