@@ -8,20 +8,29 @@ function Carroussel({ videoItems, titre }) {
 
   const scrollLeft = () => {
     if (videoListRef.current) {
-      videoListRef.current.scrollLeft -= 200; // You can adjust the scroll amount as needed
+      videoListRef.current.scrollLeft += 200; // You can adjust the scroll amount as needed
     }
   };
 
   const scrollRight = () => {
     if (videoListRef.current) {
-      videoListRef.current.scrollLeft += 200; // You can adjust the scroll amount as needed
+      videoListRef.current.scrollLeft -= 200; // You can adjust the scroll amount as needed
     }
   };
 
-  function handleScroll(e) {}
+  // function handleScroll(e) {
+  //   e.stopPropagation();
+  //   const deltaY = e.deltaY;
+  //   if (deltaY < 0) {
+  //     videoListRef.current.scrollLeft += 200;
+  //   }
+  //   if (deltaY > 0) {
+  //     videoListRef.current.scrollLeft -= 200;
+  //   }
+  // }
 
   return (
-    <div className="video-carroussel" onWheel={handleScroll}>
+    <div className="video-carroussel">
       <h2>{titre ?? "titre générique"}</h2>
       <div className="btn-car">
         <button type="button" className="button-left" onClick={scrollLeft}>
