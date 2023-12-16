@@ -5,12 +5,13 @@ import PropTypes from "prop-types";
 const userContext = createContext();
 
 export default function UserContextProvider({ children }) {
-  const [user, setUser] = useState({ admin: false, isConnected: false });
+  const [user, setUser] = useState({ isAdmin: false, isConnected: false });
   const navigate = useNavigate();
   function getUsers() {
-    return JSON.parse(localStorage.getItem("users") ?? []);
+    return JSON.parse(localStorage.getItem("users") ?? "[]");
   }
   function login(credentials) {
+    // console.log(credentials);
     const users = getUsers();
     const memoryUser = users.find(
       (userdb) =>
@@ -18,11 +19,11 @@ export default function UserContextProvider({ children }) {
         userdb.password === credentials.password
     );
     if (!memoryUser) {
-      alert("identifiants incorrect");
+      alert("identifiants incorrects");
       navigate("/");
     } else {
       alert("tu es connecté");
-      setUser({ adming: memoryUser.admin, isConnected: true });
+      setUser({ isAdmin: memoryUser.isAdmin, isConnected: true });
       navigate("/onevideo");
     }
   }
@@ -53,7 +54,7 @@ export default function UserContextProvider({ children }) {
   );
 }
 UserContextProvider.propTypes = {
-  children: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export const useUserContext = () => useContext(userContext);
