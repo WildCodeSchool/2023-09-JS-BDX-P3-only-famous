@@ -10,8 +10,8 @@ import Connexion from "./pages/Connexion";
 import Upload from "./pages/Upload";
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
-import OneVideo from "./pages/OneVideo";
 import SingleVideoPage from "./pages/SingleVideoPage";
+import UserContextProvider from "./context/UserContext";
 
 // async function timeOut(time = 3000){
 //   setTimeout(() => {
@@ -21,7 +21,11 @@ import SingleVideoPage from "./pages/SingleVideoPage";
 
 const router = createBrowserRouter([
   {
-    element: <App />,
+    element: (
+      <UserContextProvider>
+        <App />
+      </UserContextProvider>
+    ),
     path: "/",
     children: [
       {
