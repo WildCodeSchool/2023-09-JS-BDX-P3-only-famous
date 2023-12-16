@@ -1,6 +1,7 @@
 import { createContext, useContext, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import axios from "axios";
 
 const userContext = createContext();
 
@@ -10,8 +11,17 @@ export default function UserContextProvider({ children }) {
   function getUsers() {
     return JSON.parse(localStorage.getItem("users") ?? "[]");
   }
+  async function checkCredentials(credentials) {
+    try {
+      await axios.post("http://localhost:3310/api/user", credentials);
+      // console.log("response from back-end");
+    } catch (err) {
+      // console.log(err);
+    }
+  }
   function login(credentials) {
     // console.log(credentials);
+    checkCredentials(credentials);
     const users = getUsers();
     const memoryUser = users.find(
       (userdb) =>
