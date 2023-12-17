@@ -13,15 +13,18 @@ export default function UserContextProvider({ children }) {
   }
   async function checkCredentials(credentials) {
     try {
-      await axios.post("http://localhost:3310/api/user", credentials);
+      const answer = await axios.post(
+        "http://localhost:3310/api/user",
+        credentials
+      );
       // console.log("response from back-end");
+      return answer;
     } catch (err) {
+      return false;
       // console.log(err);
     }
   }
-  function login(credentials) {
-    // console.log(credentials);
-    checkCredentials(credentials);
+  async function login(credentials) {
     const users = getUsers();
     const memoryUser = users.find(
       (userdb) =>
@@ -29,11 +32,20 @@ export default function UserContextProvider({ children }) {
         userdb.password === credentials.password
     );
     if (!memoryUser) {
-      alert("identifiants incorrects");
-      navigate("/");
+      const answer = await checkCredentials(credentials);
+      if (answer) {
+        // console.log("getting good answer from back ");
+        users.push(credentials);
+        localStorage.setItem("users", JSON.stringify(users));
+        setUser({ isAdmin: false, isConnected: true });
+        navigate("/onevideo");
+      } else {
+        alert("identifiants incorrects from back");
+        navigate("/");
+      }
     } else {
       alert("tu es connecté");
-      setUser({ isAdmin: memoryUser.isAdmin, isConnected: true });
+      setUser({ isAdmin: memoryUser?.isAdmin ?? false, isConnected: true });
       navigate("/onevideo");
     }
   }
@@ -53,6 +65,7 @@ export default function UserContextProvider({ children }) {
   }
   function logout() {
     setUser({ admin: false, isConnected: false });
+    localStorage.removeItem("users");
   }
   const contextData = useMemo(
     () => ({ user, login, logout, register }),

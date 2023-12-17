@@ -21,6 +21,12 @@ router.post("/users", userControllers.add);
 // Route to check existed user
 router.post("/user", userControllers.check);
 
+// Route to edit existed user
+router.put("/user", userControllers.edit);
+
+// Route to delete existed users
+router.delete("/user", userControllers.destroy);
+
 /* ************************************************************************* */
 
 module.exports = router;
