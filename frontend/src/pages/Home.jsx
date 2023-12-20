@@ -1,7 +1,6 @@
 import videoItems from "../components/Data";
 import Carroussel from "../components/Carroussel";
 import CustomMap from "../components/CustomMap";
-import Separator from "../components/Separator";
 
 function Home() {
   return (
@@ -9,7 +8,6 @@ function Home() {
       <CustomMap />
       <Carroussel videoItems={videoItems} titre="Nature" />
       <Carroussel videoItems={videoItems} titre="Villes" />
-      <Separator />
     </div>
   );
 }
