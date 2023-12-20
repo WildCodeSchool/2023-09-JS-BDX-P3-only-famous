@@ -9,9 +9,7 @@ export default function UserContextProvider({ children }) {
   const [user, setUser] = useState({ isAdmin: false, isConnected: false });
   const [messageUser, setMessageUser] = useState("");
   const navigate = useNavigate();
-  function getUsers() {
-    return JSON.parse(localStorage.getItem("users") ?? "[]");
-  }
+
   async function checkCredentials(credentials) {
     try {
       const answer = await axios.post(
@@ -26,43 +24,36 @@ export default function UserContextProvider({ children }) {
     }
   }
   async function login(credentials) {
-    const users = getUsers();
-    const memoryUser = users.find(
-      (userdb) =>
-        userdb.email === credentials.email &&
-        userdb.password === credentials.password
-    );
-    if (!memoryUser) {
-      const answer = await checkCredentials(credentials);
-      if (answer) {
-        // console.log("getting good answer from back ");
-        users.push(credentials);
-        localStorage.setItem("users", JSON.stringify(users));
-        setUser({ isAdmin: false, isConnected: true });
-        navigate("/onevideo");
+    const { data: userdb } = await checkCredentials(credentials);
+    if (userdb) {
+      localStorage.setItem("users", JSON.stringify(userdb));
+      setUser({ isAdmin: userdb.isAdmin, isConnected: true });
+      if (userdb.isAdmin === 1) {
+        navigate("/admin");
       } else {
-        setMessageUser("identifiants incorrects from back");
         navigate("/");
       }
     } else {
-      setMessageUser("tu es connecté");
-
-      setUser({ isAdmin: memoryUser?.isAdmin ?? false, isConnected: true });
-      navigate("/onevideo");
+      setMessageUser("Identifiants incorrects");
+      navigate("/");
     }
   }
-  function register(newUser) {
-    // console.log(newUser);
-    const users = getUsers();
-    // console.log(users);
-
-    if (!users.find((userdb) => userdb.email === newUser.email)) {
-      users.push(newUser);
-      // console.log(users);
-      localStorage.setItem("users", JSON.stringify(users));
-      setMessageUser(`Bienvenue ${newUser.email}`);
-    } else {
-      setMessageUser("Vous êtes déjà inscrit !");
+  async function register(newUser) {
+    try {
+      const { data: answer } = await axios.post(
+        "http://localhost:3310/api/users",
+        newUser
+      );
+      if (+answer.insertId === 1) {
+        navigate("/");
+      } else {
+        setMessageUser(answer?.message ?? "Something wrong");
+      }
+      // console.log("response from back-end");
+      return answer;
+    } catch (err) {
+      return false;
+      // console.log(err);
     }
   }
   function logout() {

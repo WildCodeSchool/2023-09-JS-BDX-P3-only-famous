@@ -1,11 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 function VideoCard({ title }) {
   return (
-    <a href="/onevideo" className="video-card">
+    <Link to="/onevideo" className="video-card">
       <h3>{title}</h3>
-    </a>
+    </Link>
   );
 }
 VideoCard.propTypes = {

@@ -13,7 +13,7 @@ const userControllers = require("./controllers/userControllers");
 router.get("/users", userControllers.browse);
 
 // Route to get a specific item by ID
-router.get("/users/:email", userControllers.read);
+router.get("/users", userControllers.read);
 
 // Route to add a new item
 router.post("/users", userControllers.add);

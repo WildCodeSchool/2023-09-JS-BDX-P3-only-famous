@@ -12,7 +12,6 @@ export default function AdminContextProvider({ children }) {
     [isAdmin, setisAdmin]
   );
   if (!user.isAdmin) {
-    // console.log("the user is not an admin");
     return <Navigate to="/" />;
   }
   return (
