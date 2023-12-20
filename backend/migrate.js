@@ -50,3 +50,4 @@ const migrate = async () => {
 
 // Run the migration function
 migrate();
+// modify this file to test your db
