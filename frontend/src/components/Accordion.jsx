@@ -25,9 +25,9 @@ export default function Accordion() {
             Pure CSS accordion based on the "input:checked + label" style trick.
           </p>
           <div className="tags">
-            <Tag />
-            <Tag />
-            <Tag />
+            <Tag tag="My tag" />
+            <Tag tag="Your Tag" />
+            <Tag tag="His Tag" />
           </div>
         </div>
       </div>

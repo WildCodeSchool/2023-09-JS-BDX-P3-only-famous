@@ -57,4 +57,14 @@
   text-align: center;
   scroll-snap-align: start;
   flex: none;
+  background-image: url("https://picsum.photos/220/123");
+  width: 220px;
+  height: 123px;
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  h3 {
+    background-color: rgba(13, 94, 108, 0.5);
+    padding: 2px;
+  }
 }

@@ -8,13 +8,13 @@ function Carroussel({ videoItems, titre }) {
 
   const scrollLeft = () => {
     if (videoListRef.current) {
-      videoListRef.current.scrollLeft += 200; // You can adjust the scroll amount as needed
+      videoListRef.current.scrollLeft -= 200; // You can adjust the scroll amount as needed
     }
   };
 
   const scrollRight = () => {
     if (videoListRef.current) {
-      videoListRef.current.scrollLeft -= 200; // You can adjust the scroll amount as needed
+      videoListRef.current.scrollLeft += 200; // You can adjust the scroll amount as needed
     }
   };
 
