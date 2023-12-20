@@ -18,6 +18,17 @@ function Carroussel({ videoItems, titre }) {
     }
   };
 
+  // function handleScroll(e) {
+  //   e.stopPropagation();
+  //   const deltaY = e.deltaY;
+  //   if (deltaY < 0) {
+  //     videoListRef.current.scrollLeft += 200;
+  //   }
+  //   if (deltaY > 0) {
+  //     videoListRef.current.scrollLeft -= 200;
+  //   }
+  // }
+
   return (
     <div className="video-carroussel">
       <h2>{titre ?? "titre générique"}</h2>

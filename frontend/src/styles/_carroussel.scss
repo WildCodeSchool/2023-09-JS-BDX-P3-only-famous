@@ -1,20 +1,27 @@
 .video-carroussel {
-  padding: 0 30px;
+  padding: 0 0px;
   .btn-car {
     position: relative;
   }
   .button-left {
     position: absolute;
-    left: -30px;
+    left: -0px;
   }
   .button-right {
     position: absolute;
-    right: -30px;
+    right: -0px;
   }
   .button-left,
   .button-right {
-    width: 20px;
+    width: 30px;
     height: 100%;
+    opacity: 0.5;
+    outline: none;
+    border: none;
+  }
+  .button-left:active,
+  .button-right:active {
+    opacity: 0.75;
   }
 
   h2 {
@@ -50,4 +57,14 @@
   text-align: center;
   scroll-snap-align: start;
   flex: none;
+  background-image: url("https://picsum.photos/220/123");
+  width: 220px;
+  height: 123px;
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  h3 {
+    background-color: rgba(13, 94, 108, 0.5);
+    padding: 2px;
+  }
 }

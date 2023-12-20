@@ -7,4 +7,14 @@
 .App {
   position: relative;
   min-height: 100vh;
+  margin: 0 auto;
+  padding-bottom: 70px;
+}
+:root {
+  --primary-me: #344d67;
+  --secondary-me: #cd853f;
+  --middle-me: gray;
+}
+.hover {
+  filter: drop-shadow(2px 2px 4px orange);
 }

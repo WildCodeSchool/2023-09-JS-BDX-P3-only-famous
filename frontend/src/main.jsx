@@ -10,6 +10,9 @@ import Connexion from "./pages/Connexion";
 import Upload from "./pages/Upload";
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
+import SingleVideoPage from "./pages/SingleVideoPage";
+import UserContextProvider from "./context/UserContext";
+import AdminContextProvider from "./context/AdminContext";
 
 // async function timeOut(time = 3000){
 //   setTimeout(() => {
@@ -19,12 +22,20 @@ import Admin from "./pages/Admin";
 
 const router = createBrowserRouter([
   {
-    element: <App />,
+    element: (
+      <UserContextProvider>
+        <App />
+      </UserContextProvider>
+    ),
     path: "/",
     children: [
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/onevideo",
+        element: <SingleVideoPage />,
       },
       {
         path: "/inscription",
@@ -39,7 +50,11 @@ const router = createBrowserRouter([
         path: "/upload",
       },
       {
-        element: <Admin />,
+        element: (
+          <AdminContextProvider>
+            <Admin />
+          </AdminContextProvider>
+        ),
         path: "/admin",
       },
     ],

@@ -6,8 +6,9 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.5.1",
-    "mdb-react-ui-kit": "^7.0.0",
-    "mdb-react-multi-carousel": "./plugins/multi-carousel.tgz",
+    "axios": "^1.6.2",
+    "mdb-react-ui-kit": "./mdb-react-ui-kit-pro-advanced.tgz",
+    "mdb-react-vector-maps": "./plugins/vector-maps.tgz",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -17,7 +18,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.0.3",
-    "eslint": "^8.46.0",
+    "eslint": "^8.55.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.9.0",
     "eslint-plugin-import": "^2.28.0",
