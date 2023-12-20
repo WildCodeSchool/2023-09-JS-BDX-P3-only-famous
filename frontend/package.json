@@ -6,6 +6,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.5.1",
+    "axios": "^1.6.2",
     "mdb-react-ui-kit": "./mdb-react-ui-kit-pro-advanced.tgz",
     "mdb-react-vector-maps": "./plugins/vector-maps.tgz",
     "prop-types": "^15.8.1",
