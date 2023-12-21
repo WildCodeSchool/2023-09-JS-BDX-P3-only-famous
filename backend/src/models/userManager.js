@@ -1,16 +1,25 @@
+const bcrypt = require("bcrypt");
 const database = require("../../database/client");
 
 class UserManager {
+  static async hashPassword(password, saltRound = 5) {
+    const salt = await bcrypt.genSalt(saltRound);
+    const hash = await bcrypt.hash(password, salt);
+    return hash;
+  }
+
   static async create(user) {
     // console.log("create user called");
     // Execute the SQL INSERT query to add a new item to the "item" table
+    const hashedPassword = await this.hashPassword(user.password);
+
     const [result] = await database.query(
       `insert into user (firstname, lastname, email, password, birthday, isAdmin) values (?,?,?,?,?,?)`,
       [
         user.firstname,
         user.lastname,
         user.email,
-        user.password,
+        hashedPassword,
         user.birthday,
         user.isAdmin,
       ]

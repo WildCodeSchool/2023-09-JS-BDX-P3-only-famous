@@ -3,6 +3,7 @@ import { useUserContext } from "../context/UserContext";
 
 function Register() {
   const { register } = useUserContext();
+  const [message, setMessage] = useState("");
   const [formValue, setFormValue] = useState({
     email: "",
     emailValidator: "",
@@ -14,6 +15,28 @@ function Register() {
   });
   function onChange(e) {
     setFormValue({ ...formValue, [e.target.name]: e.target.value });
+  }
+  function validate() {
+    let err = false;
+    if (formValue.email !== formValue.emailValidator) {
+      setMessage("Emails incompatibles...");
+      err = true;
+    }
+    if (formValue.password.length < 8) {
+      err = true;
+      setMessage("Mot de passe non-conforme");
+    }
+    if (formValue.password !== formValue.passwordValidator) {
+      err = true;
+      setMessage("Mot de passe incompatibles...");
+    }
+    if (!err) {
+      register({
+        email: formValue.email,
+        password: formValue.password,
+        isAdmin: false,
+      });
+    }
   }
   return (
     <div className="inscription_container">
@@ -85,23 +108,15 @@ function Register() {
             type="text"
             placeholder="Entrer à nouveau votre mot de passe"
             value={formValue.passwordValidator}
-            name="passworValidator"
+            name="passwordValidator"
             onChange={onChange}
           />
         </li>
       </ul>
-      <button
-        type="button"
-        onClick={() =>
-          register({
-            email: formValue.email,
-            password: formValue.password,
-            isAdmin: true,
-          })
-        }
-      >
+      <button type="button" onClick={validate}>
         Créer mon compte
       </button>
+      <h4 style={{ color: "red", padding: "10px 0" }}>{message}</h4>
     </div>
   );
 }
