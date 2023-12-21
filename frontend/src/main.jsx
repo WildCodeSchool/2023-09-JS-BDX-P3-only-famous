@@ -5,7 +5,6 @@ import "mdb-react-ui-kit/dist/css/mdb.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import App from "./App";
-import Register from "./pages/Register";
 import Connexion from "./pages/Connexion";
 import Upload from "./pages/Upload";
 import Home from "./pages/Home";
@@ -13,6 +12,7 @@ import Admin from "./pages/Admin";
 import SingleVideoPage from "./pages/SingleVideoPage";
 import UserContextProvider from "./context/UserContext";
 import AdminContextProvider from "./context/AdminContext";
+import Register from "./pages/Register";
 
 // async function timeOut(time = 3000){
 //   setTimeout(() => {

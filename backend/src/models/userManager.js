@@ -29,7 +29,7 @@ class UserManager {
       );
       return result.insertId;
     } catch (err) {
-      console.error(err);
+      console.error("error while inserting new user in user manager: ", err);
       return null;
     }
 

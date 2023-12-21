@@ -44,16 +44,14 @@ export default function UserContextProvider({ children }) {
         "http://localhost:3310/api/users",
         newUser
       );
-      if (+answer.insertId === 1) {
+      if (+answer.insertId !== 0) {
         navigate("/");
-      } else {
-        setMessageUser(answer?.message ?? "Something wrong");
       }
+      setMessageUser(answer?.message ?? "Something wrong");
+
       // console.log("response from back-end");
-      return answer;
     } catch (err) {
-      return false;
-      // console.log(err);
+      console.error("error front : ", err);
     }
   }
   function logout() {

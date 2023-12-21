@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
 
 function Register() {
+  const navigate = useNavigate();
   const { register } = useUserContext();
   const [formValue, setFormValue] = useState({
     email: "",
@@ -12,8 +14,51 @@ function Register() {
     lastname: "",
     birthday: "",
   });
+  const [validationMessage, setValidationMessage] = useState({
+    validateEmail: "",
+    validatePassword: "",
+    securePassword: "",
+  });
   function onChange(e) {
     setFormValue({ ...formValue, [e.target.name]: e.target.value });
+    if (
+      e.target.name === "emailValidator" &&
+      e.target.value !== formValue.email
+    ) {
+      setValidationMessage({
+        ...validationMessage,
+        validateEmail: "Les emails ne correspondent pas...",
+      });
+    } else {
+      console.error("erreur");
+    }
+    if (
+      e.target.name === "passwordValidator" &&
+      e.target.value !== formValue.password
+    ) {
+      setValidationMessage({
+        ...validationMessage,
+        validatePassword: "Les mot-de-passes ne correspondent pas...",
+      });
+    }
+    if (e.target.name === "password" && e.target.value.toString().length < 8) {
+      setValidationMessage({
+        ...validationMessage,
+        securePassword: "Le mot-de-passe est court",
+      });
+    }
+  }
+
+  function checkError() {
+    register({
+      email: formValue.email,
+      password: formValue.password,
+      isAdmin: false,
+      birthday: formValue.birthday,
+      firstname: formValue.firstname,
+      lastname: formValue.lastname,
+    });
+    navigate("/");
   }
   return (
     <div className="inscription_container">
@@ -27,6 +72,7 @@ function Register() {
             value={formValue.firstname}
             name="firstname"
             onChange={onChange}
+            required
           />
         </li>
         <li>
@@ -37,69 +83,75 @@ function Register() {
             value={formValue.lastname}
             name="lastname"
             onChange={onChange}
+            required
           />
         </li>
         <li>
-          <h4>Date de naissance</h4>
+          <h4>Date de naissance*</h4>
           <input
-            type="text"
-            placeholder="00/00/0000"
+            type="date"
+            placeholder="jj/mm/aaaa"
             value={formValue.birthday}
             name="birthday"
             onChange={onChange}
+            required
           />
         </li>
         <li>
-          <h4>Email</h4>
+          <h4>Email*</h4>
           <input
-            type="text"
+            type="email"
             placeholder="Entrer votre mail ici"
             value={formValue.email}
             name="email"
             onChange={onChange}
+            required
           />
         </li>
         <li>
-          <h4>Valider mon email</h4>
+          <h4>Valider mon email*</h4>
           <input
-            type="text"
+            type="email"
             placeholder="Entrer a nouveau votre mail"
             value={formValue.emailValidator}
             name="emailValidator"
             onChange={onChange}
+            required
           />
+          <span style={{ color: "red" }}>
+            {validationMessage.validateEmail}
+          </span>
         </li>
         <li>
-          <h4>Mot de Passe</h4>
+          <h4>Mot de Passe*</h4>
           <input
-            type="text"
+            type="password"
             placeholder="Entrer votre mot de passe ici"
             value={formValue.password}
             name="password"
             onChange={onChange}
+            required
           />
+          <span style={{ color: "red" }}>
+            {validationMessage.securePassword}
+          </span>
         </li>
         <li>
-          <h4>Valider mon mot de passe</h4>
+          <h4>Valider mon mot de passe*</h4>
           <input
-            type="text"
+            type="password"
             placeholder="Entrer à nouveau votre mot de passe"
             value={formValue.passwordValidator}
-            name="passworValidator"
+            name="passwordValidator"
             onChange={onChange}
+            required
           />
+          <span style={{ color: "red" }}>
+            {validationMessage.validatePassword}
+          </span>
         </li>
       </ul>
-      <button
-        type="button"
-        onClick={() =>
-          register({
-            email: formValue.email,
-            password: formValue.password,
-            isAdmin: true,
-          })
-        }
-      >
+      <button type="button" onClick={checkError}>
         Créer mon compte
       </button>
     </div>

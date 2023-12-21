@@ -59,7 +59,7 @@ async function edit(req, res, next) {
 }
 
 // The A of BREAD - Add (Create) operation
-async function add(req, res, next) {
+async function add(req, res) {
   // Extract the item data from the request body
   try {
     const user = req.body;
@@ -67,14 +67,17 @@ async function add(req, res, next) {
     const insertId = await userManager.create(user);
 
     // Respond with HTTP 201 (Created) and the ID of the newly inserted item
-    if (insertId) {
-      res.status(201).json({ insertId });
+    if (+insertId !== 0) {
+      res.status(201).json({ message: "Well done", insertId });
     } else {
-      res.status(500).json({ message: "email exists , try to sign in" });
+      res
+        .status(500)
+        .json({ message: "email exists , try to sign in", insertId });
     }
   } catch (err) {
-    // Pass any errors to the error-handling middleware
-    next(err);
+    res
+      .status(500)
+      .json({ message: "Error while registering new user", insertId: 0 });
   }
 }
 async function check(req, res) {
