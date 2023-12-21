@@ -12,21 +12,20 @@ export default function UserContextProvider({ children }) {
 
   async function checkCredentials(credentials) {
     try {
-      const answer = await axios.post(
+      const { data } = await axios.post(
         "http://localhost:3310/api/user",
         credentials
       );
-      // console.log("response from back-end");
-      return answer;
+      // console.log("back answer", data);
+      return data;
     } catch (err) {
       return false;
-      // console.log(err);
     }
   }
   async function login(credentials) {
-    const { data: userdb } = await checkCredentials(credentials);
-    if (userdb) {
-      localStorage.setItem("users", JSON.stringify(userdb));
+    const userdb = await checkCredentials(credentials);
+    if (userdb.token) {
+      localStorage.setItem("user", JSON.stringify(userdb));
       setUser({ isAdmin: userdb.isAdmin, isConnected: true });
       if (userdb.isAdmin === 1) {
         navigate("/admin");

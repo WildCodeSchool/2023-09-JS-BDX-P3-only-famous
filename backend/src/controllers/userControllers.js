@@ -1,5 +1,22 @@
 // Import access to database tables
+const jwt = require("jsonwebtoken");
 const userManager = require("../models/userManager");
+
+function authenticateToken(req, res) {
+  if (req.body.token === null) {
+    res.sendStatus(401);
+    return;
+  }
+
+  jwt.verify(req.body.token, process.env.APP_SECRET, (err, user) => {
+    if (err) {
+      res.sendStatus(401);
+      return;
+    }
+    req.user = user;
+    // console.log("user when we verify token", user);
+  });
+}
 
 // The B of BREAD - Browse (Read All) operation
 const browse = async (req, res, next) => {
@@ -83,12 +100,22 @@ async function add(req, res) {
 }
 async function check(req, res) {
   try {
-    const user = req.body;
-    const userdb = await userManager.read(user.email, user.password);
-    if (!userdb) {
-      res.sendStatus(404).send(null);
+    if (!req.body.token) {
+      const user = req.body;
+      const userdb = await userManager.read(user.email, user.password);
+      if (!userdb) {
+        res.sendStatus(404).send(null);
+      } else {
+        res.status(200).json({
+          token: user.token,
+          isAdmin: userdb.isAdmin,
+          firstname: userdb.firstname,
+          lastname: userdb.lastname,
+        });
+      }
     } else {
-      res.status(200).json(userdb);
+      authenticateToken(req, res);
+      res.status(200).json({ ...req.user });
     }
   } catch (err) {
     console.error(err);
