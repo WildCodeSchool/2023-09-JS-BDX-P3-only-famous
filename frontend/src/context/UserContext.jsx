@@ -7,6 +7,7 @@ const userContext = createContext();
 
 export default function UserContextProvider({ children }) {
   const [user, setUser] = useState({ isAdmin: false, isConnected: false });
+  const [messageUser, setMessageUser] = useState("");
   const navigate = useNavigate();
   function getUsers() {
     return JSON.parse(localStorage.getItem("users") ?? "[]");
@@ -40,11 +41,12 @@ export default function UserContextProvider({ children }) {
         setUser({ isAdmin: false, isConnected: true });
         navigate("/onevideo");
       } else {
-        alert("identifiants incorrects from back");
+        setMessageUser("identifiants incorrects from back");
         navigate("/");
       }
     } else {
-      alert("tu es connecté");
+      setMessageUser("tu es connecté");
+
       setUser({ isAdmin: memoryUser?.isAdmin ?? false, isConnected: true });
       navigate("/onevideo");
     }
@@ -58,9 +60,9 @@ export default function UserContextProvider({ children }) {
       users.push(newUser);
       // console.log(users);
       localStorage.setItem("users", JSON.stringify(users));
-      alert(`Bienvenue ${newUser.email}`);
+      setMessageUser(`Bienvenue ${newUser.email}`);
     } else {
-      alert("Vous êtes déjà inscrit !");
+      setMessageUser("Vous êtes déjà inscrit !");
     }
   }
   function logout() {
@@ -68,8 +70,8 @@ export default function UserContextProvider({ children }) {
     localStorage.removeItem("users");
   }
   const contextData = useMemo(
-    () => ({ user, login, logout, register }),
-    [user, login, logout, register]
+    () => ({ user, messageUser, login, logout, register }),
+    [user, messageUser, login, logout, register]
   );
 
   return (
