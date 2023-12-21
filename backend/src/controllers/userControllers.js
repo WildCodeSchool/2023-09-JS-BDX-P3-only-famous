@@ -63,6 +63,7 @@ async function add(req, res) {
   // Extract the item data from the request body
   try {
     const user = req.body;
+    // console.log("user added : ", user);
     // Insert the item into the database
     const insertId = await userManager.create(user);
 
