@@ -1,7 +1,6 @@
 .inscription_container {
   background-color: #354d67;
   margin: 0 auto;
-  height: 1100px;
   width: 100%;
   text-align: center;
   display: flex;
@@ -10,6 +9,42 @@
 
   h2 {
     margin: 20px 0;
+  }
+
+  body {
+    padding: 40px;
+  }
+
+  .input-with-placeholder {
+    position: relative;
+    margin-top: 40px;
+    label {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      padding-left: 20px;
+      padding-top: 5px;
+      transition: 300ms all;
+    }
+    input {
+      width: 100%;
+      height: 60px;
+      padding: 0 15px;
+      border-radius: 40px;
+      background: rgba(100, 104, 109, 0.3);
+      &:valid + label,
+      &:focus + label {
+        height: 50%;
+        padding-left: 0;
+        transform: translateY(-100%);
+        font-size: 16px;
+        color: white;
+      }
+    }
   }
 
   .informations_inscription {
@@ -32,7 +67,7 @@
       }
 
       input {
-        background-color: #64686d;
+        background-color: rgba(100, 104, 109, 0.3);
         height: 40px;
         border-radius: 23px;
         opacity: 70%;
@@ -45,6 +80,9 @@
         color: white;
         text-align: left;
         padding-left: 20px;
+      }
+      input:focus {
+        outline: #cd853f 2px solid;
       }
     }
   }
@@ -67,7 +105,7 @@
     background-color: #354d67;
     margin: 0 auto;
     height: 1100px;
-    width: 40%;
+    width: 100%;
     text-align: center;
     display: flex;
     flex-direction: column;
