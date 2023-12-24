@@ -2,13 +2,30 @@ import { createContext, useContext, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 const userContext = createContext();
 
 export default function UserContextProvider({ children }) {
-  const [user, setUser] = useState({ isAdmin: false, isConnected: false });
+  const [user, setUser] = useState({
+    isAdmin: false,
+    isConnected: false,
+    firstname: "",
+    lastname: "",
+  });
   const [messageUser, setMessageUser] = useState("");
   const navigate = useNavigate();
+
+  // function readAndCheckToken() {
+  //   const token = localStorage.getItem("token");
+  //   if (token) {
+  //     const decoded = jwtDecode(token);
+  //     axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+  //     return decoded.exp > Date.now();
+  //   }
+  //   axios.defaults.headers.common.Authorization = `Bearer ""`;
+  //   return false;
+  // }
 
   async function checkCredentials(credentials) {
     try {
@@ -16,7 +33,6 @@ export default function UserContextProvider({ children }) {
         "http://localhost:3310/api/user",
         credentials
       );
-      // console.log("back answer", data);
       return data;
     } catch (err) {
       return false;
@@ -24,9 +40,15 @@ export default function UserContextProvider({ children }) {
   }
   async function login(credentials) {
     const userdb = await checkCredentials(credentials);
-    if (userdb.token) {
-      localStorage.setItem("user", JSON.stringify(userdb));
-      setUser({ isAdmin: userdb.isAdmin, isConnected: true });
+    const decoded = jwtDecode(userdb.token);
+    if (decoded) {
+      localStorage.setItem("user", JSON.stringify(userdb.token));
+      setUser({
+        isAdmin: decoded.isAdmin,
+        isConnected: true,
+        firstname: decoded.firstname,
+        lastname: decoded.lastname,
+      });
       if (userdb.isAdmin === 1) {
         navigate("/admin");
       } else {
@@ -55,7 +77,7 @@ export default function UserContextProvider({ children }) {
   }
   function logout() {
     setUser({ admin: false, isConnected: false });
-    localStorage.removeItem("users");
+    localStorage.removeItem("user");
   }
   const contextData = useMemo(
     () => ({ user, messageUser, login, logout, register }),

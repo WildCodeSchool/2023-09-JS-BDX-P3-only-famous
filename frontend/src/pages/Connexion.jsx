@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useUserContext } from "../context/UserContext";
+import banner from "../assets/connexion-pic.jpg";
 
 function Connexion() {
   const [formValue, setFormValue] = useState({
@@ -13,7 +14,7 @@ function Connexion() {
   const { login, logout, user } = useUserContext();
   return (
     <div className="connexion-container">
-      <img src="./src/assets/connexion-pic.jpg" alt="boussole-img" />
+      <img src={banner} alt="boussole-img" />
       {user.isConnected && (
         <div className="infos-container">
           <h1>Vous êtes déjà connecté</h1>
@@ -50,7 +51,6 @@ function Connexion() {
             className="btn-co button-co"
             type="button"
             onClick={() => {
-              // console.log("form value ", formValue);
               login(formValue);
             }}
           >

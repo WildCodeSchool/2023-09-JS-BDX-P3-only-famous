@@ -2,17 +2,17 @@ const express = require("express");
 
 const router = express.Router();
 
-const jwt = require("jsonwebtoken");
+// const jwt = require("jsonwebtoken");
 
 // generation du token
 
-function generateAccessToken(req, res, next) {
-  const user = req.body;
-  req.body.token = jwt.sign(user, process.env.APP_SECRET, {
-    expiresIn: "3600s",
-  });
-  next();
-}
+// function generateAccessToken(req, res, next) {
+//   const user = req.body;
+//   req.body.token = jwt.sign(user, process.env.APP_SECRET, {
+//     expiresIn: "3600s",
+//   });
+//   next();
+// }
 
 // function authenticateToken(req, res, next) {
 //   const authHeader = req.headers.authorization;
@@ -50,7 +50,7 @@ router.get("/users", userControllers.read);
 router.post("/users", userControllers.add);
 
 // Route to check existed user
-router.post("/user", generateAccessToken, userControllers.check);
+router.post("/user", userControllers.check);
 
 // Route to edit existed user
 router.put("/user", userControllers.edit);
