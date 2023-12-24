@@ -1,8 +1,13 @@
 import React from "react";
+import { useUserContext } from "../context/UserContext";
 
 function Admin() {
+  const { user } = useUserContext();
   return (
     <div className="admin_container">
+      <p>
+        Bienvenue : {user.firstname} {user.lastname}
+      </p>
       <div className="filtre_recherche">
         <ul>
           <li>
