@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import axios from "axios";
@@ -29,27 +29,27 @@ export default function UserContextProvider({ children }) {
 
   async function checkCredentials(credentials) {
     try {
-      const { data } = await axios.post(
+      const { headers } = await axios.post(
         "http://localhost:3310/api/user",
         credentials
       );
-      return data;
+      return headers;
     } catch (err) {
       return false;
     }
   }
-  async function login(credentials) {
-    const userdb = await checkCredentials(credentials);
-    const decoded = jwtDecode(userdb.token);
-    if (decoded) {
-      localStorage.setItem("user", JSON.stringify(userdb.token));
+  function decodeToken(token) {
+    const decoded = jwtDecode(token);
+    if (decoded && decoded.exp > Date.now() / 1000) {
+      localStorage.setItem("user", JSON.stringify(token));
       setUser({
         isAdmin: decoded.isAdmin,
         isConnected: true,
         firstname: decoded.firstname,
         lastname: decoded.lastname,
       });
-      if (userdb.isAdmin === 1) {
+      axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+      if (decoded.isAdmin === 1) {
         navigate("/admin");
       } else {
         navigate("/");
@@ -57,6 +57,14 @@ export default function UserContextProvider({ children }) {
     } else {
       setMessageUser("Identifiants incorrects");
       navigate("/");
+    }
+  }
+  async function login(credentials) {
+    const userdb = await checkCredentials(credentials);
+    if (userdb) {
+      decodeToken(userdb.token);
+    } else {
+      axios.defaults.headers.common.Authorization = `Bearer ""`;
     }
   }
   async function register(newUser) {
@@ -83,6 +91,22 @@ export default function UserContextProvider({ children }) {
     () => ({ user, messageUser, login, logout, register }),
     [user, messageUser, login, logout, register]
   );
+  function onLoadPage() {
+    const token = JSON.parse(localStorage.getItem("user"));
+    if (token) {
+      decodeToken(token);
+    } else {
+      setUser({
+        isAdmin: 0,
+        isConnected: false,
+        firstname: "Guest",
+        lastname: "",
+      });
+    }
+  }
+  useEffect(() => {
+    onLoadPage();
+  }, []);
 
   return (
     <userContext.Provider value={contextData}>{children}</userContext.Provider>

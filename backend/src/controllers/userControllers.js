@@ -104,6 +104,7 @@ async function add(req, res) {
       .json({ message: "Error while registering new user", insertId: 0 });
   }
 }
+// check for existant user in the db
 async function check(req, res) {
   try {
     const user = req.body;
@@ -111,23 +112,13 @@ async function check(req, res) {
     if (!userdb) {
       res.sendStatus(404).send(null);
     } else {
-      res.setHeader(
-        "token",
-        generateAccessToken({
-          isAdmin: userdb.isAdmin,
-          firstname: userdb.firstname,
-          lastname: userdb.lastname,
-        })
-      );
       const token = generateAccessToken({
         isAdmin: userdb.isAdmin,
         firstname: userdb.firstname,
         lastname: userdb.lastname,
       });
+      res.setHeader("token", token);
       res.status(200).json({
-        isAdmin: userdb.isAdmin,
-        firstname: userdb.firstname,
-        lastname: userdb.lastname,
         token,
       });
     }
