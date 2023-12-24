@@ -1,11 +1,11 @@
 import videoItems from "../components/Data";
 import Carroussel from "../components/Carroussel";
-import CustomMap from "../components/CustomMap";
+import Map from "../components/Map";
 
 function Home() {
   return (
     <div>
-      <CustomMap />
+      <Map />
       <Carroussel videoItems={videoItems} titre="Nature" />
       <Carroussel videoItems={videoItems} titre="Villes" />
     </div>
