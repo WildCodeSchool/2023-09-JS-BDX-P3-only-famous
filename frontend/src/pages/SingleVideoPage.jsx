@@ -6,7 +6,7 @@ export default function SingleVideoPage() {
   return (
     <div className="singleVideoPage">
       <OneVideo />
-      <Carroussel videoItems={videoItems} titre="Favories" />
+      <Carroussel videoItems={videoItems} titre="Favorites" />
     </div>
   );
 }

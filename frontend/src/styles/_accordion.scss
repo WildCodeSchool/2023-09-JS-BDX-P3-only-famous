@@ -9,7 +9,7 @@
   transition: all 0.35s;
 }
 .tab input:checked ~ .tab__content {
-  max-height: 10rem;
+  max-height: 20rem;
 }
 
 /* Visual styles */
@@ -25,9 +25,6 @@
   padding: 1rem;
 }
 
-.tab input:checked + .tab__label::after {
-  transform: rotate(270deg);
-}
 .tab__content p {
   margin: 0;
   padding: 1rem;

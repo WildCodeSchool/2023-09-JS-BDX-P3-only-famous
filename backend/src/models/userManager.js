@@ -1,34 +1,53 @@
+const bcrypt = require("bcrypt");
 const database = require("../../database/client");
 
 class UserManager {
+  static async Hashing(password) {
+    const res = await bcrypt.hash(password, 3);
+    return res;
+  }
+
+  static async compare(password, passwordHash) {
+    const res = await bcrypt.compare(password, passwordHash);
+    return res;
+  }
+
   static async create(user) {
-    // console.log("create user called");
     // Execute the SQL INSERT query to add a new item to the "item" table
-    const [result] = await database.query(
-      `insert into user (firstname, lastname, email, password, birthday, isAdmin) values (?,?,?,?,?,?)`,
-      [
-        user.firstname,
-        user.lastname,
-        user.email,
-        user.password,
-        user.birthday,
-        user.isAdmin,
-      ]
-    );
+    const hashedPassword = await this.Hashing(user.password);
+    try {
+      const [result] = await database.query(
+        `insert into user (firstname, lastname, email, password, birthday, isAdmin) values (?,?,?,?,?,?)`,
+        [
+          user.firstname,
+          user.lastname,
+          user.email,
+          hashedPassword,
+          user.birthday,
+          user.isAdmin,
+        ]
+      );
+      return result.insertId;
+    } catch (err) {
+      console.error("error while inserting new user in user manager: ", err);
+      return null;
+    }
 
     // Return the ID of the newly inserted item
-    return result.insertId;
   }
   // The Rs of CRUD - Read operations
 
-  static async read(email) {
+  static async read(email, password) {
     // Execute the SQL SELECT query to retrieve a specific item by its ID
     const [rows] = await database.query(`select * from user where email = ?`, [
       email,
     ]);
-
+    const res = await this.compare(password, rows[0].password);
+    if (res) {
+      return rows[0];
+    }
+    return null;
     // Return the first row of the result, which represents the item
-    return rows[0];
   }
 
   static async readAll() {

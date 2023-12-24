@@ -18,21 +18,46 @@ function Carroussel({ videoItems, titre }) {
     }
   };
 
-  // function handleScroll(e) {
-  //   e.stopPropagation();
-  //   const deltaY = e.deltaY;
-  //   if (deltaY < 0) {
-  //     videoListRef.current.scrollLeft += 200;
-  //   }
-  //   if (deltaY > 0) {
-  //     videoListRef.current.scrollLeft -= 200;
-  //   }
-  // }
+  const preventDefault = (ev) => {
+    if (ev.preventDefault) {
+      ev.preventDefault();
+    }
+  };
+
+  const enableBodyScroll = () => {
+    document.removeEventListener("wheel", preventDefault, false);
+  };
+  const disableBodyScroll = () => {
+    document.addEventListener("wheel", preventDefault, {
+      passive: false,
+    });
+  };
+
+  function handleScroll(e) {
+    const { deltaY } = e;
+    if (deltaY < 0) {
+      videoListRef.current.scrollLeft += 200;
+    }
+    if (deltaY > 0) {
+      videoListRef.current.scrollLeft -= 200;
+    }
+  }
+  function handleHover() {
+    disableBodyScroll();
+  }
+  function handleUnHover() {
+    enableBodyScroll();
+  }
 
   return (
     <div className="video-carroussel">
       <h2>{titre ?? "titre générique"}</h2>
-      <div className="btn-car">
+      <div
+        className="btn-car"
+        onWheel={handleScroll}
+        onMouseEnter={handleHover}
+        onMouseLeave={handleUnHover}
+      >
         <button type="button" className="button-left" onClick={scrollLeft}>
           {"<"}
         </button>

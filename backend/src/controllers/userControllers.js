@@ -1,5 +1,22 @@
 // Import access to database tables
+const jwt = require("jsonwebtoken");
 const userManager = require("../models/userManager");
+
+function authenticateToken(req, res) {
+  if (req.body.token === null) {
+    res.sendStatus(401);
+    return;
+  }
+
+  jwt.verify(req.body.token, process.env.APP_SECRET, (err, user) => {
+    if (err) {
+      res.sendStatus(401);
+      return;
+    }
+    req.user = user;
+    // console.log("user when we verify token", user);
+  });
+}
 
 // The B of BREAD - Browse (Read All) operation
 const browse = async (req, res, next) => {
@@ -18,9 +35,9 @@ const browse = async (req, res, next) => {
 // The R of BREAD - Read operation
 const read = async (req, res, next) => {
   try {
+    const { email, password } = req.body;
     // Fetch a specific item from the database based on the provided ID
-    const item = await userManager.read(req.params.email);
-
+    const item = await userManager.read(email, password);
     // console.log("item ", item);
     // If the item is not found, respond with HTTP 404 (Not Found)
     // Otherwise, respond with the item in JSON format
@@ -37,7 +54,7 @@ const read = async (req, res, next) => {
 
 // The E of BREAD - Edit (Update) operation
 // This operation is not yet implemented
-const edit = async (req, res, next) => {
+async function edit(req, res, next) {
   try {
     const user = req.body;
     // console.log("user from body", user);
@@ -56,50 +73,52 @@ const edit = async (req, res, next) => {
     // Pass any errors to the error-handling middleware
     next(err);
   }
-};
+}
 
 // The A of BREAD - Add (Create) operation
-const add = async (req, res, next) => {
+async function add(req, res) {
   // Extract the item data from the request body
-  const user = req.body;
-
   try {
+    const user = req.body;
+    // console.log("user added : ", user);
     // Insert the item into the database
     const insertId = await userManager.create(user);
 
     // Respond with HTTP 201 (Created) and the ID of the newly inserted item
-    res.status(201).json({ insertId });
+    if (+insertId !== 0) {
+      res.status(201).json({ message: "Well done", insertId });
+    } else {
+      res
+        .status(500)
+        .json({ message: "email exists , try to sign in", insertId });
+    }
   } catch (err) {
-    // Pass any errors to the error-handling middleware
-    next(err);
+    res
+      .status(500)
+      .json({ message: "Error while registering new user", insertId: 0 });
   }
-};
-async function check(req, res, next) {
+}
+async function check(req, res) {
   try {
-    const user = req.body;
-    const userdb = await userManager.read(req.body.email);
-    // console.log("user ", userdb);
-
-    if (!userdb) {
-      // console.log("user not found");
-      res.sendStatus(404);
-      return 0;
+    if (!req.body.token) {
+      const user = req.body;
+      const userdb = await userManager.read(user.email, user.password);
+      if (!userdb) {
+        res.sendStatus(404).send(null);
+      } else {
+        res.status(200).json({
+          token: user.token,
+          isAdmin: userdb.isAdmin,
+          firstname: userdb.firstname,
+          lastname: userdb.lastname,
+        });
+      }
+    } else {
+      authenticateToken(req, res);
+      res.status(200).json({ ...req.user });
     }
-    if (userdb.password !== user.password) {
-      // console.log("wrong password");
-
-      res.sendStatus(404);
-      return 0;
-    }
-    // console.log("user found");
-
-    res.status(200).json(userdb.id);
-
-    return 1;
   } catch (err) {
-    // Pass any errors to the error-handling middleware
-    next(err);
-    return 0;
+    console.error(err);
   }
 }
 

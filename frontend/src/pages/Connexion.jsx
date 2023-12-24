@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useUserContext } from "../context/UserContext";
 
 function Connexion() {
-  const { user } = useUserContext();
   const [formValue, setFormValue] = useState({
     email: "",
     password: "",
@@ -11,7 +10,7 @@ function Connexion() {
   function onChange(e) {
     setFormValue({ ...formValue, [e.target.name]: e.target.value });
   }
-  const { login, logout } = useUserContext();
+  const { login, logout, user } = useUserContext();
   return (
     <div className="connexion-container">
       <img src="./src/assets/connexion-pic.jpg" alt="boussole-img" />

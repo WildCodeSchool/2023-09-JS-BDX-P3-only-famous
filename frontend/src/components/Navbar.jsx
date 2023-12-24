@@ -10,8 +10,10 @@ import {
   MDBCollapse,
 } from "mdb-react-ui-kit";
 import logo from "../assets/Logo.png";
+import { useUserContext } from "../context/UserContext";
 
 export default function Navbar() {
+  const { user } = useUserContext();
   const [openNavColor, setOpenNavColor] = useState(false);
   useEffect(() => {
     window.addEventListener("resize", () => {
@@ -54,10 +56,11 @@ export default function Navbar() {
               <Link to="/connexion">
                 <span className="navbar-link">Connexion</span>
               </Link>
-
-              <Link to="/admin">
-                <span className="navbar-link">Espace admin</span>
-              </Link>
+              {user.isAdmin && (
+                <Link to="/admin">
+                  <span className="navbar-link">Espace admin</span>
+                </Link>
+              )}
             </MDBNavbarNav>
           </MDBCollapse>
         </MDBContainer>
