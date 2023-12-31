@@ -8,7 +8,7 @@ function App() {
   return (
     <>
       <Navbar />
-      <div className="App container-lg">
+      <div className="App container-fluid">
         <Outlet />
       </div>
       <Footer />

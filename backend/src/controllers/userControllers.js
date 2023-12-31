@@ -88,20 +88,18 @@ async function add(req, res) {
     const user = req.body;
     // console.log("user added : ", user);
     // Insert the item into the database
-    const insertId = await userManager.create(user);
+    const { insertId, message } = await userManager.create(user);
 
     // Respond with HTTP 201 (Created) and the ID of the newly inserted item
     if (+insertId !== 0) {
-      res.status(201).json({ message: "Well done", insertId });
-    } else {
-      res
-        .status(500)
-        .json({ message: "email exists , try to sign in", insertId });
+      res.status(201).json({ message, insertId });
+      return { message, insertId };
     }
+    res.status(500).json({ message, insertId });
+    return { message, insertId };
   } catch (err) {
-    res
-      .status(500)
-      .json({ message: "Error while registering new user", insertId: 0 });
+    res.status(500).json({ message: "Email existant!!!", insertId: 0 });
+    return { message: "Email existant!!!", insertId: 0 };
   }
 }
 // check for existant user in the db

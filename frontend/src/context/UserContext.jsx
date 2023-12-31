@@ -13,6 +13,13 @@ export default function UserContextProvider({ children }) {
     firstname: "",
     lastname: "",
   });
+  const [formValue, setFormValue] = useState({
+    email: "",
+    password: "",
+    firstname: "",
+    lastname: "",
+    birthday: "",
+  });
   const [messageUser, setMessageUser] = useState("");
   const navigate = useNavigate();
 
@@ -69,18 +76,28 @@ export default function UserContextProvider({ children }) {
   }
   async function register(newUser) {
     try {
-      const { data: answer } = await axios.post(
+      // console.log("before axios ");
+
+      const { message, insertId } = await axios.post(
         "http://localhost:3310/api/users",
         newUser
       );
-      if (+answer.insertId !== 0) {
-        navigate("/");
+      // console.log("after axios ");
+      if (+insertId !== 0) {
+        // console.log("message from back end : ", message);
+        setMessageUser(message);
       }
-      setMessageUser(answer?.message ?? "Something wrong");
+      // console.log("message from back end : ", message);
 
+      setMessageUser(message);
+      return true;
       // console.log("response from back-end");
     } catch (err) {
+      // console.log("Essaie avec un autre email");
+      setMessageUser("Essaie avec un autre email");
+
       console.error("error front : ", err);
+      return false;
     }
   }
   function logout() {
@@ -88,8 +105,16 @@ export default function UserContextProvider({ children }) {
     localStorage.removeItem("user");
   }
   const contextData = useMemo(
-    () => ({ user, messageUser, login, logout, register }),
-    [user, messageUser, login, logout, register]
+    () => ({
+      user,
+      messageUser,
+      formValue,
+      setFormValue,
+      login,
+      logout,
+      register,
+    }),
+    [user, messageUser, formValue, setFormValue, login, logout, register]
   );
   function onLoadPage() {
     const token = JSON.parse(localStorage.getItem("user"));

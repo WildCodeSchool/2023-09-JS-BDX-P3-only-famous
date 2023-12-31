@@ -1,23 +1,29 @@
 import { useState } from "react";
 import InputField from "../components/InputField";
 import DatePicker from "../components/DatePicker";
+import { useUserContext } from "../context/UserContext";
+import RegisterPassword from "./RegisterPassword";
 
 export default function RegisterCoord() {
   const [email, setEmail] = useState("");
   const [birthday, setBirdthday] = useState("");
   const [message, setMessage] = useState("");
+  const { formValue, setFormValue } = useUserContext();
+  const [next, setNext] = useState(false);
 
   function checkError() {
     const mailformat = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
     if (email === "" || birthday === "" || !email.match(mailformat)) {
       setMessage(
-        "La date de naissance et un email valide sont obligatoires!!!"
+        () => "La date de naissance et un email valide sont obligatoires!!!"
       );
     } else {
-      setMessage("");
+      setFormValue({ ...formValue, email, birthday });
+      setMessage(() => "");
+      setNext(true);
     }
   }
-  return (
+  return !next ? (
     <div className="inscription_container">
       <h2>Créer votre compte</h2>
       <h4>Saisissez vos coordonnées</h4>
@@ -31,6 +37,7 @@ export default function RegisterCoord() {
             setValue={setEmail}
           />
         </li>
+
         <li>
           <DatePicker date={birthday} value={birthday} setDate={setBirdthday} />
         </li>
@@ -40,5 +47,7 @@ export default function RegisterCoord() {
         </button>
       </ul>
     </div>
+  ) : (
+    <RegisterPassword />
   );
 }
