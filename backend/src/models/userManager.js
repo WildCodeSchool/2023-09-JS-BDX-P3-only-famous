@@ -27,10 +27,10 @@ class UserManager {
           user.isAdmin,
         ]
       );
-      return result.insertId;
+      return { message: "Utilisateur ajouté!!!", insertId: result.insertId };
     } catch (err) {
       console.error("error while inserting new user in user manager: ", err);
-      return null;
+      return { message: "Email existant!!!", insertId: 0 };
     }
 
     // Return the ID of the newly inserted item

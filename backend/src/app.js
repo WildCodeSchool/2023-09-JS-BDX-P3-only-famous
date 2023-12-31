@@ -27,7 +27,11 @@ const app = express();
 
 const cors = require("cors");
 
-app.use(cors({}));
+const corsOptions = {
+  exposedHeaders: "token",
+};
+
+app.use(cors(corsOptions));
 /*
 const cors = require("cors");
 

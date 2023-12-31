@@ -12,7 +12,7 @@ import Admin from "./pages/Admin";
 import SingleVideoPage from "./pages/SingleVideoPage";
 import UserContextProvider from "./context/UserContext";
 import AdminContextProvider from "./context/AdminContext";
-import Register from "./pages/Register";
+import RegisterUser from "./pages/RegisterUser";
 
 // async function timeOut(time = 3000){
 //   setTimeout(() => {
@@ -39,7 +39,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/inscription",
-        element: <Register />,
+        element: <RegisterUser />,
       },
       {
         path: "/connexion",

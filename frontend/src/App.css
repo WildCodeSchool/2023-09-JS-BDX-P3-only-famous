@@ -2,13 +2,16 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  background-color: #344d67;
+  /* background-color: #344d67; */
 }
 .App {
   position: relative;
   min-height: 100vh;
   margin: 0 auto;
   padding-bottom: 80px;
+}
+body {
+  background-color: #344d67;
 }
 :root {
   --primary-me: #344d67;
@@ -17,4 +20,7 @@
 }
 .hover {
   filter: drop-shadow(2px 2px 4px orange);
+}
+body {
+  font-family: Roboto, Helvetica, Arial, sans-serif;
 }

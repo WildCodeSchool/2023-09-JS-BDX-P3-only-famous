@@ -1,0 +1,60 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import InputField from "../components/InputField";
+import { useUserContext } from "../context/UserContext";
+
+export default function RegisterPassword() {
+  const navigate = useNavigate();
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [message, setMessage] = useState("");
+  const { formValue, setFormValue } = useUserContext();
+  const { register, messageUser } = useUserContext();
+
+  async function checkError() {
+    if (password.length < 4 || password !== confirmPassword) {
+      setMessage(
+        () => "Le mot de passe n'est pas conforme ou n'est pas confirmé!!!"
+      );
+    } else {
+      setFormValue({ ...formValue, isAdmin: 0, password });
+      const isDone = await register(formValue);
+      setMessage(() => messageUser);
+      if (isDone) navigate("/connexion");
+      else {
+        navigate("/inscription");
+      }
+    }
+  }
+  return (
+    <div className="inscription_container">
+      <h2>Créer votre compte</h2>
+      <h4>Saisissez vos coordonnées</h4>
+      <ul className="informations_inscription">
+        <li>
+          <InputField
+            type="password"
+            title="Mot de passe"
+            id="password"
+            value={password}
+            setValue={setPassword}
+          />
+        </li>
+        <li>
+          <InputField
+            type="password"
+            title="Confirmer le MDP"
+            id="confirmPassword"
+            value={confirmPassword}
+            setValue={setConfirmPassword}
+          />
+        </li>
+
+        <p style={{ color: "red" }}>{message}</p>
+        <button type="button" onClick={checkError}>
+          Suivant
+        </button>
+      </ul>
+    </div>
+  );
+}

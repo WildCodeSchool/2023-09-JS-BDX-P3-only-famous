@@ -49,6 +49,7 @@ export default function Map() {
   }
   useEffect(() => {
     window.addEventListener("resize", handleResize);
+
     setDimensionX(window.innerWidth);
     setDimensionY(window.innerWidth / 2.3);
   }, []);
