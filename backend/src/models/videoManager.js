@@ -61,9 +61,13 @@ class VideoManager {
       `select * from video where playlistId = ? `,
       [playListId]
     );
+    const [playlist] = await database.query(
+      `select playlistTitle from playlist where playlistId = ? `,
+      [playListId]
+    );
 
     // Return the array of items
-    return rows;
+    return { rows, title: playlist[0].playlistTitle };
   }
 
   // The U of CRUD - Update operation

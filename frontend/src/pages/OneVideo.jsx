@@ -1,11 +1,18 @@
+import { useEffect, useState } from "react";
 import Accordion from "../components/Accordion";
+import { useUserContext } from "../context/UserContext";
 
 export default function OneVideo() {
+  const { linkToVideo } = useUserContext();
+  const [fullLink, setFullLink] = useState("");
+  useEffect(() => {
+    setFullLink(`https://www.youtube.com/embed/${linkToVideo}`);
+  }, []);
   return (
     <div className="SingleVideo">
       <div className="ratio ratio-16x9 center-middle">
         <iframe
-          src="https://www.youtube.com/embed/N5VlFzWVvK0?si=iUwoNff9mgIlXDZ-"
+          src={fullLink}
           title="YouTube video player"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowFullScreen

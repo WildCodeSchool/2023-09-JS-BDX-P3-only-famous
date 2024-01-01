@@ -11,12 +11,15 @@
   padding-bottom: 80px;
 }
 body {
-  background-color: #344d67;
+  background-color: #333333;
 }
 :root {
-  --primary-me: #344d67;
-  --secondary-me: #cd853f;
-  --middle-me: gray;
+  --primary-me: #333333;
+  --primary-me-dark: #222222;
+  --secondary-me: #ffe500;
+  --border: #c5c1c0;
+  --font-light-grey: #c5c1c0;
+  --font-light: #ffffff;
 }
 .hover {
   filter: drop-shadow(2px 2px 4px orange);

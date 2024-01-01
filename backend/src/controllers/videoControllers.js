@@ -34,13 +34,13 @@ const read = async (req, res, next) => {
 
 const readPlaylist = async (req, res, next) => {
   try {
-    const { playlistId } = req.body;
+    const { playlistId } = req.query;
     // Fetch a specific item from the database based on the provided ID
-    const item = await videoManager.readPlayList(playlistId);
-    if (item == null) {
+    const { rows, title } = await videoManager.readPlayList(playlistId);
+    if (rows == null) {
       res.sendStatus(404);
     } else {
-      res.json(item);
+      res.json({ rows, title });
     }
   } catch (err) {
     // Pass any errors to the error-handling middleware
