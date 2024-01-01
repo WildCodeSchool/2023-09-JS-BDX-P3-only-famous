@@ -93,9 +93,11 @@ app.use(express.json());
 
 // Import the API routes from the router module
 const router = require("./router");
+const routerVideo = require("./routerVideo");
 
 // Mount the API routes under the "/api" endpoint
 app.use("/api", router);
+app.use("/api", routerVideo);
 
 /* ************************************************************************* */
 

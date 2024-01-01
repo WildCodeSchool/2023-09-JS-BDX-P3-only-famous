@@ -22,6 +22,7 @@ export default function UserContextProvider({ children }) {
   });
   const [messageUser, setMessageUser] = useState("");
   const navigate = useNavigate();
+  const [linkToVideo, setLinkToVideo] = useState("");
 
   // function readAndCheckToken() {
   //   const token = localStorage.getItem("token");
@@ -113,8 +114,20 @@ export default function UserContextProvider({ children }) {
       login,
       logout,
       register,
+      linkToVideo,
+      setLinkToVideo,
     }),
-    [user, messageUser, formValue, setFormValue, login, logout, register]
+    [
+      user,
+      messageUser,
+      formValue,
+      setFormValue,
+      login,
+      logout,
+      register,
+      linkToVideo,
+      setLinkToVideo,
+    ]
   );
   function onLoadPage() {
     const token = JSON.parse(localStorage.getItem("user"));

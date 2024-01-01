@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import PropTypes from "prop-types";
-import VideoCard from "./VideoCard";
+import VideoItem from "./VideoItem";
 
 function Carroussel({ videoItems, titre }) {
   // const theCategory = [...new Set(videoItems.map((item) => item.category))];
@@ -51,26 +51,49 @@ function Carroussel({ videoItems, titre }) {
 
   return (
     <div className="video-carroussel">
-      <h2>{titre ?? "titre générique"}</h2>
+      <div className="carousel-top">
+        <h2>{titre ?? "titre générique"}</h2>
+        <button type="button" className="btn browse">
+          Tout regarder
+        </button>
+      </div>
+
+      <hr
+        style={{
+          borderTop: "8px solid #bbb",
+          borderRadius: "5px",
+          margin: `10px 0`,
+        }}
+      />
       <div
         className="btn-car"
         onWheel={handleScroll}
         onMouseEnter={handleHover}
         onMouseLeave={handleUnHover}
       >
+        {/* eslint-disable-next-line */}
         <button type="button" className="button-left" onClick={scrollLeft}>
-          {"<"}
+          <img src="./src/assets/left.svg" alt="" height="25" width="25" />
         </button>
         <div className="video-list" ref={videoListRef}>
           {videoItems.map((item) => (
-            <VideoCard
-              address={item.address}
+            // <VideoCard
+            //   address={item.address}
+            //   title={item.title}
+            //   key={item.title}
+            // />
+            <VideoItem
               title={item.title}
+              duration={item.duration}
+              description="small description for testing"
+              imgUrl="https://i.ytimg.com/vi/rhPIw9a1CxQ/default.jpg"
+              publishDate="21-04"
               key={item.title}
             />
           ))}
+          {/* eslint-disable-next-line */}
           <button type="button" className="button-right" onClick={scrollRight}>
-            {">"}
+            <img src="./src/assets/right.svg" alt="" height="25" width="25" />
           </button>
         </div>
       </div>
