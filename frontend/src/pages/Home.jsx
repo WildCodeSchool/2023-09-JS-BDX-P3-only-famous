@@ -20,7 +20,11 @@ function Home() {
     <div>
       <Map />
       {videos && <Carroussel videoItems={videos} titre={playlistTitle} />}
-      {/* <Carroussel videoItems={videoItems} titre="Villes" /> */}
+      {videos && <Carroussel videoItems={videos} titre={playlistTitle} />}
+
+      {videos && <Carroussel videoItems={videos} titre={playlistTitle} />}
+
+      {videos && <Carroussel videoItems={videos} titre={playlistTitle} />}
     </div>
   );
 }
