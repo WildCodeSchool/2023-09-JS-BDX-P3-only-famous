@@ -25,6 +25,7 @@ export default function RegisterCoord() {
   }
   return !next ? (
     <div className="inscription_container">
+      <div className="banner" />
       <h2>Créer votre compte</h2>
       <h4>Saisissez vos coordonnées</h4>
       <ul className="informations_inscription">
@@ -42,7 +43,7 @@ export default function RegisterCoord() {
           <DatePicker date={birthday} value={birthday} setDate={setBirdthday} />
         </li>
         <p style={{ color: "red" }}>{message}</p>
-        <button type="button" onClick={checkError}>
+        <button type="button" className="mybtn" onClick={checkError}>
           Suivant
         </button>
       </ul>

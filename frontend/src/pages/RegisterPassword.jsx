@@ -17,7 +17,7 @@ export default function RegisterPassword() {
         () => "Le mot de passe n'est pas conforme ou n'est pas confirmé!!!"
       );
     } else {
-      setFormValue({ ...formValue, isAdmin: 0, password });
+      setFormValue({ ...formValue, password, isAdmin: 0 });
       const isDone = await register(formValue);
       setMessage(() => messageUser);
       if (isDone) navigate("/connexion");
@@ -28,6 +28,7 @@ export default function RegisterPassword() {
   }
   return (
     <div className="inscription_container">
+      <div className="banner" />
       <h2>Créer votre compte</h2>
       <h4>Saisissez vos coordonnées</h4>
       <ul className="informations_inscription">
@@ -51,7 +52,7 @@ export default function RegisterPassword() {
         </li>
 
         <p style={{ color: "red" }}>{message}</p>
-        <button type="button" onClick={checkError}>
+        <button type="button" className="mybtn" onClick={checkError}>
           Suivant
         </button>
       </ul>

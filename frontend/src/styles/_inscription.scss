@@ -1,11 +1,19 @@
 .inscription_container {
-  background-color: #354d67;
+  // background-color: #354d67;
   margin: 0 auto;
   width: 100%;
   text-align: center;
   display: flex;
   flex-direction: column;
   color: white;
+  .banner {
+    background-image: url("../assets/banner.png");
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background-size: cover;
+    border-radius: 20%;
+    background-repeat: no-repeat;
+  }
 
   h2 {
     margin: 20px 0;
@@ -35,7 +43,7 @@
       height: 60px;
       padding: 0 15px;
       border-radius: 40px;
-      background: rgba(100, 104, 109, 0.3);
+      background: var(--primary-me-dark);
       &:valid + label,
       &:focus + label {
         height: 50%;
@@ -68,7 +76,7 @@
       }
 
       input {
-        background-color: rgba(100, 104, 109, 0.3);
+        background-color: var(--primary-me-dark);
         height: 40px;
         border-radius: 23px;
         opacity: 70%;
@@ -88,7 +96,7 @@
     }
   }
 
-  button {
+  button.mybtn {
     height: 40px;
     border-radius: 23px;
     width: 50%;
@@ -97,13 +105,18 @@
     border: none;
     border: 1px solid #cd853f;
     color: white;
-    background-color: #354d67;
+    background-color: var(--primary-me-dark);
+  }
+  button.invisible-btn {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    color: var(--secondary-me);
   }
 }
 
 @media screen and (min-width: 768px) {
   .inscription_container {
-    background-color: #354d67;
     margin: 0 auto;
     height: 1100px;
     width: 100%;
@@ -115,5 +128,10 @@
 
   li {
     margin: 30px 0;
+  }
+  .more-options {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
   }
 }

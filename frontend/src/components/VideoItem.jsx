@@ -1,25 +1,33 @@
-import React, { useEffect } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
 
 export default function VideoItem({
-  title = "my title",
-  duration = "10:00",
-  imgUrl = "https://i.ytimg.com/vi/ilqxZiXnwD8/default.jpg",
-  publishDate = "21-04-1986",
-  link = "oSk5Edwzw4s",
+  title,
+  duration,
+  imgUrl,
+  publishDate,
+  link,
+  description,
+  tags,
 }) {
   const { setLinkToVideo } = useUserContext();
   const navigate = useNavigate();
-  useEffect(() => {
-    setLinkToVideo(link);
-  }, []);
   return (
     <button
       type="button"
       className="carousel-item btn"
       onClick={() => {
+        setLinkToVideo({
+          title,
+          duration,
+          imgUrl,
+          publishDate,
+          link,
+          description,
+          tags,
+        });
         navigate("/onevideo");
       }}
     >
@@ -49,4 +57,6 @@ VideoItem.propTypes = {
   link: PropTypes.string.isRequired,
   imgUrl: PropTypes.string.isRequired,
   publishDate: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  tags: PropTypes.string.isRequired,
 };

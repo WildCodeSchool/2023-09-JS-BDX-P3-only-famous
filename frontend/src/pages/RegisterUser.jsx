@@ -22,6 +22,7 @@ export default function RegisterUser() {
   }
   return !next ? (
     <div className="inscription_container">
+      <div className="banner" />
       <h2>Créer votre compte</h2>
       <h4>Saisissez votre nom</h4>
       <ul className="informations_inscription">
@@ -44,7 +45,7 @@ export default function RegisterUser() {
           />
         </li>
         <p style={{ color: "red" }}>{message}</p>
-        <button type="button" onClick={checkError}>
+        <button type="button" onClick={checkError} className="mybtn">
           Suivant
         </button>
       </ul>

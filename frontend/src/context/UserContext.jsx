@@ -22,7 +22,7 @@ export default function UserContextProvider({ children }) {
   });
   const [messageUser, setMessageUser] = useState("");
   const navigate = useNavigate();
-  const [linkToVideo, setLinkToVideo] = useState("");
+  const [linkToVideo, setLinkToVideo] = useState({});
 
   // function readAndCheckToken() {
   //   const token = localStorage.getItem("token");
@@ -109,6 +109,7 @@ export default function UserContextProvider({ children }) {
     () => ({
       user,
       messageUser,
+      setMessageUser,
       formValue,
       setFormValue,
       login,
@@ -120,6 +121,7 @@ export default function UserContextProvider({ children }) {
     [
       user,
       messageUser,
+      setMessageUser,
       formValue,
       setFormValue,
       login,

@@ -107,6 +107,7 @@ async function check(req, res) {
   try {
     const user = req.body;
     const userdb = await userManager.read(user.email, user.password);
+
     if (!userdb) {
       res.sendStatus(404).send(null);
     } else {

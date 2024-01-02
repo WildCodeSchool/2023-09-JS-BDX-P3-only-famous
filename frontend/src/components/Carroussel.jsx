@@ -112,7 +112,8 @@ function Carroussel({ playlistId }) {
                 duration={item.duration}
                 description="small description for testing"
                 imgUrl={item.thumbnails}
-                publishDate="21-04"
+                publishDate={item.publishDate}
+                link={item.ytId}
                 key={item.title}
               />
             ))}
@@ -128,9 +129,11 @@ function Carroussel({ playlistId }) {
             <VideoItem
               title={item.title}
               duration={item.duration}
-              description="small description for testing"
               imgUrl={item.thumbnails}
               publishDate="21-04"
+              link={item.ytId}
+              description={item.description}
+              tags={item.tags}
               key={item.title}
             />
           ))}

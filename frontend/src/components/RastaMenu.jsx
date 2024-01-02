@@ -14,9 +14,6 @@ export default function RastaMenu() {
 
   return (
     <div className="navbar">
-      {window.addEventListener("resize", () => {
-        setChecked(false);
-      })}
       <div className="classic-navbar">
         <button
           type="button"
@@ -125,6 +122,9 @@ export default function RastaMenu() {
             ""
           )}
         </ul>
+      </div>
+      <div className="user-area">
+        <p>{`Bienvenue ${user.firstname}`}</p>
       </div>
     </div>
   );

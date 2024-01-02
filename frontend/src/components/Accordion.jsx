@@ -1,7 +1,9 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
+
 import Tag from "./Tag";
 
-export default function Accordion() {
+export default function Accordion({ description, tags }) {
   const [isChecked, setIschecked] = useState(true);
   return (
     <div className="accordion tab">
@@ -15,20 +17,23 @@ export default function Accordion() {
         }}
       />
       <label htmlFor="cb1" className="tab__label">
-        {isChecked ? "Moins" : "En savoir plus"}
+        {isChecked ? (
+          <span style={{ color: `var(--secondary-me)` }}>Moins</span>
+        ) : (
+          <span style={{ color: `var(--secondary-me)` }}>En savoir plus</span>
+        )}
       </label>
       <div className="tab__content">
-        <p>
-          Pure CSS accordion based on the "input:checked + label" style trick.
-          Pure CSS accordion based on the "input:checked + label" style trick.
-          Pure CSS accordion based on the "input:checked + label" style trick.
-        </p>
+        <p>{description}</p>
         <div className="tags">
-          <Tag tag="My tag" />
-          <Tag tag="Your Tag" />
-          <Tag tag="His Tag" />
+          {tags && tags.split(",").map((tag) => <Tag tag={tag} />)}
         </div>
       </div>
     </div>
   );
 }
+
+Accordion.propTypes = {
+  description: PropTypes.string.isRequired,
+  tags: PropTypes.string.isRequired,
+};

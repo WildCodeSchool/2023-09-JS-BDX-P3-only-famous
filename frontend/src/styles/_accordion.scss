@@ -28,6 +28,12 @@
 .tab__content p {
   margin: 0;
   padding: 1rem;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .tab__close {
   justify-content: flex-end;
