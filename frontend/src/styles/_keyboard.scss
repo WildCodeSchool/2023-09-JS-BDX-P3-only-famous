@@ -1,0 +1,11 @@
+.keyboard {
+  display: flex;
+  justify-content: center;
+}
+.language {
+  transition: all 0.2s ease;
+}
+.language:hover {
+  transform: translate(0, 2px);
+  cursor: pointer;
+}

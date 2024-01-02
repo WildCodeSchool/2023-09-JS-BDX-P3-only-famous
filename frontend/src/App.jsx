@@ -2,13 +2,14 @@ import "./styles/_index.scss";
 import { Outlet } from "react-router-dom";
 import "./App.css";
 import Footer from "./components/Footer";
-import Navbar from "./components/Navbar";
+import RastaMenu from "./components/RastaMenu";
 
 function App() {
   return (
     <>
-      <Navbar />
-      <div className="App container-fluid">
+      {/* <Navbar /> */}
+      <RastaMenu />
+      <div className="App container-md">
         <Outlet />
       </div>
       <Footer />

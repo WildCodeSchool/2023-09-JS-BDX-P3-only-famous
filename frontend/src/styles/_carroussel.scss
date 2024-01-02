@@ -19,7 +19,14 @@
     outline: none;
     border: none;
     background-color: transparent;
-    z-index: 10;
+
+    z-index: 2;
+  }
+  .button-right {
+    mask-image: linear-gradient(to right, var(--primary-me), transparent);
+  }
+  .button-left {
+    mask-image: linear-gradient(to left, var(--primary-me), transparent);
   }
   .button-left:active,
   .button-right:active {
@@ -76,5 +83,13 @@
   h3 {
     background-color: rgba(13, 94, 108, 0.5);
     padding: 2px;
+  }
+}
+.video-carroussel {
+  .flex-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
   }
 }
