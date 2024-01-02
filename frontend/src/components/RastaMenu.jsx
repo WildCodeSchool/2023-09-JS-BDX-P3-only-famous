@@ -18,15 +18,19 @@ export default function RastaMenu() {
         setChecked(false);
       })}
       <div className="classic-navbar">
-        <div className="main-logo">
+        <button
+          type="button"
+          className="main-logo btn"
+          onClick={() => navigate("/")}
+        >
           <img
             src="./src/assets/logoButtons.svg"
             alt=""
             className="logo"
             width="35"
             height="35"
-          />
-        </div>
+          />{" "}
+        </button>
         <div className="navbar-links">
           <button
             type="button"

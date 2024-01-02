@@ -32,14 +32,13 @@ export default function VideoItem({
           width: `120px`,
           height: `100px`,
           borderRadius: "10px",
-          filter: "drop-shadow(2px 2px 8px var(--border))",
         }}
       >
         <p className="carousel-item-duration">{duration}</p>
       </div>
       <div className="carousel-item-details">
         <h3 className="carousel-item-title">{title}</h3>
-        <p>Publié le {publishDate}</p>
+        <h3 className="carousel-item-title">Publié le {publishDate}</h3>
       </div>
     </button>
   );

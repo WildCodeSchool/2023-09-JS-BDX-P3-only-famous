@@ -6,14 +6,19 @@
   border-radius: 10px;
   border: 2px solid var(--border);
   scroll-snap-align: start;
+  font-family: Arial, Helvetica, sans-serif;
 
   display: flex;
   align-items: center;
   .carousel-item-image {
-    margin: 0 10px;
+    margin: 0 5px;
     padding: 5px;
     min-width: 120px;
-    mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+    mask-image: linear-gradient(
+      to bottom,
+      var(--primary-me) 25%,
+      transparent 100%
+    );
     position: relative;
     .carousel-item-duration {
       position: absolute;
@@ -32,10 +37,11 @@
       font-size: 10px;
       color: var(--middle-me);
     }
-    h3 {
-      font-size: 12px;
+    h3.carousel-item-title {
+      font-size: 10px;
       margin: 0;
       padding: 0;
+      text-transform: none;
     }
   }
 }

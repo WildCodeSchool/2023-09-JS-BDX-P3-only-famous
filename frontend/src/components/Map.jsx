@@ -58,6 +58,7 @@ export default function Map() {
       <h2>{countrySelected}</h2>
       <TransformWrapper>
         <TransformComponent>
+          {/* <Keyborad /> */}
           <svg
             baseProfile="tiny"
             fill="#ececec"

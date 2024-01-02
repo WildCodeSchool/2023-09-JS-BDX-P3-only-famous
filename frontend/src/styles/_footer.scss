@@ -1,10 +1,10 @@
 .text-center {
-  background-color: #354d67 !important;
+  background-color: var(--primary-me) !important;
+  mask-image: linear-gradient(to top, var(--primary-me), transparent);
   padding: 2px !important;
   display: none;
 }
 .footer-footer {
-  position: fixed;
   bottom: 0;
   margin: 0 auto;
   width: 100%;
@@ -12,6 +12,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  z-index: 10;
 }
 .footer-icons {
   padding: 2px 0;

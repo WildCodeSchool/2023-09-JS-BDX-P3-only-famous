@@ -1,30 +1,15 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
 import Carroussel from "../components/Carroussel";
-import Map from "../components/Map";
+import Keyborad from "../components/Keyboard";
 
 function Home() {
-  const [videos, setVideos] = useState([]);
-  const [playlistTitle, setPlaylistTitle] = useState([]);
-  useEffect(() => {
-    async function getData() {
-      const { data } = await axios.get("http://localhost:3310/api/playlist", {
-        params: { playlistId: "PLjwdMgw5TTLUEOKPg5Z5TgwAOeWkjGL69" },
-      });
-      setVideos(data.rows);
-      setPlaylistTitle(data.title);
-    }
-    getData();
-  }, []);
   return (
     <div>
-      <Map />
-      {videos && <Carroussel videoItems={videos} titre={playlistTitle} />}
-      {videos && <Carroussel videoItems={videos} titre={playlistTitle} />}
-
-      {videos && <Carroussel videoItems={videos} titre={playlistTitle} />}
-
-      {videos && <Carroussel videoItems={videos} titre={playlistTitle} />}
+      {/* <Map /> */}
+      <Keyborad />
+      <Carroussel playlistId="PLjwdMgw5TTLUEOKPg5Z5TgwAOeWkjGL69" />
+      <Carroussel playlistId="PLNgSFZ9yC06Lj8ndCyoTjymTCAjG-pzFQ" />
+      <Carroussel playlistId="PLjwdMgw5TTLUnvhOKLcpCG8ORQsfE7uB4" />
+      <Carroussel playlistId="PLNgSFZ9yC06Ifg4MDVbu2gJLDI3cjhsJ5" />
     </div>
   );
 }
