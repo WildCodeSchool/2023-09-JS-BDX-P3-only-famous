@@ -114,6 +114,7 @@ function Carroussel({ playlistId }) {
                 imgUrl={item.thumbnails}
                 publishDate={item.publishDate}
                 link={item.ytId}
+                tags={item.tags}
                 key={item.title}
               />
             ))}

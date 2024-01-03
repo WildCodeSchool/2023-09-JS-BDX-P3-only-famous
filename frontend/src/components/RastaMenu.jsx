@@ -52,9 +52,9 @@ export default function RastaMenu() {
           {user.isAdmin ? (
             <button
               type="button"
-              onClick={() => {
+              onClick={(e) => {
                 navigate("/admin");
-                handleClick();
+                handleClick(e);
               }}
               className="desktop-navbar-li btn"
             >
@@ -123,9 +123,9 @@ export default function RastaMenu() {
           )}
         </ul>
       </div>
-      <div className="user-area">
+      {/* <div className="user-area">
         <p>{`Bienvenue ${user.firstname}`}</p>
-      </div>
+      </div> */}
     </div>
   );
 }
