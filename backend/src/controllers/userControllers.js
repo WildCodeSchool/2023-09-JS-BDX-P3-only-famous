@@ -115,6 +115,7 @@ async function check(req, res) {
         isAdmin: userdb.isAdmin,
         firstname: userdb.firstname,
         lastname: userdb.lastname,
+        email: user.email,
       });
       res.setHeader("token", token);
       res.status(200).json({

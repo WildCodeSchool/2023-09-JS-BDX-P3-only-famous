@@ -84,6 +84,21 @@ class UserManager {
     return 0;
   }
 
+  static async updateImage(email, imgUrl) {
+    const [userdb] = await database.query(
+      `select * from user where email = ?`,
+      [email]
+    );
+    if (userdb[0]) {
+      const [res] = await database.query(
+        "update user set imgUrl  WHERE email = ?",
+        [imgUrl]
+      );
+      return res.affectedRows;
+    }
+    return 0;
+  }
+
   // The D of CRUD - Delete operation
   // TODO: Implement the delete operation to remove an item by its ID
 

@@ -1,4 +1,5 @@
 const express = require("express");
+const multer = require("multer");
 
 const router = express.Router();
 
@@ -57,6 +58,21 @@ router.put("/user", userControllers.edit);
 
 // Route to delete existed users
 router.delete("/user", userControllers.destroy);
+
+// to be deleted
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./public/images/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}_${file.originalname}`);
+  },
+});
+const upload = multer({ storage });
+router.post("/userimage", upload.single("file"), (req, res) => {
+  res.json({ message: "fileUploaded" });
+});
 
 /* ************************************************************************* */
 
