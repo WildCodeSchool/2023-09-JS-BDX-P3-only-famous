@@ -7,13 +7,13 @@ function Carroussel({ playlistId }) {
   const videoListRef = useRef(null);
   const scrollLeft = () => {
     if (videoListRef.current) {
-      videoListRef.current.scrollLeft -= 200; // You can adjust the scroll amount as needed
+      videoListRef.current.scrollLeft -= 200;
     }
   };
 
   const scrollRight = () => {
     if (videoListRef.current) {
-      videoListRef.current.scrollLeft += 200; // You can adjust the scroll amount as needed
+      videoListRef.current.scrollLeft += 200;
     }
   };
 
