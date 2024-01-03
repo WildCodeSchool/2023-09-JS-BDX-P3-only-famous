@@ -13,13 +13,13 @@ import SingleVideoPage from "./pages/SingleVideoPage";
 import UserContextProvider from "./context/UserContext";
 import AdminContextProvider from "./context/AdminContext";
 import RegisterUser from "./pages/RegisterUser";
+import PageUser from "./pages/PageUser";
 
 // async function timeOut(time = 3000){
 //   setTimeout(() => {
 //     console.log('timeout done ');
 //   }, time);
 // }
-
 const router = createBrowserRouter([
   {
     element: (
@@ -48,6 +48,10 @@ const router = createBrowserRouter([
       {
         element: <Upload />,
         path: "/upload",
+      },
+      {
+        element: <PageUser />,
+        path: "/user",
       },
       {
         element: (
