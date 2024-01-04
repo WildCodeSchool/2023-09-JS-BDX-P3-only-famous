@@ -17,7 +17,7 @@ class UserManager {
     const hashedPassword = await this.Hashing(user.password);
     try {
       const [result] = await database.query(
-        `insert into user (firstname, lastname, email, password, birthday, isAdmin) values (?,?,?,?,?,?)`,
+        `insert into user (firstname, lastname, email, password, birthday, isAdmin, imgUrl) values (?,?,?,?,?,?,?)`,
         [
           user.firstname,
           user.lastname,
@@ -25,6 +25,7 @@ class UserManager {
           hashedPassword,
           user.birthday,
           user.isAdmin,
+          user.imgUrl,
         ]
       );
       return { message: "Utilisateur ajouté!!!", insertId: result.insertId };
@@ -76,8 +77,15 @@ class UserManager {
       });
 
       const [res] = await database.query(
-        "update user set firstname = ?, lastname = ?, password = ?  WHERE email = ?",
-        [user.firstname, user.lastname, user.password, user.email]
+        "update user set firstname = ?, lastname = ?, birthday = ?, imgUrl = ?, password = ?  WHERE email = ?",
+        [
+          user.firstname,
+          user.lastname,
+          user.birthday,
+          user.imgUrl,
+          user.password,
+          user.email,
+        ]
       );
       return res.affectedRows;
     }
@@ -91,8 +99,8 @@ class UserManager {
     );
     if (userdb[0]) {
       const [res] = await database.query(
-        "update user set imgUrl  WHERE email = ?",
-        [imgUrl]
+        "update user set imgUrl =?  WHERE email = ?",
+        [imgUrl, email]
       );
       return res.affectedRows;
     }

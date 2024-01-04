@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import Carroussel from "../components/Carroussel";
 import Keyborad from "../components/Keyboard";
-import Map from "../components/Map";
 
 function Home() {
   const preventDefault = (ev) => {
@@ -17,7 +16,7 @@ function Home() {
   });
   return (
     <div>
-      <Map />
+      {/* <Map /> */}
       <Keyborad />
       <Carroussel playlistId="PLjwdMgw5TTLUEOKPg5Z5TgwAOeWkjGL69" />
     </div>

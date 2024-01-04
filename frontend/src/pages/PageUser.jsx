@@ -35,7 +35,7 @@ export default function PageUser() {
         <div className="row no-gutters">
           <div className="col-md-4">
             <img
-              src={urlImage ? urlImage.preview : "https://placehold.co/600x400"}
+              src={urlImage.preview ? urlImage.preview : user.imgUrl}
               className="card-img"
               alt="..."
             />

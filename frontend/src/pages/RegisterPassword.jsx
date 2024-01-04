@@ -17,7 +17,12 @@ export default function RegisterPassword() {
         () => "Le mot de passe n'est pas conforme ou n'est pas confirmé!!!"
       );
     } else {
-      setFormValue({ ...formValue, password, isAdmin: 0 });
+      setFormValue({
+        ...formValue,
+        password,
+        isAdmin: 0,
+        imgUrl: "http://localhost:3310/uploads/default.png",
+      });
       const isDone = await register(formValue);
       setMessage(() => messageUser);
       if (isDone) navigate("/connexion");

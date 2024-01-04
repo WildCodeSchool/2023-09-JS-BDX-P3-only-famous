@@ -1,5 +1,6 @@
 // Import access to database tables
 const jwt = require("jsonwebtoken");
+const jwtDecode = require("jwt-decode");
 const userManager = require("../models/userManager");
 
 // function authenticateToken(req, res) {
@@ -88,7 +89,7 @@ async function add(req, res) {
     const user = req.body;
     // console.log("user added : ", user);
     // Insert the item into the database
-    const { insertId, message } = await userManager.create(user);
+    const { message, insertId } = await userManager.create(user);
 
     // Respond with HTTP 201 (Created) and the ID of the newly inserted item
     if (+insertId !== 0) {
@@ -98,6 +99,7 @@ async function add(req, res) {
     res.status(500).json({ message, insertId });
     return { message, insertId };
   } catch (err) {
+    console.error("catch triggered ");
     res.status(500).json({ message: "Email existant!!!", insertId: 0 });
     return { message: "Email existant!!!", insertId: 0 };
   }
@@ -117,9 +119,11 @@ async function check(req, res) {
         lastname: userdb.lastname,
         email: user.email,
       });
+      delete userdb.password;
+      console.warn("userDb back:", userdb);
       res.setHeader("token", token);
       res.status(200).json({
-        token,
+        user: userdb,
       });
     }
   } catch (err) {
@@ -140,6 +144,17 @@ async function destroy(req, res) {
   }
 }
 
+async function updateImage(req, res) {
+  const token = req.headers.authorization.split(" ")[1];
+  const { email } = jwtDecode.jwtDecode(token);
+  const result = await userManager.updateImage(email, req.newPath);
+  if (result !== 0) {
+    res.json({ message: "fileUploaded" });
+  } else {
+    res.json({ message: "failed to update database" });
+  }
+}
+
 // Ready to export the controller functions
 module.exports = {
   browse,
@@ -148,4 +163,5 @@ module.exports = {
   edit,
   destroy,
   check,
+  updateImage,
 };
