@@ -4,9 +4,9 @@ import axios from "axios";
 import { useUserContext } from "../context/UserContext";
 
 export default function PageUser() {
-  const [urlImage, setUrlImage] = useState({});
   const navigate = useNavigate();
-  const { user } = useUserContext();
+  const { user, setUser } = useUserContext();
+  const [urlImage, setUrlImage] = useState({ preview: user.imgUrl });
 
   async function handleChange(e) {
     setUrlImage({
@@ -15,7 +15,11 @@ export default function PageUser() {
     });
     const formData = new FormData();
     formData.append("file", e.target.files[0]);
-    await axios.post("http://localhost:3310/api/userimage", formData);
+    const { imgUrl } = await axios.post(
+      "http://localhost:3310/api/userimage",
+      formData
+    );
+    setUser({ ...user, imgUrl });
   }
   useEffect(() => {
     if (!user.isConnected) {
@@ -35,7 +39,8 @@ export default function PageUser() {
         <div className="row no-gutters">
           <div className="col-md-4">
             <img
-              src={urlImage.preview ? urlImage.preview : user.imgUrl}
+              src={urlImage.preview ?? user.imgUrl}
+              // src={user.imgUrl}
               className="card-img"
               alt="..."
             />

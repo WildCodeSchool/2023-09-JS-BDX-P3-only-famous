@@ -38,18 +38,6 @@ export default function UserContextProvider({ children }) {
   //   axios.defaults.headers.common.Authorization = `Bearer ""`;
   //   return false;
   // }
-
-  async function checkCredentials(credentials) {
-    try {
-      const { headers, data } = await axios.post(
-        "http://localhost:3310/api/user",
-        credentials
-      );
-      return { headers, userdb: data.user };
-    } catch (err) {
-      return false;
-    }
-  }
   function decodeToken(token) {
     const decoded = jwtDecode(token);
     if (decoded && decoded.exp > Date.now() / 1000) {
@@ -73,6 +61,19 @@ export default function UserContextProvider({ children }) {
       navigate("/");
     }
   }
+
+  async function checkCredentials(credentials) {
+    try {
+      const { headers, data } = await axios.post(
+        "http://localhost:3310/api/user",
+        credentials
+      );
+      return { headers, userdb: data.user };
+    } catch (err) {
+      return false;
+    }
+  }
+
   async function login(credentials) {
     const { headers, userdb } = await checkCredentials(credentials);
     if (userdb) {
@@ -85,6 +86,7 @@ export default function UserContextProvider({ children }) {
         email: userdb.email,
         imgUrl: userdb.imgUrl,
       });
+      axios.defaults.headers.common.Authorization = `Bearer ${headers.token}`;
       // console.log("userdb :", userdb);
       // decodeToken(headers.token);
       navigate("/user");

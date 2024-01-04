@@ -43,14 +43,13 @@ class UserManager {
     const [rows] = await database.query(`select * from user where email = ?`, [
       email,
     ]);
-
-    const res = await this.compare(password, rows[0].password);
-    if (res) {
-      return rows[0];
+    if (rows[0]) {
+      const res = await this.compare(password, rows[0].password);
+      if (res) {
+        return rows[0];
+      }
     }
-
     return null;
-    // Return the first row of the result, which represents the item
   }
 
   static async readAll() {

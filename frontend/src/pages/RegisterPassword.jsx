@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import InputField from "../components/InputField";
 import { useUserContext } from "../context/UserContext";
@@ -10,6 +10,7 @@ export default function RegisterPassword() {
   const [message, setMessage] = useState("");
   const { formValue, setFormValue } = useUserContext();
   const { register, messageUser } = useUserContext();
+  const refUser = useRef({});
 
   async function checkError() {
     if (password.length < 4 || password !== confirmPassword) {
@@ -23,7 +24,13 @@ export default function RegisterPassword() {
         isAdmin: 0,
         imgUrl: "http://localhost:3310/uploads/default.png",
       });
-      const isDone = await register(formValue);
+      refUser.current = {
+        ...formValue,
+        password,
+        isAdmin: 0,
+        imgUrl: "http://localhost:3310/uploads/default.png",
+      };
+      const isDone = await register(refUser.current);
       setMessage(() => messageUser);
       if (isDone) navigate("/connexion");
       else {

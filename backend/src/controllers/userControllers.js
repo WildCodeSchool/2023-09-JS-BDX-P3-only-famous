@@ -109,9 +109,8 @@ async function check(req, res) {
   try {
     const user = req.body;
     const userdb = await userManager.read(user.email, user.password);
-
     if (!userdb) {
-      res.sendStatus(404).send(null);
+      res.status(404).send(null);
     } else {
       const token = generateAccessToken({
         isAdmin: userdb.isAdmin,
@@ -120,14 +119,13 @@ async function check(req, res) {
         email: user.email,
       });
       delete userdb.password;
-      console.warn("userDb back:", userdb);
       res.setHeader("token", token);
       res.status(200).json({
         user: userdb,
       });
     }
   } catch (err) {
-    console.error(err);
+    console.error("My error : ", err);
   }
 }
 
@@ -149,9 +147,12 @@ async function updateImage(req, res) {
   const { email } = jwtDecode.jwtDecode(token);
   const result = await userManager.updateImage(email, req.newPath);
   if (result !== 0) {
-    res.json({ message: "fileUploaded" });
+    res.json({ message: "fileUploaded", result, imgUrl: req.newPath });
   } else {
-    res.json({ message: "failed to update database" });
+    res.json({
+      message: "failed to update database",
+      result,
+    });
   }
 }
 
