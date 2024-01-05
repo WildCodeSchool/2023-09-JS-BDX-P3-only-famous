@@ -17,7 +17,7 @@ class UserManager {
     const hashedPassword = await this.Hashing(user.password);
     try {
       const [result] = await database.query(
-        `insert into user (firstname, lastname, email, password, birthday, isAdmin) values (?,?,?,?,?,?)`,
+        `insert into user (firstname, lastname, email, password, birthday, isAdmin, imgUrl) values (?,?,?,?,?,?,?)`,
         [
           user.firstname,
           user.lastname,
@@ -25,6 +25,7 @@ class UserManager {
           hashedPassword,
           user.birthday,
           user.isAdmin,
+          user.imgUrl,
         ]
       );
       return { message: "Utilisateur ajouté!!!", insertId: result.insertId };
@@ -42,14 +43,13 @@ class UserManager {
     const [rows] = await database.query(`select * from user where email = ?`, [
       email,
     ]);
-
-    const res = await this.compare(password, rows[0].password);
-    if (res) {
-      return rows[0];
+    if (rows[0]) {
+      const res = await this.compare(password, rows[0].password);
+      if (res) {
+        return rows[0];
+      }
     }
-
     return null;
-    // Return the first row of the result, which represents the item
   }
 
   static async readAll() {
@@ -76,8 +76,30 @@ class UserManager {
       });
 
       const [res] = await database.query(
-        "update user set firstname = ?, lastname = ?, password = ?  WHERE email = ?",
-        [user.firstname, user.lastname, user.password, user.email]
+        "update user set firstname = ?, lastname = ?, birthday = ?, imgUrl = ?, password = ?  WHERE email = ?",
+        [
+          user.firstname,
+          user.lastname,
+          user.birthday,
+          user.imgUrl,
+          user.password,
+          user.email,
+        ]
+      );
+      return res.affectedRows;
+    }
+    return 0;
+  }
+
+  static async updateImage(email, imgUrl) {
+    const [userdb] = await database.query(
+      `select * from user where email = ?`,
+      [email]
+    );
+    if (userdb[0]) {
+      const [res] = await database.query(
+        "update user set imgUrl =?  WHERE email = ?",
+        [imgUrl, email]
       );
       return res.affectedRows;
     }

@@ -1,9 +1,11 @@
 // Load the express module to create a web application
 
 const express = require("express");
+const path = require("path");
 
 const app = express();
 
+app.use(express.static(path.join(__dirname, "../public")));
 // Configure it
 
 /* ************************************************************************* */

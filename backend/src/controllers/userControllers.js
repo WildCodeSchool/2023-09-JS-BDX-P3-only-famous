@@ -1,5 +1,6 @@
 // Import access to database tables
 const jwt = require("jsonwebtoken");
+const jwtDecode = require("jwt-decode");
 const userManager = require("../models/userManager");
 
 // function authenticateToken(req, res) {
@@ -88,7 +89,7 @@ async function add(req, res) {
     const user = req.body;
     // console.log("user added : ", user);
     // Insert the item into the database
-    const { insertId, message } = await userManager.create(user);
+    const { message, insertId } = await userManager.create(user);
 
     // Respond with HTTP 201 (Created) and the ID of the newly inserted item
     if (+insertId !== 0) {
@@ -98,6 +99,7 @@ async function add(req, res) {
     res.status(500).json({ message, insertId });
     return { message, insertId };
   } catch (err) {
+    console.error("catch triggered ");
     res.status(500).json({ message: "Email existant!!!", insertId: 0 });
     return { message: "Email existant!!!", insertId: 0 };
   }
@@ -107,22 +109,23 @@ async function check(req, res) {
   try {
     const user = req.body;
     const userdb = await userManager.read(user.email, user.password);
-
     if (!userdb) {
-      res.sendStatus(404).send(null);
+      res.status(404).send(null);
     } else {
       const token = generateAccessToken({
         isAdmin: userdb.isAdmin,
         firstname: userdb.firstname,
         lastname: userdb.lastname,
+        email: user.email,
       });
+      delete userdb.password;
       res.setHeader("token", token);
       res.status(200).json({
-        token,
+        user: userdb,
       });
     }
   } catch (err) {
-    console.error(err);
+    console.error("My error : ", err);
   }
 }
 
@@ -139,6 +142,20 @@ async function destroy(req, res) {
   }
 }
 
+async function updateImage(req, res) {
+  const token = req.headers.authorization.split(" ")[1];
+  const { email } = jwtDecode.jwtDecode(token);
+  const result = await userManager.updateImage(email, req.newPath);
+  if (result !== 0) {
+    res.json({ message: "fileUploaded", result, imgUrl: req.newPath });
+  } else {
+    res.json({
+      message: "failed to update database",
+      result,
+    });
+  }
+}
+
 // Ready to export the controller functions
 module.exports = {
   browse,
@@ -147,4 +164,5 @@ module.exports = {
   edit,
   destroy,
   check,
+  updateImage,
 };

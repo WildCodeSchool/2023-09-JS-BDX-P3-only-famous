@@ -31,9 +31,9 @@ export default function RastaMenu() {
         <div className="navbar-links">
           <button
             type="button"
-            onClick={() => {
+            onClick={(e) => {
               navigate("/");
-              handleClick();
+              handleClick(e);
             }}
             className="desktop-navbar-li btn"
           >
@@ -41,9 +41,9 @@ export default function RastaMenu() {
           </button>
           <button
             type="button"
-            onClick={() => {
+            onClick={(e) => {
               navigate("/connexion");
-              handleClick();
+              handleClick(e);
             }}
             className="desktop-navbar-li btn"
           >
@@ -123,9 +123,9 @@ export default function RastaMenu() {
           )}
         </ul>
       </div>
-      {/* <div className="user-area">
-        <p>{`Bienvenue ${user.firstname}`}</p>
-      </div> */}
+      <div className="user-area">
+        <p>{`Bienvenue ${user.firstname ?? "visiteur"}`}</p>
+      </div>
     </div>
   );
 }

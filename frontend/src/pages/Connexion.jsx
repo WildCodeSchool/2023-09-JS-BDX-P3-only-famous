@@ -79,8 +79,12 @@ export default function Connexion() {
             Créer votre compte
           </button>
         </p>
-        <button type="button" className="invisible-btn">
-          Créer votre compte
+        <button
+          type="button"
+          className="invisible-btn"
+          onClick={() => navigate("/user")}
+        >
+          Page utilisateur
         </button>
       </div>
     </div>

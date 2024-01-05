@@ -1,4 +1,6 @@
 const express = require("express");
+const multer = require("multer");
+const multerMiddle = require("./middlewares/multerMiddle");
 
 const router = express.Router();
 
@@ -57,6 +59,16 @@ router.put("/user", userControllers.edit);
 
 // Route to delete existed users
 router.delete("/user", userControllers.destroy);
+
+// to be deleted
+const upload = multer({ dest: "./public/uploads/" });
+router.post(
+  "/userimage",
+  // multerMiddle.saveFile,
+  upload.single("file"),
+  multerMiddle.renameFile,
+  userControllers.updateImage
+);
 
 /* ************************************************************************* */
 

@@ -1,0 +1,23 @@
+.user-page {
+  .card-img {
+    width: 250px;
+    height: 250px;
+    padding: 10px;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
+    border-radius: 20px;
+  }
+  .banner-user {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background-size: cover;
+    border-radius: 20%;
+    background-repeat: no-repeat;
+  }
+  .card {
+    margin: 20px 0 0 0;
+    background-color: var(--primary-me);
+    color: var(--font-light-grey);
+  }
+}

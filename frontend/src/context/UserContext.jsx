@@ -12,6 +12,8 @@ export default function UserContextProvider({ children }) {
     isConnected: false,
     firstname: "",
     lastname: "",
+    email: "",
+    imgUrl: "",
   });
   const [formValue, setFormValue] = useState({
     email: "",
@@ -19,6 +21,8 @@ export default function UserContextProvider({ children }) {
     firstname: "",
     lastname: "",
     birthday: "",
+    isAdmin: 0,
+    imgUrl: "http://localhost:3310/uploads/default.png",
   });
   const [messageUser, setMessageUser] = useState("");
   const navigate = useNavigate();
@@ -34,18 +38,6 @@ export default function UserContextProvider({ children }) {
   //   axios.defaults.headers.common.Authorization = `Bearer ""`;
   //   return false;
   // }
-
-  async function checkCredentials(credentials) {
-    try {
-      const { headers } = await axios.post(
-        "http://localhost:3310/api/user",
-        credentials
-      );
-      return headers;
-    } catch (err) {
-      return false;
-    }
-  }
   function decodeToken(token) {
     const decoded = jwtDecode(token);
     if (decoded && decoded.exp > Date.now() / 1000) {
@@ -55,6 +47,8 @@ export default function UserContextProvider({ children }) {
         isConnected: true,
         firstname: decoded.firstname,
         lastname: decoded.lastname,
+        email: decoded.email,
+        imgUrl: decoded.imgUrl,
       });
       axios.defaults.headers.common.Authorization = `Bearer ${token}`;
       if (decoded.isAdmin === 1) {
@@ -67,10 +61,35 @@ export default function UserContextProvider({ children }) {
       navigate("/");
     }
   }
+
+  async function checkCredentials(credentials) {
+    try {
+      const { headers, data } = await axios.post(
+        "http://localhost:3310/api/user",
+        credentials
+      );
+      return { headers, userdb: data.user };
+    } catch (err) {
+      return false;
+    }
+  }
+
   async function login(credentials) {
-    const userdb = await checkCredentials(credentials);
+    const { headers, userdb } = await checkCredentials(credentials);
     if (userdb) {
-      decodeToken(userdb.token);
+      localStorage.setItem("user", JSON.stringify(headers.token));
+      setUser({
+        isAdmin: userdb.isAdmin,
+        isConnected: true,
+        firstname: userdb.firstname,
+        lastname: userdb.lastname,
+        email: userdb.email,
+        imgUrl: userdb.imgUrl,
+      });
+      axios.defaults.headers.common.Authorization = `Bearer ${headers.token}`;
+      // console.log("userdb :", userdb);
+      // decodeToken(headers.token);
+      navigate("/user");
     } else {
       axios.defaults.headers.common.Authorization = `Bearer ""`;
     }
@@ -139,7 +158,7 @@ export default function UserContextProvider({ children }) {
       setUser({
         isAdmin: 0,
         isConnected: false,
-        firstname: "Guest",
+        firstname: "",
         lastname: "",
       });
     }
