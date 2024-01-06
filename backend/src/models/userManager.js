@@ -83,12 +83,12 @@ class UserManager {
       const [res] = await database.query(
         "update user set firstname = ?, lastname = ?, birthday = ?, imgUrl = ?, password = ?  WHERE email = ?",
         [
-          user.firstname,
-          user.lastname,
-          user.birthday,
-          user.imgUrl,
-          user.password,
-          user.email,
+          userdb.firstname,
+          userdb.lastname,
+          userdb.birthday,
+          userdb.imgUrl,
+          userdb.password,
+          userdb.email,
         ]
       );
       return res.affectedRows;
@@ -107,36 +107,6 @@ class UserManager {
         [imgUrl, email]
       );
       return res.affectedRows;
-    }
-    return 0;
-  }
-
-  static async updateSecret(secretQuestion, secretAnswer, email) {
-    const hashedsecret = await this.Hashing(secretAnswer);
-    const [userdb] = await database.query(
-      `select * from user where email = ?`,
-      [email]
-    );
-    if (userdb[0]) {
-      const [res] = await database.query(
-        "update user set secretQuestion =? , secretAnswer = ? WHERE email = ?",
-        [secretQuestion, hashedsecret, email]
-      );
-      return res.affectedRows;
-    }
-    return 0;
-  }
-
-  static async compareSecret(secretAnswer, email) {
-    const [userdb] = await database.query(
-      `select * from user where email = ?`,
-      [email]
-    );
-    if (userdb[0]) {
-      const res = this.compare(secretAnswer, userdb.secretAnswer);
-      if (res) {
-        return 1;
-      }
     }
     return 0;
   }

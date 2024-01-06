@@ -14,7 +14,9 @@ export default function UserContextProvider({ children }) {
     lastname: "",
     email: "",
     imgUrl: "",
+    isActive: 0,
   });
+  // state used in user creation request
   const [formValue, setFormValue] = useState({
     email: "",
     password: "",
@@ -24,9 +26,11 @@ export default function UserContextProvider({ children }) {
     isAdmin: 0,
     imgUrl: "http://localhost:3310/uploads/default.png",
   });
+  // message used to show message received from back-end mainly
   const [messageUser, setMessageUser] = useState("");
-  const navigate = useNavigate();
+  // Details of videos, links data.... used in Single page video, to show the video and play it
   const [linkToVideo, setLinkToVideo] = useState({});
+  const navigate = useNavigate();
 
   // function readAndCheckToken() {
   //   const token = localStorage.getItem("token");
@@ -38,6 +42,8 @@ export default function UserContextProvider({ children }) {
   //   axios.defaults.headers.common.Authorization = `Bearer ""`;
   //   return false;
   // }
+
+  // function that decode token and store data from it in the user state
   function decodeToken(token) {
     const decoded = jwtDecode(token);
     if (decoded && decoded.exp > Date.now() / 1000) {
@@ -49,7 +55,9 @@ export default function UserContextProvider({ children }) {
         lastname: decoded.lastname,
         email: decoded.email,
         imgUrl: decoded.imgUrl,
+        isActive: decoded.isActive,
       });
+
       axios.defaults.headers.common.Authorization = `Bearer ${token}`;
       if (decoded.isAdmin === 1) {
         navigate("/admin");
@@ -61,21 +69,28 @@ export default function UserContextProvider({ children }) {
       navigate("/");
     }
   }
-
+  // function used to send login and password to back end to check its validity
+  // then get back the token and the  user's data from the back-end
   async function checkCredentials(credentials) {
     try {
       const { headers, data } = await axios.post(
         "http://localhost:3310/api/user",
         credentials
       );
-      return { headers, userdb: data.user };
+      return {
+        headers,
+        userdb: data.user,
+        message: data.message,
+      };
     } catch (err) {
-      return false;
+      return { userdb: null, message: err.response.data.message };
     }
   }
 
+  // function called when user login, it calls internally the checkCredential function, and set
+  // the token in the storage, and set it in the header of every http request
   async function login(credentials) {
-    const { headers, userdb } = await checkCredentials(credentials);
+    const { headers, userdb, message } = await checkCredentials(credentials);
     if (userdb) {
       localStorage.setItem("user", JSON.stringify(headers.token));
       setUser({
@@ -85,15 +100,19 @@ export default function UserContextProvider({ children }) {
         lastname: userdb.lastname,
         email: userdb.email,
         imgUrl: userdb.imgUrl,
+        isActive: userdb.isActive,
       });
       axios.defaults.headers.common.Authorization = `Bearer ${headers.token}`;
       // console.log("userdb :", userdb);
       // decodeToken(headers.token);
       navigate("/user");
+      setMessageUser(message);
     } else {
       axios.defaults.headers.common.Authorization = `Bearer ""`;
+      setMessageUser(message);
     }
   }
+  // function called when use is prepare to be created
   async function register(newUser) {
     try {
       // console.log("before axios ");
@@ -102,28 +121,42 @@ export default function UserContextProvider({ children }) {
         "http://localhost:3310/api/users",
         newUser
       );
-      // console.log("after axios ");
       if (+insertId !== 0) {
-        // console.log("message from back end : ", message);
         setMessageUser(message);
+        return false;
       }
-      // console.log("message from back end : ", message);
 
       setMessageUser(message);
       return true;
-      // console.log("response from back-end");
     } catch (err) {
-      // console.log("Essaie avec un autre email");
       setMessageUser("Essaie avec un autre email");
-
-      console.error("error front : ", err);
       return false;
     }
   }
+
+  // function called to logout use, it empty the localstorage as well
   function logout() {
     setUser({ admin: false, isConnected: false });
     localStorage.removeItem("user");
   }
+
+  function onLoadPage() {
+    const token = JSON.parse(localStorage.getItem("user"));
+    if (token) {
+      decodeToken(token);
+    } else {
+      setUser({
+        isAdmin: 0,
+        isConnected: false,
+        firstname: "",
+        lastname: "",
+      });
+    }
+  }
+  useEffect(() => {
+    onLoadPage();
+  }, []);
+
   const contextData = useMemo(
     () => ({
       user,
@@ -150,23 +183,6 @@ export default function UserContextProvider({ children }) {
       setLinkToVideo,
     ]
   );
-  function onLoadPage() {
-    const token = JSON.parse(localStorage.getItem("user"));
-    if (token) {
-      decodeToken(token);
-    } else {
-      setUser({
-        isAdmin: 0,
-        isConnected: false,
-        firstname: "",
-        lastname: "",
-      });
-    }
-  }
-  useEffect(() => {
-    onLoadPage();
-  }, []);
-
   return (
     <userContext.Provider value={contextData}>{children}</userContext.Provider>
   );

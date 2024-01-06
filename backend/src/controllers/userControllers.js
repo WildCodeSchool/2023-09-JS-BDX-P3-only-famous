@@ -38,7 +38,6 @@ const browse = async (req, res, next) => {
     next(err);
   }
 };
-
 // The R of BREAD - Read operation
 const read = async (req, res, next) => {
   try {
@@ -58,9 +57,7 @@ const read = async (req, res, next) => {
     next(err);
   }
 };
-
 // The E of BREAD - Edit (Update) operation
-// This operation is not yet implemented
 async function edit(req, res, next) {
   try {
     const user = req.body;
@@ -81,7 +78,6 @@ async function edit(req, res, next) {
     next(err);
   }
 }
-
 // The A of BREAD - Add (Create) operation
 async function add(req, res) {
   // Extract the item data from the request body
@@ -110,7 +106,10 @@ async function check(req, res) {
     const user = req.body;
     const userdb = await userManager.read(user.email, user.password);
     if (!userdb) {
-      res.status(404).send(null);
+      res.status(404).json({
+        user: null,
+        message: "Identifiants incorrects!!!",
+      });
     } else {
       const token = generateAccessToken({
         isAdmin: userdb.isAdmin,
@@ -118,18 +117,23 @@ async function check(req, res) {
         lastname: userdb.lastname,
         email: user.email,
         isActive: user.isActive,
+        imgUrl: user.imgUrl,
       });
       delete userdb.password;
       res.setHeader("token", token);
       res.status(200).json({
         user: userdb,
+        message: "Bravo!!! Vous êtes connecté",
       });
     }
   } catch (err) {
+    res.status(404).json({
+      user: null,
+      message: "Mauvais identifiants",
+    });
     console.error("My error : ", err);
   }
 }
-
 // The D of BREAD - Destroy (Delete) operation
 // This operation is not yet implemented
 async function destroy(req, res) {
