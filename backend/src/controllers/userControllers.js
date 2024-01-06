@@ -156,6 +156,23 @@ async function updateImage(req, res) {
   }
 }
 
+async function updateSecret(req, res) {
+  const { secretQuestion, secretAnswer } = req.body;
+  const token = req.headers.authorization.split(" ")[1];
+  const { email } = jwtDecode.jwtDecode(token);
+  const result = await userManager.updateSecret(
+    secretQuestion,
+    secretAnswer,
+    email
+  );
+  if (result !== 0) {
+    res.status(200).json({ message: "reponse enregistrée" });
+  } else {
+    res.status(404).json({
+      message: "failed to update database",
+    });
+  }
+}
 // Ready to export the controller functions
 module.exports = {
   browse,
@@ -165,4 +182,5 @@ module.exports = {
   destroy,
   check,
   updateImage,
+  updateSecret,
 };

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FaRegUser } from "react-icons/fa";
 import { useUserContext } from "../context/UserContext";
 
 export default function RastaMenu() {
@@ -21,7 +22,7 @@ export default function RastaMenu() {
           onClick={() => navigate("/")}
         >
           <img
-            src="./src/assets/logoButtons.svg"
+            src="./src/assets/logo.png"
             alt=""
             className="logo"
             width="35"
@@ -47,7 +48,12 @@ export default function RastaMenu() {
             }}
             className="desktop-navbar-li btn"
           >
-            <span className="navbar-link">Connexion</span>
+            <span className="navbar-link user-link">
+              <span>
+                <FaRegUser />
+              </span>
+              <span>{user.isConnected ? "Utilisateur" : "Connexion"}</span>
+            </span>
           </button>
           {user.isAdmin ? (
             <button
@@ -102,7 +108,12 @@ export default function RastaMenu() {
               }}
               className="desktop-navbar-li btn"
             >
-              <span className="navbar-link">Connexion</span>
+              <span className="navbar-link user-link">
+                <span>
+                  <FaRegUser />
+                </span>
+                <span>{user.isConnected ? "Utilisateur" : "Connexion"}</span>
+              </span>
             </button>
           </li>
           {user.isAdmin ? (
@@ -124,7 +135,7 @@ export default function RastaMenu() {
         </ul>
       </div>
       <div className="user-area">
-        <p>{`Bienvenue ${user.firstname ?? "visiteur"}`}</p>
+        <p>{`Bienvenue ${user.firstname ?? ""}`}</p>
       </div>
     </div>
   );
