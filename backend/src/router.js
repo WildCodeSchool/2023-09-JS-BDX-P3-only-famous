@@ -60,6 +60,9 @@ router.put("/user", userControllers.edit);
 // Route to delete existed users
 router.delete("/user", userControllers.destroy);
 
+// Route pour mettre à jour la question secrete et sa réponse
+router.post("/secret", userControllers.updateSecret);
+
 // to be deleted
 const upload = multer({ dest: "./public/uploads/" });
 router.post(

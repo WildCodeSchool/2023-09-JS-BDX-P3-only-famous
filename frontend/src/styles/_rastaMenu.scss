@@ -213,6 +213,7 @@ a {
 .logo {
   margin: 0 5px;
   transition: all 0.2s ease-in-out;
+  filter: drop-shadow(0 0 4px var(--secondary-me));
 }
 .main-logo {
   width: 90px;
@@ -224,4 +225,19 @@ a {
 }
 .logo:hover {
   transform: scale(1.1);
+  filter: drop-shadow(0 0 8px var(--secondary-me));
+}
+
+// user icons
+.user-link span {
+  margin: 0 2px;
+}
+.user-link span:first-child {
+  padding-top: 5px;
+}
+.user-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 10px;
 }

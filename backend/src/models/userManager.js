@@ -106,6 +106,36 @@ class UserManager {
     return 0;
   }
 
+  static async updateSecret(secretQuestion, secretAnswer, email) {
+    const hashedsecret = await this.Hashing(secretAnswer);
+    const [userdb] = await database.query(
+      `select * from user where email = ?`,
+      [email]
+    );
+    if (userdb[0]) {
+      const [res] = await database.query(
+        "update user set secretQuestion =? , secretAnswer = ? WHERE email = ?",
+        [secretQuestion, hashedsecret, email]
+      );
+      return res.affectedRows;
+    }
+    return 0;
+  }
+
+  static async compareSecret(secretAnswer, email) {
+    const [userdb] = await database.query(
+      `select * from user where email = ?`,
+      [email]
+    );
+    if (userdb[0]) {
+      const res = this.compare(secretAnswer, userdb.secretAnswer);
+      if (res) {
+        return 1;
+      }
+    }
+    return 0;
+  }
+
   // The D of CRUD - Delete operation
   // TODO: Implement the delete operation to remove an item by its ID
 

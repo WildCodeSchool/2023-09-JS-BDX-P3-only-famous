@@ -46,7 +46,9 @@ export default function VideoItem({
       </div>
       <div className="carousel-item-details">
         <h3 className="carousel-item-title">{title}</h3>
-        <h3 className="carousel-item-title">Publié le {publishDate}</h3>
+        <h3 className="carousel-item-title">
+          Publié le {publishDate.split("T")[0]}
+        </h3>
       </div>
     </button>
   );
