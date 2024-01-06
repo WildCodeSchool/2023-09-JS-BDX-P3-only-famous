@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const database = require("../../database/client");
+const activationManager = require("./activationManager");
 
 class UserManager {
   static async Hashing(password) {
@@ -16,8 +17,9 @@ class UserManager {
     // Execute the SQL INSERT query to add a new item to the "item" table
     const hashedPassword = await this.Hashing(user.password);
     try {
+      const randomCode = Math.ceil(Math.random() * (9999 - 1000) + 1000);
       const [result] = await database.query(
-        `insert into user (firstname, lastname, email, password, birthday, isAdmin, imgUrl) values (?,?,?,?,?,?,?)`,
+        `insert into user (firstname, lastname, email, password, birthday, isAdmin, imgUrl, activationCode) values (?,?,?,?,?,?,?,?)`,
         [
           user.firstname,
           user.lastname,
@@ -26,8 +28,11 @@ class UserManager {
           user.birthday,
           user.isAdmin,
           user.imgUrl,
+          randomCode,
         ]
       );
+
+      activationManager.sendValidationCode(user.email, randomCode);
       return { message: "Utilisateur ajouté!!!", insertId: result.insertId };
     } catch (err) {
       console.error("error while inserting new user in user manager: ", err);
@@ -145,6 +150,26 @@ class UserManager {
     ]);
     // console.log("res ", res);
     return res.affectedRows;
+  }
+
+  // activation via email
+  static async getActivationCode(email) {
+    const [userdb] = await database.query(
+      `select * from user where email = ?`,
+      [email]
+    );
+    if (userdb[0]) {
+      return { activationCode: userdb[0].activationCode };
+    }
+    return { activationCode: 0 };
+  }
+
+  static async activateAccount(email) {
+    const [res] = await database.query(
+      "update user set isActive = 1  WHERE email = ?",
+      [email]
+    );
+    return { affectedRows: res.affectedRows };
   }
 }
 

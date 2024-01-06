@@ -117,6 +117,7 @@ async function check(req, res) {
         firstname: userdb.firstname,
         lastname: userdb.lastname,
         email: user.email,
+        isActive: user.isActive,
       });
       delete userdb.password;
       res.setHeader("token", token);
@@ -156,22 +157,20 @@ async function updateImage(req, res) {
   }
 }
 
-async function updateSecret(req, res) {
-  const { secretQuestion, secretAnswer } = req.body;
-  const token = req.headers.authorization.split(" ")[1];
-  const { email } = jwtDecode.jwtDecode(token);
-  const result = await userManager.updateSecret(
-    secretQuestion,
-    secretAnswer,
-    email
-  );
-  if (result !== 0) {
-    res.status(200).json({ message: "reponse enregistrée" });
-  } else {
-    res.status(404).json({
-      message: "failed to update database",
-    });
-  }
+async function activateAccount(req, res) {
+  const { email, code } = req.body;
+
+  const { activationCode } = await userManager.getActivationCode(email);
+  if (+activationCode === +code && +activationCode !== 0) {
+    const { affectedRows } = await userManager.activateAccount(email);
+    if (affectedRows) {
+      res.status(200).json({ message: "Votre compte est activé!!!" });
+    } else {
+      res
+        .status(404)
+        .json({ message: "Erreur coté serveur, essaie une autre fois!!!" });
+    }
+  } else res.status(404).json({ message: "Serieux Amigo !!! " });
 }
 // Ready to export the controller functions
 module.exports = {
@@ -182,5 +181,5 @@ module.exports = {
   destroy,
   check,
   updateImage,
-  updateSecret,
+  activateAccount,
 };

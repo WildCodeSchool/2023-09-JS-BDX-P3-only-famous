@@ -2,15 +2,11 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useUserContext } from "../context/UserContext";
-import UserSecretSet from "../components/userComponents/UserSecretSet";
 
 export default function PageUser() {
   const navigate = useNavigate();
   const { user, setUser } = useUserContext();
   const [urlImage, setUrlImage] = useState({ preview: user.imgUrl });
-  const [secretQuestion, setSecretQuestion] = useState("");
-  const [secretAnswer, setSecretAnswer] = useState("");
-  const [secretMessage, setSecretMessage] = useState("");
 
   async function handleChange(e) {
     setUrlImage({
@@ -25,13 +21,7 @@ export default function PageUser() {
     );
     setUser({ ...user, imgUrl });
   }
-  const saveSecret = async () => {
-    const { data } = await axios.post("http://localhost:3310/api/secret", {
-      secretQuestion,
-      secretAnswer,
-    });
-    setSecretMessage(data.message);
-  };
+
   useEffect(() => {
     if (!user.isConnected) {
       navigate("/");
@@ -96,14 +86,6 @@ export default function PageUser() {
             Role:{user.isAdmin ? " utilisateur" : " administrateur"}
           </li>
         </ul>
-
-        <UserSecretSet
-          secretAnswer={secretAnswer}
-          setSecretAnswer={setSecretAnswer}
-          secretQuestion={secretQuestion}
-          setSecretQuestion={setSecretQuestion}
-          saveSecret={saveSecret}
-        />
       </div>
       <div className="col-md-8 text-white">
         <ul>
@@ -121,7 +103,6 @@ export default function PageUser() {
           >
             Supprimer votre compte
           </button>
-          <p>{secretMessage}</p>
         </ul>
       </div>
     </div>
