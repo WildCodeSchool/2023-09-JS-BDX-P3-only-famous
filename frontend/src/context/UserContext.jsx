@@ -83,6 +83,7 @@ export default function UserContextProvider({ children }) {
         message: data.message,
       };
     } catch (err) {
+      console.error(err);
       return { userdb: null, message: err.response.data.message };
     }
   }
