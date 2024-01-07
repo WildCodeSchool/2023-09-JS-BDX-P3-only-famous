@@ -2,15 +2,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useUserContext } from "../context/UserContext";
-import UserSecretSet from "../components/userComponents/UserSecretSet";
+import ActivateAccount from "../components/ActivateAccount";
 
 export default function PageUser() {
   const navigate = useNavigate();
+  const { activateAccount } = useUserContext();
   const { user, setUser } = useUserContext();
   const [urlImage, setUrlImage] = useState({ preview: user.imgUrl });
-  const [secretQuestion, setSecretQuestion] = useState("");
-  const [secretAnswer, setSecretAnswer] = useState("");
-  const [secretMessage, setSecretMessage] = useState("");
+  const [code, setCode] = useState("");
 
   async function handleChange(e) {
     setUrlImage({
@@ -25,13 +24,10 @@ export default function PageUser() {
     );
     setUser({ ...user, imgUrl });
   }
-  const saveSecret = async () => {
-    const { data } = await axios.post("http://localhost:3310/api/secret", {
-      secretQuestion,
-      secretAnswer,
-    });
-    setSecretMessage(data.message);
-  };
+  async function handleActivation() {
+    await activateAccount(user.email, code);
+  }
+
   useEffect(() => {
     if (!user.isConnected) {
       navigate("/");
@@ -39,9 +35,6 @@ export default function PageUser() {
   }, []);
   return (
     <div className="user-page container-md">
-      {user && (
-        <h1 className="text-white">Bienvenue {user.firstname.toUpperCase()}</h1>
-      )}
       <div
         className="banner-user"
         style={{ backgroundImage: `url("./src/assets/banner.png")` }}
@@ -85,6 +78,11 @@ export default function PageUser() {
       </div>
       <div className="col-md-8 text-white">
         <ul>
+          <p>
+            {user.isActive
+              ? "Compte activé"
+              : "Votre compte n'est pas activé!!!"}
+          </p>
           <li>
             Nom : {user.firstname} {user.lastname.toUpperCase()}
           </li>
@@ -96,32 +94,29 @@ export default function PageUser() {
             Role:{user.isAdmin ? " utilisateur" : " administrateur"}
           </li>
         </ul>
-
-        <UserSecretSet
-          secretAnswer={secretAnswer}
-          setSecretAnswer={setSecretAnswer}
-          secretQuestion={secretQuestion}
-          setSecretQuestion={setSecretQuestion}
-          saveSecret={saveSecret}
-        />
       </div>
       <div className="col-md-8 text-white">
         <ul>
+          {!user.isActive && <ActivateAccount code={+code} setCode={setCode} />}
+
+          {!user.isActive && (
+            <button
+              className="btn"
+              style={{ color: `var(--secondary-me)` }}
+              type="button"
+              onClick={handleActivation}
+            >
+              Activer votre compte
+            </button>
+          )}
+
           <button
             className="btn"
-            style={{ color: `var(--secondary-me)` }}
-            type="button"
-          >
-            Modifier votre profil
-          </button>
-          <button
-            className="btn"
-            style={{ color: `var(--secondary-me)`, display: "block" }}
+            style={{ color: `red`, display: "block" }}
             type="button"
           >
             Supprimer votre compte
           </button>
-          <p>{secretMessage}</p>
         </ul>
       </div>
     </div>

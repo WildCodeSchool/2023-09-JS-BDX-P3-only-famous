@@ -38,7 +38,6 @@ const browse = async (req, res, next) => {
     next(err);
   }
 };
-
 // The R of BREAD - Read operation
 const read = async (req, res, next) => {
   try {
@@ -58,9 +57,7 @@ const read = async (req, res, next) => {
     next(err);
   }
 };
-
 // The E of BREAD - Edit (Update) operation
-// This operation is not yet implemented
 async function edit(req, res, next) {
   try {
     const user = req.body;
@@ -81,7 +78,6 @@ async function edit(req, res, next) {
     next(err);
   }
 }
-
 // The A of BREAD - Add (Create) operation
 async function add(req, res) {
   // Extract the item data from the request body
@@ -110,25 +106,34 @@ async function check(req, res) {
     const user = req.body;
     const userdb = await userManager.read(user.email, user.password);
     if (!userdb) {
-      res.status(404).send(null);
+      res.status(404).json({
+        user: null,
+        message: "Identifiants incorrects!!!",
+      });
     } else {
       const token = generateAccessToken({
         isAdmin: userdb.isAdmin,
         firstname: userdb.firstname,
         lastname: userdb.lastname,
         email: user.email,
+        isActive: user.isActive,
+        imgUrl: user.imgUrl,
       });
       delete userdb.password;
       res.setHeader("token", token);
       res.status(200).json({
         user: userdb,
+        message: "Bravo!!! Vous êtes connecté",
       });
     }
   } catch (err) {
+    res.status(404).json({
+      user: null,
+      message: "Mauvais identifiants",
+    });
     console.error("My error : ", err);
   }
 }
-
 // The D of BREAD - Destroy (Delete) operation
 // This operation is not yet implemented
 async function destroy(req, res) {
@@ -156,21 +161,54 @@ async function updateImage(req, res) {
   }
 }
 
-async function updateSecret(req, res) {
-  const { secretQuestion, secretAnswer } = req.body;
-  const token = req.headers.authorization.split(" ")[1];
-  const { email } = jwtDecode.jwtDecode(token);
-  const result = await userManager.updateSecret(
-    secretQuestion,
-    secretAnswer,
-    email
-  );
-  if (result !== 0) {
-    res.status(200).json({ message: "reponse enregistrée" });
+async function activateAccount(req, res) {
+  const { email, code } = req.body;
+
+  const { activationCode } = await userManager.getActivationCode(email);
+  if (+activationCode === +code && +activationCode !== 0) {
+    const { affectedRows } = await userManager.activateAccount(email);
+    if (affectedRows) {
+      // delete activation code when account is validated
+      await userManager.deleteActivationCode(email);
+      res
+        .status(200)
+        .json({ message: "Votre compte est activé!!!", affectedRows });
+    } else {
+      res.status(404).json({
+        message: "Erreur coté serveur, essaie une autre fois!!!",
+        affectedRows,
+      });
+    }
+  } else
+    res.status(404).json({ message: "Serieux Amigo !!! ", affectedRow: 0 });
+}
+
+async function generateNewActivation(req, res) {
+  const { email } = req.body;
+  const { affectedRows } = await userManager.createActivationCode(email);
+  if (affectedRows) {
+    res.status(200).json({ message: "email de validation envoyé!!!" });
   } else {
-    res.status(404).json({
-      message: "failed to update database",
+    res.status(404).json({ message: "Essayer une autre fois!!!" });
+  }
+}
+async function updatePassword(req, res) {
+  const { password, code, email } = req.body;
+  const userdb = await userManager.readUserViaEmail(email);
+  if (+userdb.activationCode === +code) {
+    const { affectedRows } = await userManager.updatePassword({
+      password,
+      email,
     });
+    if (affectedRows !== 0) {
+      res
+        .status(200)
+        .json({ message: "Mot de passe actualisé!!!", result: true });
+    } else {
+      res.status(500).json({ message: "Erreur coté serveur", result: false });
+    }
+  } else {
+    res.status(500).json({ message: "Mauvais code", result: false });
   }
 }
 // Ready to export the controller functions
@@ -182,5 +220,7 @@ module.exports = {
   destroy,
   check,
   updateImage,
-  updateSecret,
+  activateAccount,
+  generateNewActivation,
+  updatePassword,
 };

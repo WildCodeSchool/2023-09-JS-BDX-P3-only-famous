@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const database = require("../../database/client");
+const activationManager = require("./activationManager");
 
 class UserManager {
   static async Hashing(password) {
@@ -16,8 +17,9 @@ class UserManager {
     // Execute the SQL INSERT query to add a new item to the "item" table
     const hashedPassword = await this.Hashing(user.password);
     try {
+      const randomCode = Math.ceil(Math.random() * (9999 - 1000) + 1000);
       const [result] = await database.query(
-        `insert into user (firstname, lastname, email, password, birthday, isAdmin, imgUrl) values (?,?,?,?,?,?,?)`,
+        `insert into user (firstname, lastname, email, password, birthday, isAdmin, imgUrl, activationCode) values (?,?,?,?,?,?,?,?)`,
         [
           user.firstname,
           user.lastname,
@@ -26,8 +28,11 @@ class UserManager {
           user.birthday,
           user.isAdmin,
           user.imgUrl,
+          randomCode,
         ]
       );
+
+      activationManager.sendValidationCode(user.email, randomCode);
       return { message: "Utilisateur ajouté!!!", insertId: result.insertId };
     } catch (err) {
       console.error("error while inserting new user in user manager: ", err);
@@ -48,6 +53,17 @@ class UserManager {
       if (res) {
         return rows[0];
       }
+    }
+    return null;
+  }
+
+  static async readUserViaEmail(email) {
+    // Execute the SQL SELECT query to retrieve a specific item by its ID
+    const [rows] = await database.query(`select * from user where email = ?`, [
+      email,
+    ]);
+    if (rows[0]) {
+      return rows[0];
     }
     return null;
   }
@@ -78,12 +94,12 @@ class UserManager {
       const [res] = await database.query(
         "update user set firstname = ?, lastname = ?, birthday = ?, imgUrl = ?, password = ?  WHERE email = ?",
         [
-          user.firstname,
-          user.lastname,
-          user.birthday,
-          user.imgUrl,
-          user.password,
-          user.email,
+          userdb.firstname,
+          userdb.lastname,
+          userdb.birthday,
+          userdb.imgUrl,
+          userdb.password,
+          userdb.email,
         ]
       );
       return res.affectedRows;
@@ -106,36 +122,6 @@ class UserManager {
     return 0;
   }
 
-  static async updateSecret(secretQuestion, secretAnswer, email) {
-    const hashedsecret = await this.Hashing(secretAnswer);
-    const [userdb] = await database.query(
-      `select * from user where email = ?`,
-      [email]
-    );
-    if (userdb[0]) {
-      const [res] = await database.query(
-        "update user set secretQuestion =? , secretAnswer = ? WHERE email = ?",
-        [secretQuestion, hashedsecret, email]
-      );
-      return res.affectedRows;
-    }
-    return 0;
-  }
-
-  static async compareSecret(secretAnswer, email) {
-    const [userdb] = await database.query(
-      `select * from user where email = ?`,
-      [email]
-    );
-    if (userdb[0]) {
-      const res = this.compare(secretAnswer, userdb.secretAnswer);
-      if (res) {
-        return 1;
-      }
-    }
-    return 0;
-  }
-
   // The D of CRUD - Delete operation
   // TODO: Implement the delete operation to remove an item by its ID
 
@@ -145,6 +131,77 @@ class UserManager {
     ]);
     // console.log("res ", res);
     return res.affectedRows;
+  }
+
+  // activation via email
+  static async getActivationCode(email) {
+    const [userdb] = await database.query(
+      `select * from user where email = ?`,
+      [email]
+    );
+    if (userdb[0]) {
+      return { activationCode: userdb[0].activationCode };
+    }
+    return { activationCode: 0 };
+  }
+
+  static async activateAccount(email) {
+    const [res] = await database.query(
+      "update user set isActive = 1  WHERE email = ?",
+      [email]
+    );
+    return { affectedRows: res.affectedRows };
+  }
+
+  static async deleteActivationCode(email) {
+    const [res] = await database.query(
+      "update user set activationCode = NULL  WHERE email = ?",
+      [email]
+    );
+    return { affectedRows: res.affectedRows };
+  }
+
+  static async createActivationCode(email) {
+    // Execute the SQL INSERT query to add a new item to the "item" table
+    const randomCode = Math.ceil(Math.random() * (9999 - 1000) + 1000);
+    try {
+      const [res] = await database.query(
+        "update user set activationCode = ?  WHERE email = ?",
+        [randomCode, email]
+      );
+      activationManager.sendValidationCode(email, randomCode);
+      return { affectedRows: res.affectedRows };
+    } catch (err) {
+      console.error(
+        "error while creating new validation code in user manager: ",
+        err
+      );
+      return { message: "failed to create new validation!!!", insertId: 0 };
+    }
+
+    // Return the ID of the newly inserted item
+  }
+
+  static async updatePassword({ email, password }) {
+    try {
+      const [userdb] = await database.query(
+        `select * from user where email = ?`,
+        [email]
+      );
+      const hashedPassword = await this.Hashing(password);
+      if (userdb[0]) {
+        const [res] = await database.query(
+          "update user set  password = ?  WHERE email = ?",
+          [hashedPassword, email]
+        );
+        await this.deleteActivationCode(email);
+        return { affectedRows: res.affectedRows };
+      }
+      return { affectedRows: 0 };
+    } catch (err) {
+      console.error("error ", err);
+      return { affectedRows: 0 };
+    }
   }
 }
 

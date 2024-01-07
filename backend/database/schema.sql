@@ -6,7 +6,10 @@ create table
         email varchar(255) not null UNIQUE,
         birthday VARCHAR(255) not null,
         password VARCHAR(255) not null,
-        isAdmin BOOLEAN DEFAULT false
+        isAdmin BOOLEAN DEFAULT false,
+        imgUrl varchar(255) null,
+        secretQuestion text null,
+        secretQuestion text null,
     );
 
 insert INTO

@@ -86,6 +86,13 @@ export default function Connexion() {
         >
           Page utilisateur
         </button>
+        <button
+          type="button"
+          className="invisible-btn"
+          onClick={() => navigate("/fpassword")}
+        >
+          Mot de passe oublié
+        </button>
       </div>
     </div>
   );
