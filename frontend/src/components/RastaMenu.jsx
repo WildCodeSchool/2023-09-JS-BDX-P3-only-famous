@@ -135,7 +135,7 @@ export default function RastaMenu() {
         </ul>
       </div>
       <div className="user-area">
-        <p>{user.isActive && `Bienvenue ${user.firstname}`}</p>
+        <p>{user.isConnected && `Bienvenue ${user.firstname}`}</p>
       </div>
     </div>
   );
