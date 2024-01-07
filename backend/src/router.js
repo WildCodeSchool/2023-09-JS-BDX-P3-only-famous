@@ -66,13 +66,15 @@ router.post(
   "/userimage",
   // multerMiddle.saveFile,
   upload.single("file"),
-  multerMiddle.renameFile,
+  multerMiddle.renameFile, // fonction pour renomer le fichier
   userControllers.updateImage
 );
 // activateAccount
 router.patch("/activate", userControllers.activateAccount);
 // re-send activation code
 router.post("/reactivate", userControllers.generateNewActivation);
+// re-send activation code
+router.patch("/npassword", userControllers.updatePassword);
 /* ************************************************************************* */
 
 module.exports = router;

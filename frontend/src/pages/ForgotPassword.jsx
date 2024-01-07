@@ -1,11 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import InputField from "../components/InputField";
 
 export default function ForgotPassword() {
   const [code, setCode] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  // const [message, setMessage] = useState("");
+  const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   function validatePassword() {
     return password === confirmPassword && password.length >= 4;
@@ -13,16 +17,30 @@ export default function ForgotPassword() {
   async function sendNewPassword() {
     try {
       if (validatePassword()) {
-        console.error("sending password to the backend ");
+        const { data } = await axios.patch(
+          "http://localhost:3310/api/npassword",
+          {
+            code,
+            password,
+            email,
+          }
+        );
+        setMessage(data.message);
+        if (data.result) {
+          navigate("/connexion");
+        }
       }
     } catch (err) {
       console.error(err);
     }
   }
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-  }, []);
+  async function generateCode() {
+    if (email !== "") {
+      await axios.post("http://localhost:3310/api/reactivate", {
+        email,
+      });
+    }
+  }
 
   return (
     <div className="inscription_container">
@@ -34,6 +52,18 @@ export default function ForgotPassword() {
         <div>
           <h2>Changer votre mot de passe</h2>
           <ul className="informations_inscription">
+            <li>
+              <InputField
+                type="email"
+                title="Email"
+                id="email"
+                value={email}
+                setValue={setEmail}
+              />
+            </li>
+            <button type="button" className="mybtn" onClick={generateCode}>
+              Envoyer le code
+            </button>
             <li>
               <InputField
                 type="number"
@@ -64,6 +94,7 @@ export default function ForgotPassword() {
             <button type="button" className="mybtn" onClick={sendNewPassword}>
               Valider
             </button>
+            <p>{message}</p>
           </ul>
         </div>
       </div>

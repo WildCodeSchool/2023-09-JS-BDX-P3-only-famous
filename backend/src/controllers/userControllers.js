@@ -192,6 +192,25 @@ async function generateNewActivation(req, res) {
     res.status(404).json({ message: "Essayer une autre fois!!!" });
   }
 }
+async function updatePassword(req, res) {
+  const { password, code, email } = req.body;
+  const userdb = await userManager.readUserViaEmail(email);
+  if (+userdb.activationCode === +code) {
+    const { affectedRows } = await userManager.updatePassword({
+      password,
+      email,
+    });
+    if (affectedRows !== 0) {
+      res
+        .status(200)
+        .json({ message: "Mot de passe actualisé!!!", result: true });
+    } else {
+      res.status(500).json({ message: "Erreur coté serveur", result: false });
+    }
+  } else {
+    res.status(500).json({ message: "Mauvais code", result: false });
+  }
+}
 // Ready to export the controller functions
 module.exports = {
   browse,
@@ -203,4 +222,5 @@ module.exports = {
   updateImage,
   activateAccount,
   generateNewActivation,
+  updatePassword,
 };

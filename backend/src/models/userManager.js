@@ -57,6 +57,17 @@ class UserManager {
     return null;
   }
 
+  static async readUserViaEmail(email) {
+    // Execute the SQL SELECT query to retrieve a specific item by its ID
+    const [rows] = await database.query(`select * from user where email = ?`, [
+      email,
+    ]);
+    if (rows[0]) {
+      return rows[0];
+    }
+    return null;
+  }
+
   static async readAll() {
     // Execute the SQL SELECT query to retrieve all items from the "item" table
     const [rows] = await database.query(`select * from user`);
@@ -169,6 +180,28 @@ class UserManager {
     }
 
     // Return the ID of the newly inserted item
+  }
+
+  static async updatePassword({ email, password }) {
+    try {
+      const [userdb] = await database.query(
+        `select * from user where email = ?`,
+        [email]
+      );
+      const hashedPassword = await this.Hashing(password);
+      if (userdb[0]) {
+        const [res] = await database.query(
+          "update user set  password = ?  WHERE email = ?",
+          [hashedPassword, email]
+        );
+        await this.deleteActivationCode(email);
+        return { affectedRows: res.affectedRows };
+      }
+      return { affectedRows: 0 };
+    } catch (err) {
+      console.error("error ", err);
+      return { affectedRows: 0 };
+    }
   }
 }
 
