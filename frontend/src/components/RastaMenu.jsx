@@ -71,7 +71,7 @@ export default function RastaMenu() {
           )}
         </div>
       </div>
-      <div className="burger">
+      <div>
         <input
           type="checkbox"
           id="menu-toggle"
