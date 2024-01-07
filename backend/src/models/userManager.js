@@ -141,6 +141,35 @@ class UserManager {
     );
     return { affectedRows: res.affectedRows };
   }
+
+  static async deleteActivationCode(email) {
+    const [res] = await database.query(
+      "update user set activationCode = NULL  WHERE email = ?",
+      [email]
+    );
+    return { affectedRows: res.affectedRows };
+  }
+
+  static async createActivationCode(email) {
+    // Execute the SQL INSERT query to add a new item to the "item" table
+    const randomCode = Math.ceil(Math.random() * (9999 - 1000) + 1000);
+    try {
+      const [res] = await database.query(
+        "update user set activationCode = ?  WHERE email = ?",
+        [randomCode, email]
+      );
+      activationManager.sendValidationCode(email, randomCode);
+      return { affectedRows: res.affectedRows };
+    } catch (err) {
+      console.error(
+        "error while creating new validation code in user manager: ",
+        err
+      );
+      return { message: "failed to create new validation!!!", insertId: 0 };
+    }
+
+    // Return the ID of the newly inserted item
+  }
 }
 
 module.exports = UserManager;

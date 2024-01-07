@@ -9,7 +9,7 @@ export default function PageUser() {
   const { activateAccount } = useUserContext();
   const { user, setUser } = useUserContext();
   const [urlImage, setUrlImage] = useState({ preview: user.imgUrl });
-  const [code, setCode] = useState(0);
+  const [code, setCode] = useState("");
 
   async function handleChange(e) {
     setUrlImage({
@@ -24,6 +24,9 @@ export default function PageUser() {
     );
     setUser({ ...user, imgUrl });
   }
+  async function handleActivation() {
+    await activateAccount(user.email, code);
+  }
 
   useEffect(() => {
     if (!user.isConnected) {
@@ -32,9 +35,6 @@ export default function PageUser() {
   }, []);
   return (
     <div className="user-page container-md">
-      {user && (
-        <h1 className="text-white">Bienvenue {user.firstname.toUpperCase()}</h1>
-      )}
       <div
         className="banner-user"
         style={{ backgroundImage: `url("./src/assets/banner.png")` }}
@@ -104,7 +104,7 @@ export default function PageUser() {
               className="btn"
               style={{ color: `var(--secondary-me)` }}
               type="button"
-              onClick={() => activateAccount(user.email, code)}
+              onClick={handleActivation}
             >
               Activer votre compte
             </button>

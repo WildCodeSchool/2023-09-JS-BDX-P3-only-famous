@@ -151,9 +151,13 @@ export default function UserContextProvider({ children }) {
       );
       if (affectedRows !== 0) {
         setUser({ ...user, isActive: 1 });
+        return { message: "Compte activé ", result: true };
       }
+      return { message: "Erreur de validation!!! code éroné ?", result: false };
     } catch (err) {
       console.error("err", err);
+      setUser({ ...user, isActive: 0 });
+      return { message: "Erreur de validation!!! code éroné ?", result: false };
     }
   }
 

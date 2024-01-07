@@ -71,6 +71,8 @@ router.post(
 );
 // activateAccount
 router.patch("/activate", userControllers.activateAccount);
+// re-send activation code
+router.post("/reactivate", userControllers.generateNewActivation);
 /* ************************************************************************* */
 
 module.exports = router;
