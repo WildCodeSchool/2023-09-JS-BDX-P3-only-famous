@@ -168,13 +168,17 @@ async function activateAccount(req, res) {
   if (+activationCode === +code && +activationCode !== 0) {
     const { affectedRows } = await userManager.activateAccount(email);
     if (affectedRows) {
-      res.status(200).json({ message: "Votre compte est activé!!!" });
-    } else {
       res
-        .status(404)
-        .json({ message: "Erreur coté serveur, essaie une autre fois!!!" });
+        .status(200)
+        .json({ message: "Votre compte est activé!!!", affectedRows });
+    } else {
+      res.status(404).json({
+        message: "Erreur coté serveur, essaie une autre fois!!!",
+        affectedRows,
+      });
     }
-  } else res.status(404).json({ message: "Serieux Amigo !!! " });
+  } else
+    res.status(404).json({ message: "Serieux Amigo !!! ", affectedRow: 0 });
 }
 // Ready to export the controller functions
 module.exports = {

@@ -123,6 +123,7 @@ export default function UserContextProvider({ children }) {
         newUser
       );
       if (+insertId !== 0) {
+        // à corriger
         setMessageUser(message);
         return false;
       }
@@ -139,6 +140,21 @@ export default function UserContextProvider({ children }) {
   function logout() {
     setUser({ admin: false, isConnected: false });
     localStorage.removeItem("user");
+  }
+
+  // activate account
+  async function activateAccount(email, code) {
+    try {
+      const { affectedRows } = await axios.patch(
+        "http://localhost:3310/api/activate",
+        { email, code }
+      );
+      if (affectedRows !== 0) {
+        setUser({ ...user, isActive: 1 });
+      }
+    } catch (err) {
+      console.error("err", err);
+    }
   }
 
   function onLoadPage() {
@@ -170,6 +186,7 @@ export default function UserContextProvider({ children }) {
       register,
       linkToVideo,
       setLinkToVideo,
+      activateAccount,
     }),
     [
       user,
@@ -182,6 +199,7 @@ export default function UserContextProvider({ children }) {
       register,
       linkToVideo,
       setLinkToVideo,
+      activateAccount,
     ]
   );
   return (
