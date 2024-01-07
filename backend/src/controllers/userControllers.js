@@ -189,7 +189,7 @@ async function generateNewActivation(req, res) {
   if (affectedRows) {
     res.status(200).json({ message: "email de validation envoyé!!!" });
   } else {
-    res.status(404).json({ message: "Essayer une autre fois!!!" });
+    res.status(404).json({ message: "Essayer une autre fois !!!" });
   }
 }
 async function updatePassword(req, res) {
