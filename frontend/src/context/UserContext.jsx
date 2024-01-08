@@ -16,6 +16,7 @@ export default function UserContextProvider({ children }) {
     imgUrl: "",
     isActive: 0,
   });
+  const [mobileMode, setMobileMode] = useState(true);
   // state used in user creation request
   const [formValue, setFormValue] = useState({
     email: "",
@@ -191,6 +192,8 @@ export default function UserContextProvider({ children }) {
       linkToVideo,
       setLinkToVideo,
       activateAccount,
+      mobileMode,
+      setMobileMode,
     }),
     [
       user,
@@ -204,6 +207,8 @@ export default function UserContextProvider({ children }) {
       linkToVideo,
       setLinkToVideo,
       activateAccount,
+      mobileMode,
+      setMobileMode,
     ]
   );
   return (
