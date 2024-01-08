@@ -13,6 +13,12 @@
     background-size: cover;
     border-radius: 20%;
     background-repeat: no-repeat;
+    max-height: 450px;
+  }
+  @media screen and (max-width: 600px) {
+    .banner {
+      max-height: 250px;
+    }
   }
 
   h2 {

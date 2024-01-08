@@ -10,24 +10,12 @@ import { useUserContext } from "./context/UserContext";
 
 function App() {
   const { setMobileMode } = useUserContext();
-  const match = useMediaQuery({ query: "(min-width : 600px)" });
-  // window.addEventListener("resize", () => {
-  //   if (window.innerWidth > 600) {
-  //     setMobileMode(false);
-  //   } else if (window.innerWidth <= 600) {
-  //     setMobileMode(true);
-  //     console.log("mobile", window.innerWidth);
-  //   }
-  // });
+  const match = useMediaQuery({ query: "(max-width : 600px)" });
 
   useEffect(() => {
-    if (window.innerWidth > 600) {
-      setMobileMode(false);
-    } else {
-      setMobileMode(true);
-    }
-    // console.log("mobile mode ", match);
+    setMobileMode(match);
   }, [match]);
+
   return (
     <>
       {/* <Navbar /> */}

@@ -7,7 +7,7 @@ import ActivateAccount from "../components/ActivateAccount";
 export default function PageUser() {
   const navigate = useNavigate();
   const { activateAccount } = useUserContext();
-  const { user, setUser } = useUserContext();
+  const { user, setUser, logout } = useUserContext();
   const [urlImage, setUrlImage] = useState({ preview: user.imgUrl });
   const [code, setCode] = useState("");
 
@@ -27,7 +27,7 @@ export default function PageUser() {
   async function handleActivation() {
     await activateAccount(user.email, code);
   }
-
+  const bannerImage = `./src/assets/banner.png`;
   useEffect(() => {
     if (!user.isConnected) {
       navigate("/");
@@ -35,10 +35,24 @@ export default function PageUser() {
   }, []);
   return (
     <div className="user-page container-md">
-      <div
+      {/* <div
         className="banner-user"
         style={{ backgroundImage: `url("./src/assets/banner.png")` }}
-      />
+      /> */}
+      <div
+        className="center"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+        url(${bannerImage})`,
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+        }}
+      >
+        <h2 className="center-text glitch is-glitching" data-text="Utilisateur">
+          Utilisateur
+        </h2>
+      </div>
       <div className="card  mb-3">
         <div className="row no-gutters">
           <div className="col-md-4">
@@ -116,6 +130,17 @@ export default function PageUser() {
             type="button"
           >
             Supprimer votre compte
+          </button>
+          <button
+            type="button"
+            className="btn"
+            onClick={() => {
+              logout();
+              navigate("/");
+            }}
+            style={{ color: `var(--secondary-me)` }}
+          >
+            Deconnexion
           </button>
         </ul>
       </div>

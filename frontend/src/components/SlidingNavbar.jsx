@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
 
@@ -7,7 +7,7 @@ export default function SlidingNavbar() {
   const closeButton = useRef();
   const myNav = useRef();
   const refLinks = useRef();
-  const { mobileMode } = useUserContext();
+  const { mobileMode, user } = useUserContext();
 
   function openNav() {
     myNav.current.style.width = "100%";
@@ -16,6 +16,21 @@ export default function SlidingNavbar() {
   function closeNav() {
     myNav.current.style.width = "0%";
   }
+  // const preventDefault = (ev) => {
+  //   if (ev.preventDefault) {
+  //     ev.preventDefault();
+  //   }
+  // };
+  // const enableBodyScroll = () => {
+  //   document.removeEventListener("wheel", preventDefault, false);
+  // };
+  // const disableBodyScroll = () => {
+  //   document.addEventListener("wheel", preventDefault, {
+  //     passive: false,
+  //   });
+  // };
+
+  useEffect(() => {}, []);
 
   return (
     <div className="navbar-full">
@@ -27,37 +42,44 @@ export default function SlidingNavbar() {
             if (mobileMode) {
               openNav();
               // refLinks.current.style.transform = `translate(600px, 0)`;
-              refLinks.current.classList.toggle("slide-left");
+              // refLinks.current.classList.toggle("slide-left");
+            } else {
+              navigate("/");
             }
           }}
         >
           <img src="./src/assets/logo.png" alt="logo" className="logo" />
         </button>
 
-        <div className="navbar-links" ref={refLinks}>
-          <button type="button" className="btn">
-            <span>Accueil</span>
-          </button>
-          <button type="button" className="btn">
-            <span>Utilisateur</span>
-          </button>
-          <button type="button" className="btn">
-            <span>Admin</span>
-          </button>
-          <button type="button" className="btn">
-            <span>À propos</span>
-          </button>
-        </div>
+        {!mobileMode && (
+          <div className="navbar-links" ref={refLinks}>
+            <Link to="/">
+              <span>Accueil</span>
+            </Link>
+            <Link to={user.isConnected ? "/user" : "/connexion"}>
+              <span>{user.isConnected ? "Utilisateur" : "Connexion"}</span>
+            </Link>
+            <Link to="/admin">
+              <span>Admin</span>
+            </Link>
+          </div>
+        )}
       </div>
       {mobileMode && (
         <div className="navbar-burger">
-          <div id="myNav" className="overlay" ref={myNav}>
+          <div
+            id="myNav"
+            className="overlay"
+            ref={myNav}
+            // onMouseEnter={disableBodyScroll}
+            // onMouseLeave={enableBodyScroll}
+          >
             <button
               type="button"
               className="closebtn"
               onClick={() => {
                 closeNav();
-                refLinks.current.classList.toggle("slide-left");
+                // refLinks.current.classList.toggle("slide-left");
               }}
               ref={closeButton}
             >
@@ -66,21 +88,38 @@ export default function SlidingNavbar() {
             <div className="overlay-content">
               <button
                 type="button"
-                className="btn"
                 onClick={() => {
                   navigate("/");
                   closeNav();
-                  refLinks.current.classList.toggle("slide-left");
+                  // refLinks.current.classList.toggle("slide-left");
                 }}
               >
                 <span>Accueil</span>
               </button>
-              <Link to="/">
-                <span>Utilisateur</span>
-              </Link>
-              <Link to="/">
-                <span>Admin</span>
-              </Link>
+              <button
+                type="button"
+                onClick={() => {
+                  navigate(user.isConnected ? "/user" : "/connexion");
+                  closeNav();
+                  // refLinks.current.classList.toggle("slide-left");
+                }}
+              >
+                <span>{user.isConnected ? "Utilisateur" : "Connexion"}</span>
+              </button>
+              {user.isAdmin ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigate("/admin");
+                    closeNav();
+                    // refLinks.current.classList.toggle("slide-left");
+                  }}
+                >
+                  <span>Admin</span>
+                </button>
+              ) : (
+                ""
+              )}
             </div>
           </div>
         </div>
