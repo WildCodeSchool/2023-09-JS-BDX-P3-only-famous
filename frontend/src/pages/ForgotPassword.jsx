@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import InputField from "../components/InputField";
@@ -41,6 +41,9 @@ export default function ForgotPassword() {
       });
     }
   }
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="inscription_container">

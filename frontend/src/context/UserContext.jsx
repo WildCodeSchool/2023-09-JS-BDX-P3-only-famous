@@ -16,6 +16,7 @@ export default function UserContextProvider({ children }) {
     imgUrl: "",
     isActive: 0,
   });
+  const [mobileMode, setMobileMode] = useState(true);
   // state used in user creation request
   const [formValue, setFormValue] = useState({
     email: "",
@@ -116,13 +117,11 @@ export default function UserContextProvider({ children }) {
   // function called when use is prepare to be created
   async function register(newUser) {
     try {
-      // console.log("before axios ");
-
       const { message, insertId } = await axios.post(
         "http://localhost:3310/api/users",
         newUser
       );
-      if (+insertId !== 0) {
+      if (+insertId === 0) {
         // à corriger
         setMessageUser(message);
         return false;
@@ -131,7 +130,7 @@ export default function UserContextProvider({ children }) {
       setMessageUser(message);
       return true;
     } catch (err) {
-      setMessageUser("Essaie avec un autre email");
+      setMessageUser(err.response.data.message);
       return false;
     }
   }
@@ -191,6 +190,8 @@ export default function UserContextProvider({ children }) {
       linkToVideo,
       setLinkToVideo,
       activateAccount,
+      mobileMode,
+      setMobileMode,
     }),
     [
       user,
@@ -204,6 +205,8 @@ export default function UserContextProvider({ children }) {
       linkToVideo,
       setLinkToVideo,
       activateAccount,
+      mobileMode,
+      setMobileMode,
     ]
   );
   return (

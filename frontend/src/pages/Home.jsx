@@ -13,6 +13,7 @@ function Home() {
   };
   useEffect(() => {
     enableBodyScroll();
+    window.scrollTo(0, 0);
   });
   return (
     <div>

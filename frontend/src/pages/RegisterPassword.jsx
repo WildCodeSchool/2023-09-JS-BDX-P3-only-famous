@@ -7,14 +7,13 @@ export default function RegisterPassword() {
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [message, setMessage] = useState("");
   const { formValue, setFormValue } = useUserContext();
-  const { register, messageUser } = useUserContext();
+  const { register, messageUser, setMessageUser } = useUserContext();
   const refUser = useRef({});
 
   async function checkError() {
     if (password.length < 4 || password !== confirmPassword) {
-      setMessage(
+      setMessageUser(
         () => "Le mot de passe n'est pas conforme ou n'est pas confirmé!!!"
       );
     } else {
@@ -31,7 +30,7 @@ export default function RegisterPassword() {
         imgUrl: "http://localhost:3310/uploads/default.png",
       };
       const isDone = await register(refUser.current);
-      setMessage(() => messageUser);
+      setMessageUser(() => messageUser);
       if (isDone) navigate("/connexion");
       else {
         navigate("/inscription");
@@ -63,7 +62,7 @@ export default function RegisterPassword() {
           />
         </li>
 
-        <p style={{ color: "red" }}>{message}</p>
+        <p style={{ color: "red" }}>{messageUser}</p>
         <button type="button" className="mybtn" onClick={checkError}>
           Suivant
         </button>

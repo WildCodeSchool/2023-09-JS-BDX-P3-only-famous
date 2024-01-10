@@ -1,5 +1,4 @@
 .inscription_container {
-  // background-color: #354d67;
   margin: 0 auto;
   width: 100%;
   text-align: center;
@@ -13,6 +12,12 @@
     background-size: cover;
     border-radius: 20%;
     background-repeat: no-repeat;
+    max-height: 450px;
+  }
+  @media screen and (max-width: 600px) {
+    .banner {
+      max-height: 250px;
+    }
   }
 
   h2 {
@@ -131,4 +136,22 @@
     flex-direction: column;
     align-items: start;
   }
+}
+
+@keyframes slidein {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0%);
+  }
+}
+
+.slideIn {
+  animation: slidein 1000ms;
+}
+.slideOut {
+  animation-direction: reverse;
+  animation: slidein 1000ms;
 }

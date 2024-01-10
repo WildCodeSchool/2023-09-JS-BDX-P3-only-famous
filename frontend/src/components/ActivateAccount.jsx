@@ -14,6 +14,6 @@ export default function ActivateAccount({ code, setCode }) {
 }
 
 ActivateAccount.propTypes = {
-  code: PropTypes.number.isRequired,
+  code: PropTypes.string.isRequired,
   setCode: PropTypes.func.isRequired,
 };

@@ -70,7 +70,7 @@ router.post(
   userControllers.updateImage
 );
 // activateAccount
-router.patch("/activate", userControllers.activateAccount);
+router.get("/validation/:code/:email", userControllers.activate);
 // re-send activation code
 router.post("/reactivate", userControllers.generateNewActivation);
 // re-send activation code

@@ -26,10 +26,19 @@ export default function Connexion() {
   }
   useEffect(() => {
     setMessageUser("");
+    window.scrollTo(0, 0);
   }, []);
   return (
     <div className="inscription_container">
-      <div className="banner" />
+      {/* <div className="banner " /> */}
+      <div className="center">
+        <h2
+          className="center-text glitch is-glitching"
+          data-text={!user.isConnected ? "Connexion" : "Utilisateur"}
+        >
+          {!user.isConnected ? "Connexion" : "Utilisateur"}
+        </h2>
+      </div>
       {user.isConnected && (
         <div className="infos-container">
           <h1>Vous êtes déjà connecté</h1>
@@ -79,13 +88,7 @@ export default function Connexion() {
             Créer votre compte
           </button>
         </p>
-        <button
-          type="button"
-          className="invisible-btn"
-          onClick={() => navigate("/user")}
-        >
-          Page utilisateur
-        </button>
+
         <button
           type="button"
           className="invisible-btn"

@@ -48,17 +48,18 @@ const read = async (req, res, next) => {
     // If the item is not found, respond with HTTP 404 (Not Found)
     // Otherwise, respond with the item in JSON format
     if (item == null) {
-      res.sendStatus(404);
+      res.status(404).json({ message: "Mauvais identifiants!!!" });
     } else {
       res.json(item);
     }
   } catch (err) {
+    res.status(404).json({ message: "Mauvais identifiants!!!" });
     // Pass any errors to the error-handling middleware
     next(err);
   }
 };
 // The E of BREAD - Edit (Update) operation
-async function edit(req, res, next) {
+async function edit(req, res) {
   try {
     const user = req.body;
     // console.log("user from body", user);
@@ -69,13 +70,17 @@ async function edit(req, res, next) {
     // If the item is not found, respond with HTTP 404 (Not Found)
     // Otherwise, respond with the item in JSON format
     if (+affectedRow === 0) {
-      res.sendStatus(500);
+      res.status(500).json({
+        message: "Aucune modification réalisée, sans erreurs",
+        affectedRow: 0,
+      });
     } else {
-      res.json(affectedRow);
+      res.status(202).json({ message: "Utilisateur modifé", affectedRow });
     }
   } catch (err) {
-    // Pass any errors to the error-handling middleware
-    next(err);
+    res
+      .status(401)
+      .json({ message: "Aucune modification réalisée", affectedRow: 0 });
   }
 }
 // The A of BREAD - Add (Create) operation
@@ -90,14 +95,12 @@ async function add(req, res) {
     // Respond with HTTP 201 (Created) and the ID of the newly inserted item
     if (+insertId !== 0) {
       res.status(201).json({ message, insertId });
-      return { message, insertId };
+      return;
     }
     res.status(500).json({ message, insertId });
-    return { message, insertId };
   } catch (err) {
-    console.error("catch triggered ");
-    res.status(500).json({ message: "Email existant!!!", insertId: 0 });
-    return { message: "Email existant!!!", insertId: 0 };
+    console.error("catch triggered ", err.message);
+    res.status(409).json({ message: "Email existant!!!", insertId: 0 });
   }
 }
 // check for existant user in the db
@@ -131,56 +134,82 @@ async function check(req, res) {
       user: null,
       message: "Mauvais identifiants",
     });
-    console.error("My error : ", err);
   }
 }
 // The D of BREAD - Destroy (Delete) operation
 // This operation is not yet implemented
 async function destroy(req, res) {
-  const { email } = req.body;
-  const result = await userManager.delete(email);
-  // console.log("deleted rows number", result);
-  if (+result !== 0) {
-    res.json({ deleted: result });
-  } else {
-    res.status(404).send("element not found");
+  try {
+    const { email, password } = req.body;
+    const result = await userManager.delete(email, password);
+    // console.log("deleted rows number", result);
+    if (+result !== 0) {
+      res.status(200).json({ message: "Utilisateur supprimé" });
+    } else {
+      res
+        .status(404)
+        .json({ message: "Mauvais identifiants ou utilisateur non existant" });
+    }
+  } catch (err) {
+    console.error(err.message);
+    res.status(401).json({ message: "Suppression non autorisée" });
   }
 }
 
 async function updateImage(req, res) {
-  const token = req.headers.authorization.split(" ")[1];
-  const { email } = jwtDecode.jwtDecode(token);
-  const result = await userManager.updateImage(email, req.newPath);
-  if (result !== 0) {
-    res.json({ message: "fileUploaded", result, imgUrl: req.newPath });
-  } else {
-    res.json({
-      message: "failed to update database",
-      result,
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+    const { email } = jwtDecode.jwtDecode(token);
+    // const result = await userManager.updateImage(email, req.newPath);
+    const result = await userManager.update({
+      email,
+      imgUrl: req.newPath,
     });
+
+    if (result !== 0) {
+      res.json({ message: "fileUploaded", result, imgUrl: req.newPath });
+    } else {
+      res.json({
+        message: "Le compte n'est pas mis à jour",
+        result,
+      });
+    }
+  } catch (err) {
+    res.status(401).json({ message: "Action non autorisée", result: 0 });
   }
 }
 
-async function activateAccount(req, res) {
-  const { email, code } = req.body;
+async function activate(req, res) {
+  try {
+    const { code, email } = req.params;
 
-  const { activationCode } = await userManager.getActivationCode(email);
-  if (+activationCode === +code && +activationCode !== 0) {
-    const { affectedRows } = await userManager.activateAccount(email);
-    if (affectedRows) {
-      // delete activation code when account is validated
-      await userManager.deleteActivationCode(email);
-      res
-        .status(200)
-        .json({ message: "Votre compte est activé!!!", affectedRows });
-    } else {
-      res.status(404).json({
-        message: "Erreur coté serveur, essaie une autre fois!!!",
-        affectedRows,
-      });
-    }
-  } else
-    res.status(404).json({ message: "Serieux Amigo !!! ", affectedRow: 0 });
+    // const { activationCode, isActive } = await userManager.getActivationCode(
+    //   email
+    // );
+    const { activationCode, isActive } = await userManager.readUserViaEmail(
+      email
+    );
+    if (activationCode === code && activationCode !== null && !isActive) {
+      const { affectedRows } = await userManager.activateAccount(email);
+      if (affectedRows) {
+        // delete activation code when account is validated
+        await userManager.deleteActivationCode(email);
+        res.redirect("http://localhost:3000/user");
+        // res
+        //   .status(200)
+        //   .json({ message: "Votre compte est activé!!!", affectedRows });
+      } else {
+        res.status(404).json({
+          message: "Aucune modification realisée!!!",
+          affectedRows,
+        });
+      }
+    } else
+      res.status(404).json({ message: "Serieux Amigo !!! ", affectedRow: 0 });
+  } catch (err) {
+    console.error(err.message);
+    res.status(404).json({ message: "Compte non activé !!! ", affectedRow: 0 });
+  }
 }
 
 async function generateNewActivation(req, res) {
@@ -192,6 +221,7 @@ async function generateNewActivation(req, res) {
     res.status(404).json({ message: "Essayer une autre fois !!!" });
   }
 }
+
 async function updatePassword(req, res) {
   const { password, code, email } = req.body;
   const userdb = await userManager.readUserViaEmail(email);
@@ -220,7 +250,7 @@ module.exports = {
   destroy,
   check,
   updateImage,
-  activateAccount,
   generateNewActivation,
   updatePassword,
+  activate,
 };
