@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useUserContext } from "../context/UserContext";
 import InputField from "../components/InputField";
 import RegisterCoord from "./RegisterCoord";
@@ -20,6 +20,9 @@ export default function RegisterUser() {
       setNext(true);
     }
   }
+  useEffect(() => {
+    window.scrollTo(0, 250);
+  }, []);
   return !next ? (
     <div className="inscription_container">
       <div className="banner" />

@@ -26,6 +26,7 @@ export default function Connexion() {
   }
   useEffect(() => {
     setMessageUser("");
+    window.scrollTo(0, 0);
   }, []);
   return (
     <div className="inscription_container">
