@@ -35,8 +35,9 @@ class UserManager {
       activationManager.sendValidationCode(user.email, randomCode);
       return { message: "Utilisateur ajouté!!!", insertId: result.insertId };
     } catch (err) {
-      console.error("error while inserting new user in user manager: ", err);
-      return { message: "Email existant!!!", insertId: 0 };
+      // console.error("error while inserting new user in user manager: ", err);
+      // return { message: "Email existant!!!", insertId: 0 };
+      throw new Error(err.message);
     }
 
     // Return the ID of the newly inserted item
@@ -45,16 +46,22 @@ class UserManager {
 
   static async read(email, password) {
     // Execute the SQL SELECT query to retrieve a specific item by its ID
-    const [rows] = await database.query(`select * from user where email = ?`, [
-      email,
-    ]);
-    if (rows[0]) {
-      const res = await this.compare(password, rows[0].password);
-      if (res) {
-        return rows[0];
+    try {
+      const [rows] = await database.query(
+        `select * from user where email = ?`,
+        [email]
+      );
+      if (rows[0]) {
+        const res = await this.compare(password, rows[0].password);
+        if (res) {
+          return rows[0];
+        }
+        return null;
       }
+      return null;
+    } catch (err) {
+      throw new Error(err.message);
     }
-    return null;
   }
 
   static async readUserViaEmail(email) {
@@ -80,31 +87,34 @@ class UserManager {
   // TODO: Implement the update operation to modify an existing item
 
   static async update(user) {
-    const [userdb] = await database.query(
-      `select * from user where email = ?`,
-      [user.email]
-    );
-    if (userdb[0]) {
-      const keys = Object.keys(user);
-      // console.log("keys ", keys);
-      keys.forEach((ele) => {
-        userdb[0][ele] = user[ele];
-      });
-
-      const [res] = await database.query(
-        "update user set firstname = ?, lastname = ?, birthday = ?, imgUrl = ?, password = ?  WHERE email = ?",
-        [
-          userdb.firstname,
-          userdb.lastname,
-          userdb.birthday,
-          userdb.imgUrl,
-          userdb.password,
-          userdb.email,
-        ]
+    try {
+      const [userdb] = await database.query(
+        `select * from user where email = ?`,
+        [user.email]
       );
-      return res.affectedRows;
+      if (userdb[0]) {
+        const keys = Object.keys(user);
+        // console.log("keys ", keys);
+        keys.forEach((ele) => {
+          userdb[0][ele] = user[ele];
+        });
+
+        const [res] = await database.query(
+          "update user set firstname = ?, lastname = ?, birthday = ?, imgUrl = ?  WHERE email = ?",
+          [
+            userdb.firstname,
+            userdb.lastname,
+            userdb.birthday,
+            userdb.imgUrl,
+            userdb.email,
+          ]
+        );
+        return res.affectedRows;
+      }
+      return 0;
+    } catch (err) {
+      throw new Error("Aucune modification réalisé!!!");
     }
-    return 0;
   }
 
   static async updateImage(email, imgUrl) {
@@ -125,12 +135,27 @@ class UserManager {
   // The D of CRUD - Delete operation
   // TODO: Implement the delete operation to remove an item by its ID
 
-  static async delete(email) {
-    const res = await database.query("delete from user WHERE email = ?", [
-      email,
-    ]);
-    // console.log("res ", res);
-    return res.affectedRows;
+  static async delete(email, password) {
+    try {
+      const [user] = await database.query(
+        "select * from user WHERE email = ?",
+        [email]
+      );
+      if (user[0]) {
+        const comparison = await this.compare(password, user[0].password);
+        if (comparison) {
+          const res = await database.query("delete from user WHERE email = ?", [
+            email,
+          ]);
+          // console.log("res ", res);
+          return res.affectedRows;
+        }
+      }
+      return 0;
+    } catch (err) {
+      // console.log("Error ", err.message);
+      throw new Error(err.message);
+    }
   }
 
   // activation via email

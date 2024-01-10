@@ -130,7 +130,7 @@ export default function UserContextProvider({ children }) {
       setMessageUser(message);
       return true;
     } catch (err) {
-      setMessageUser("Validé");
+      setMessageUser(err.response.data.message);
       return false;
     }
   }
