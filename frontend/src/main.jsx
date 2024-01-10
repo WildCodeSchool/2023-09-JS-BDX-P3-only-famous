@@ -21,6 +21,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 //     console.log('timeout done ');
 //   }, time);
 // }
+
 const router = createBrowserRouter([
   {
     element: (
