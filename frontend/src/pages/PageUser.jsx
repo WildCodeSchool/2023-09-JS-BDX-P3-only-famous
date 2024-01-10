@@ -111,7 +111,7 @@ export default function PageUser() {
       </div>
       <div className="col-md-8 text-white">
         <ul>
-          {!user.isActive && <ActivateAccount code={+code} setCode={setCode} />}
+          {!user.isActive && <ActivateAccount code={code} setCode={setCode} />}
 
           {!user.isActive && (
             <button

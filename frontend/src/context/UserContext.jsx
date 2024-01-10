@@ -117,13 +117,11 @@ export default function UserContextProvider({ children }) {
   // function called when use is prepare to be created
   async function register(newUser) {
     try {
-      // console.log("before axios ");
-
       const { message, insertId } = await axios.post(
         "http://localhost:3310/api/users",
         newUser
       );
-      if (+insertId !== 0) {
+      if (+insertId === 0) {
         // à corriger
         setMessageUser(message);
         return false;
@@ -132,7 +130,7 @@ export default function UserContextProvider({ children }) {
       setMessageUser(message);
       return true;
     } catch (err) {
-      setMessageUser("Essaie avec un autre email");
+      setMessageUser("Validé");
       return false;
     }
   }

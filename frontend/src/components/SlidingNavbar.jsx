@@ -59,9 +59,13 @@ export default function SlidingNavbar() {
             <Link to={user.isConnected ? "/user" : "/connexion"}>
               <span>{user.isConnected ? "Utilisateur" : "Connexion"}</span>
             </Link>
-            <Link to="/admin">
-              <span>Admin</span>
-            </Link>
+            {user.isAdmin ? (
+              <Link to="/admin">
+                <span>Admin</span>
+              </Link>
+            ) : (
+              ""
+            )}
           </div>
         )}
       </div>
