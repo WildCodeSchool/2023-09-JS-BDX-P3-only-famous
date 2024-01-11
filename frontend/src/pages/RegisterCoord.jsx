@@ -23,6 +23,7 @@ export default function RegisterCoord() {
       setNext(true);
     }
   }
+
   return !next ? (
     <div className="inscription_container">
       <div className="banner" />

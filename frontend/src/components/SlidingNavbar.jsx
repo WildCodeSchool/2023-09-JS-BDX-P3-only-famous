@@ -68,6 +68,7 @@ export default function SlidingNavbar() {
             )}
           </div>
         )}
+        <h4 className="title-site">La Banque de Tutos</h4>
       </div>
       {mobileMode && (
         <div className="navbar-burger">

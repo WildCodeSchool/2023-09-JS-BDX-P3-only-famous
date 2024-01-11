@@ -29,6 +29,7 @@ export default function PageUser() {
   }
   const bannerImage = `./src/assets/banner.png`;
   useEffect(() => {
+    window.scrollTo(0, 0);
     if (!user.isConnected) {
       navigate("/");
     }

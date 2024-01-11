@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const { v4: uuid } = require("uuid");
 const database = require("../../database/client");
 const activationManager = require("./activationManager");
 
@@ -17,7 +18,8 @@ class UserManager {
     // Execute the SQL INSERT query to add a new item to the "item" table
     const hashedPassword = await this.Hashing(user.password);
     try {
-      const randomCode = Math.ceil(Math.random() * (9999 - 1000) + 1000);
+      // const randomCode = Math.ceil(Math.random() * (9999 - 1000) + 1000);
+      const randomCode = uuid();
       const [result] = await database.query(
         `insert into user (firstname, lastname, email, password, birthday, isAdmin, imgUrl, activationCode) values (?,?,?,?,?,?,?,?)`,
         [
@@ -65,14 +67,19 @@ class UserManager {
   }
 
   static async readUserViaEmail(email) {
-    // Execute the SQL SELECT query to retrieve a specific item by its ID
-    const [rows] = await database.query(`select * from user where email = ?`, [
-      email,
-    ]);
-    if (rows[0]) {
-      return rows[0];
+    try {
+      const [rows] = await database.query(
+        `select * from user where email = ?`,
+        [email]
+      );
+      if (rows[0]) {
+        return rows[0];
+      }
+      return null;
+    } catch (err) {
+      throw new Error(err.message);
     }
-    return null;
+    // Execute the SQL SELECT query to retrieve a specific item by its ID
   }
 
   static async readAll() {
@@ -98,15 +105,18 @@ class UserManager {
         keys.forEach((ele) => {
           userdb[0][ele] = user[ele];
         });
-
+        if (user.password) {
+          userdb[0].password = await this.Hashing(user.password);
+        }
         const [res] = await database.query(
-          "update user set firstname = ?, lastname = ?, birthday = ?, imgUrl = ?  WHERE email = ?",
+          "update user set firstname = ?, lastname = ?, birthday = ?, imgUrl = ?, password = ?  WHERE email = ?",
           [
-            userdb.firstname,
-            userdb.lastname,
-            userdb.birthday,
-            userdb.imgUrl,
-            userdb.email,
+            userdb[0].firstname,
+            userdb[0].lastname,
+            userdb[0].birthday,
+            userdb[0].imgUrl,
+            userdb[0].password,
+            userdb[0].email,
           ]
         );
         return res.affectedRows;
@@ -115,21 +125,6 @@ class UserManager {
     } catch (err) {
       throw new Error("Aucune modification réalisé!!!");
     }
-  }
-
-  static async updateImage(email, imgUrl) {
-    const [userdb] = await database.query(
-      `select * from user where email = ?`,
-      [email]
-    );
-    if (userdb[0]) {
-      const [res] = await database.query(
-        "update user set imgUrl =?  WHERE email = ?",
-        [imgUrl, email]
-      );
-      return res.affectedRows;
-    }
-    return 0;
   }
 
   // The D of CRUD - Delete operation
@@ -156,18 +151,6 @@ class UserManager {
       // console.log("Error ", err.message);
       throw new Error(err.message);
     }
-  }
-
-  // activation via email
-  static async getActivationCode(email) {
-    const [userdb] = await database.query(
-      `select * from user where email = ?`,
-      [email]
-    );
-    if (userdb[0]) {
-      return { activationCode: userdb[0].activationCode };
-    }
-    return { activationCode: 0 };
   }
 
   static async activateAccount(email) {
