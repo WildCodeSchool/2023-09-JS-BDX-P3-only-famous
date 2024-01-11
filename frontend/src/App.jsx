@@ -18,8 +18,6 @@ function App() {
 
   return (
     <>
-      {/* <Navbar /> */}
-      {/* <RastaMenu /> */}
       <SlidingNavbar />
       <div className="App container-md">
         <Outlet />

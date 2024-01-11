@@ -66,8 +66,7 @@ export default function UserContextProvider({ children }) {
         navigate("/");
       }
     } else {
-      setMessageUser("Identifiants incorrects");
-      navigate("/");
+      localStorage.removeItem("user");
     }
   }
   // function used to send login and password to back end to check its validity
@@ -86,6 +85,34 @@ export default function UserContextProvider({ children }) {
     } catch (err) {
       console.error(err);
       return { userdb: null, message: err.response.data.message };
+    }
+  }
+
+  // function to update forgotten password
+  async function resetPassword(credentials) {
+    try {
+      const { data } = await axios.post(
+        "http://localhost:3310/api/reset",
+        credentials
+      );
+      setMessageUser(data.message);
+      navigate("/user");
+    } catch (err) {
+      console.error(err);
+      setMessageUser("Erreur : ", err.response.data.message);
+    }
+  }
+
+  // send reset link
+  async function sendResetLink(email) {
+    try {
+      const { data } = await axios.post("http://localhost:3310/api/sendreset", {
+        email,
+      });
+      return { message: data.message };
+    } catch (err) {
+      console.error(err);
+      return { message: err.response.data.message };
     }
   }
 
@@ -192,6 +219,8 @@ export default function UserContextProvider({ children }) {
       activateAccount,
       mobileMode,
       setMobileMode,
+      resetPassword,
+      sendResetLink,
     }),
     [
       user,
@@ -207,6 +236,8 @@ export default function UserContextProvider({ children }) {
       activateAccount,
       mobileMode,
       setMobileMode,
+      resetPassword,
+      sendResetLink,
     ]
   );
   return (
