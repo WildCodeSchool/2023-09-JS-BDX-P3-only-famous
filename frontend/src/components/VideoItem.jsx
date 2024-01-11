@@ -17,7 +17,7 @@ export default function VideoItem({
   return (
     <button
       type="button"
-      className="carousel-item btn"
+      className="carousel-item"
       onClick={() => {
         setLinkToVideo({
           title,
@@ -37,8 +37,8 @@ export default function VideoItem({
           backgroundImage: `url(${imgUrl})`,
           backgroundRepeat: "no-repeat",
           backgroundSize: `100% 100%`,
-          width: `120px`,
-          height: `100px`,
+          width: `300px`,
+          height: `225px`,
           borderRadius: "10px",
         }}
       >

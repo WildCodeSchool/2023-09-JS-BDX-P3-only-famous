@@ -102,7 +102,7 @@ function Carroussel({ playlistId }) {
       >
         {/* eslint-disable-next-line */}
         <button type="button" className="button-left" onClick={scrollLeft}>
-          <img src="./src/assets/left.svg" alt="" height="25" width="25" />
+          <img src="./src/assets/left.svg" alt="" height="50" width="50" />
         </button>
         <div className="video-list" ref={videoListRef}>
           {!showGrid &&
@@ -120,7 +120,7 @@ function Carroussel({ playlistId }) {
             ))}
           {/* eslint-disable-next-line */}
           <button type="button" className="button-right" onClick={scrollRight}>
-            <img src="./src/assets/right.svg" alt="" height="25" width="25" />
+            <img src="./src/assets/right.svg" alt="" height="50" width="50" />
           </button>
         </div>
       </div>
