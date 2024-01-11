@@ -14,6 +14,22 @@ export default function VideoItem({
 }) {
   const { setLinkToVideo } = useUserContext();
   const navigate = useNavigate();
+  function formatDuration(durations) {
+    const ADuration = durations.split(":");
+    let hours = "00";
+    if (ADuration[2]) {
+      hours = +ADuration[2] < 10 ? `0${ADuration[2]}` : `${ADuration[2]}`;
+    }
+    let minutes = "00";
+    if (ADuration[1]) {
+      minutes = +ADuration[1] < 10 ? `0${ADuration[1]}` : `${ADuration[1]}`;
+    }
+    let seconds = "00";
+    if (ADuration[0]) {
+      seconds = +ADuration[0] < 10 ? `0${ADuration[0]}` : `${ADuration[0]}`;
+    }
+    return `${hours}:${minutes}:${seconds}`;
+  }
   return (
     <button
       type="button"
@@ -42,7 +58,7 @@ export default function VideoItem({
           borderRadius: "10px",
         }}
       >
-        <p className="carousel-item-duration">{duration}</p>
+        <p className="carousel-item-duration">{formatDuration(duration)}</p>
       </div>
       <div className="carousel-item-details">
         <h3 className="carousel-item-title">{title}</h3>
