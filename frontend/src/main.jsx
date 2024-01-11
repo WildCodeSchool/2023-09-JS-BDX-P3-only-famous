@@ -31,10 +31,6 @@ const router = createBrowserRouter([
     path: "/",
     children: [
       {
-        path: "/",
-        element: <Home />,
-      },
-      {
         path: "/onevideo",
         element: <SingleVideoPage />,
       },
@@ -57,6 +53,10 @@ const router = createBrowserRouter([
       {
         element: <ForgotPassword />,
         path: "/fpassword",
+      },
+      {
+        path: "/",
+        element: <Home />,
       },
       {
         element: (

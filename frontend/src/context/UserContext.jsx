@@ -66,8 +66,7 @@ export default function UserContextProvider({ children }) {
         navigate("/");
       }
     } else {
-      setMessageUser("Identifiants incorrects");
-      navigate("/");
+      localStorage.removeItem("user");
     }
   }
   // function used to send login and password to back end to check its validity
