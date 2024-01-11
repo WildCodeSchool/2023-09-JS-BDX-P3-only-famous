@@ -75,6 +75,10 @@ router.get("/validation/:code/:email", userControllers.activate);
 router.post("/reactivate", userControllers.generateNewActivation);
 // re-send activation code
 router.patch("/npassword", userControllers.updatePassword);
+// resend code  used to reset password
+router.post("/sendreset", userControllers.sendResetPassword);
+// reset password
+router.post("/reset", userControllers.updatePassword);
 /* ************************************************************************* */
 
 module.exports = router;

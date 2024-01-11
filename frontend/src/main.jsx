@@ -15,6 +15,7 @@ import AdminContextProvider from "./context/AdminContext";
 import RegisterUser from "./pages/RegisterUser";
 import PageUser from "./pages/PageUser";
 import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 // async function timeOut(time = 3000){
 //   setTimeout(() => {
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
       {
         path: "/connexion",
         element: <Connexion />,
+      },
+      {
+        path: "/resetpassword",
+        element: <ResetPassword />,
       },
       {
         element: <Upload />,

@@ -50,6 +50,53 @@ class ActivationManager {
       }
     });
   }
+
+  static sendResetCode(email, randomCode) {
+    const transporter = createTransport({
+      host: process.env.NODE_HOST,
+      port: process.env.NODE_PORT,
+      auth: {
+        user: process.env.NODE_USER,
+        pass: process.env.NODE_MAILER_KEY,
+      },
+    });
+    const lien = `http://localhost:3000/resetpassword?code=${randomCode}&email=${email}`;
+    const mailOptions = {
+      from: process.env.NODE_USER,
+      to: email,
+      subject: `Code de reset "Banque de tutos"`,
+      text: `	Cher utilisateur de la "Banque de tutos",
+      Félicitations ! Votre compte sur la Banque de tutos, a été créé avec succès. Nous sommes ravis de vous accueillir dans notre communauté.
+      En revanche, votre compte n'est pas activé.  
+      Avant de commencer à profiter pleinement de toutes les fonctionnalités de la Banque de tutos, veuillez activer votre compte en utilisant le code de validation ci-dessous :
+             ${randomCode}
+
+             Activer votre compte en cliquand sur ce lien:
+             ${lien}
+      Nous sommes impatients de vous voir explorer notre application et de profiter de toutes les fonctionnalités et tutoriels que nous avons à offrir. Merci de faire partie de notre communauté !
+      Cordialement,
+      
+      
+      Mahdi Mcheik`,
+      html: `
+        <h2>Cher utilisateur de la "Banque de tutos",</h2>
+
+        <p>Pour réinitialiser votre mot de passe, cliquer sur ce lien:</p>
+        <a href="${lien}">${lien}</a>
+        <p>si vous n'êtes pas à l'origine de cette demande, veuillez ne pas tenir compte de fking mail, i kill my family with a knife!</p>
+        
+        <p>Cordialement</p>
+        <h3>Mahdi Mcheik</h3>
+        `,
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error(error);
+      } else {
+        console.error("Email sent: ", info.response);
+      }
+    });
+  }
 }
 
 module.exports = ActivationManager;

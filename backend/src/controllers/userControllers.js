@@ -194,7 +194,7 @@ async function activate(req, res) {
       if (affectedRows) {
         // delete activation code when account is validated
         await userManager.deleteActivationCode(email);
-        res.redirect("http://localhost:3000/user");
+        res.redirect("http://localhost:3000?activated=true");
         // res
         //   .status(200)
         //   .json({ message: "Votre compte est activé!!!", affectedRows });
@@ -223,6 +223,47 @@ async function generateNewActivation(req, res) {
 }
 
 async function updatePassword(req, res) {
+  try {
+    const { password, code, email } = req.body;
+    const userdb = await userManager.readUserViaEmail(email);
+    if (userdb.activationCode === code) {
+      const { affectedRows } = await userManager.update({
+        password,
+        email,
+      });
+      if (affectedRows !== 0) {
+        res
+          .status(200)
+          .json({ message: "Mot de passe actualisé!!!", result: true });
+      } else {
+        res.status(500).json({ message: "Erreur coté serveur", result: false });
+      }
+    } else {
+      res.status(500).json({ message: "Mauvais code", result: false });
+    }
+  } catch (err) {
+    res.status(409).json({ message: err.message });
+  }
+}
+
+async function sendResetPassword(req, res) {
+  try {
+    const { email } = req.body;
+
+    const { affectedRows } = userManager.createResetCode(email);
+    if (affectedRows !== 0) {
+      res.status(200).json({ message: "email envoyé !!! ", affectedRow: 0 });
+    } else {
+      res
+        .status(404)
+        .json({ message: "Cet compte n'existe pas !!! ", affectedRow: 0 });
+    }
+  } catch (err) {
+    console.error(err.message);
+    res.status(404).json({ message: err.message, affectedRow: 0 });
+  }
+}
+async function resetPassword(req, res) {
   const { password, code, email } = req.body;
   const userdb = await userManager.readUserViaEmail(email);
   if (+userdb.activationCode === +code) {
@@ -241,6 +282,7 @@ async function updatePassword(req, res) {
     res.status(500).json({ message: "Mauvais code", result: false });
   }
 }
+
 // Ready to export the controller functions
 module.exports = {
   browse,
@@ -253,4 +295,6 @@ module.exports = {
   generateNewActivation,
   updatePassword,
   activate,
+  sendResetPassword,
+  resetPassword,
 };

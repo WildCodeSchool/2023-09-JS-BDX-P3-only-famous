@@ -88,6 +88,34 @@ export default function UserContextProvider({ children }) {
     }
   }
 
+  // function to update forgotten password
+  async function resetPassword(credentials) {
+    try {
+      const { data } = await axios.post(
+        "http://localhost:3310/api/reset",
+        credentials
+      );
+      setMessageUser(data.message);
+      navigate("/user");
+    } catch (err) {
+      console.error(err);
+      setMessageUser("Erreur : ", err.response.data.message);
+    }
+  }
+
+  // send reset link
+  async function sendResetLink(email) {
+    try {
+      const { data } = await axios.post("http://localhost:3310/api/sendreset", {
+        email,
+      });
+      return { message: data.message };
+    } catch (err) {
+      console.error(err);
+      return { message: err.response.data.message };
+    }
+  }
+
   // function called when user login, it calls internally the checkCredential function, and set
   // the token in the storage, and set it in the header of every http request
   async function login(credentials) {
@@ -191,6 +219,8 @@ export default function UserContextProvider({ children }) {
       activateAccount,
       mobileMode,
       setMobileMode,
+      resetPassword,
+      sendResetLink,
     }),
     [
       user,
@@ -206,6 +236,8 @@ export default function UserContextProvider({ children }) {
       activateAccount,
       mobileMode,
       setMobileMode,
+      resetPassword,
+      sendResetLink,
     ]
   );
   return (
