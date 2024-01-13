@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import InputField from "../components/InputField";
+import { Link } from "react-router-dom";
+import { Button, Container, Fieldset, Input } from "@mantine/core";
 import { useUserContext } from "../context/UserContext";
+import Banner from "../components/Banner";
 
 export default function Connexion() {
-  const { login, logout, user, messageUser, setMessageUser } = useUserContext();
+  const { login, setMessageUser } = useUserContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
 
   const validateEmail = (mail) => {
     return String(mail)
@@ -29,74 +29,42 @@ export default function Connexion() {
     window.scrollTo(0, 0);
   }, []);
   return (
-    <div className="inscription_container">
-      {/* <div className="banner " /> */}
-      <div className="center">
-        <h2
-          className="center-text glitch is-glitching"
-          data-text={!user.isConnected ? "Connexion" : "Utilisateur"}
-        >
-          {!user.isConnected ? "Connexion" : "Utilisateur"}
-        </h2>
+    <Container size="xs">
+      <Banner imgUrl="./src/assets/banner.png" />
+      <h2>La banque de tutos</h2>
+      <Fieldset legend="Coordonnées" radius="sm" className="transparent">
+        <Input
+          placeholder="Votre email"
+          value={email}
+          onChange={(e) => setEmail(e.currentTarget.value)}
+        />
+        <Input
+          placeholder="Mot de passe"
+          value={password}
+          onChange={(event) => setPassword(event.currentTarget.value)}
+          rightSectionPointerEvents="all"
+          mt="md"
+          type="password"
+        />
+      </Fieldset>
+      <Button
+        type="button"
+        onClick={() => checkError()}
+        className="invisible-button-with-border"
+      >
+        Connexion
+      </Button>
+      <div>
+        <span>Pas de compte? </span>
+        <Link to="/inscription" className="invisible-button">
+          Créer votre compte
+        </Link>
       </div>
-      {user.isConnected && (
-        <div className="infos-container">
-          <h1>Vous êtes déjà connecté</h1>
-          <button type="button" onClick={logout} className="mybtn">
-            Deconnectez-vous
-          </button>
-        </div>
-      )}
-      {!user.isConnected && (
-        <div>
-          <h2>Connectez-vous</h2>
-          <h4>Saisissez vos coordonnées</h4>
-          <ul className="informations_inscription">
-            <li>
-              <InputField
-                type="email"
-                title="Email"
-                id="email"
-                value={email}
-                setValue={setEmail}
-              />
-            </li>
-            <li>
-              <InputField
-                type="password"
-                title="Mot de passe"
-                id="password"
-                value={password}
-                setValue={setPassword}
-              />
-            </li>
-            <p style={{ color: "red" }}>{messageUser}</p>
-            <button type="button" onClick={checkError} className="mybtn">
-              Connexion
-            </button>
-          </ul>
-        </div>
-      )}
-      <div className="more-options">
-        <p>
-          Pas de compte ?{" "}
-          <button
-            type="button"
-            className="invisible-btn"
-            onClick={() => navigate("/inscription")}
-          >
-            Créer votre compte
-          </button>
-        </p>
-
-        <button
-          type="button"
-          className="invisible-btn"
-          onClick={() => navigate("/fpassword")}
-        >
-          Mot de passe oublié
-        </button>
+      <div>
+        <Link to="/fpassword" className="invisible-button">
+          Mot de passe oublié !!!
+        </Link>
       </div>
-    </div>
+    </Container>
   );
 }

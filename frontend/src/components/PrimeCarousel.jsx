@@ -20,7 +20,7 @@ export default function PrimeCarousel({ playlistId }) {
   }, []);
   return (
     <>
-      <Button variant="filled" className="playlist-title" size="xl">
+      <Button variant="filled" className="invisible-button" size="xl">
         {playlistTitle}
       </Button>
       <Progress color="gray" value={100} />

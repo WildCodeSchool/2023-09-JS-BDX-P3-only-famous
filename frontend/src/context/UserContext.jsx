@@ -149,7 +149,6 @@ export default function UserContextProvider({ children }) {
         newUser
       );
       if (+insertId === 0) {
-        // à corriger
         setMessageUser(message);
         return false;
       }
@@ -157,7 +156,7 @@ export default function UserContextProvider({ children }) {
       setMessageUser(message);
       return true;
     } catch (err) {
-      setMessageUser(err.response.data.message);
+      setMessageUser(`${err.response.data.message}, Connectez vous !!!`);
       return false;
     }
   }

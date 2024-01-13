@@ -1,15 +1,10 @@
-import { useUserContext } from "../context/UserContext";
+import PropTypes from "prop-types";
 
-export default function Banner() {
-  const { user } = useUserContext();
+export default function Banner({ imgUrl }) {
   return (
-    <div className="center">
-      <h2
-        className="center-text glitch is-glitching"
-        data-text={!user.isConnected ? "Connexion" : "Utisateur"}
-      >
-        {!user.isConnected ? "Connexion" : "Utisateur"}
-      </h2>
-    </div>
+    <div className="banner" style={{ backgroundImage: `url(${imgUrl})` }} />
   );
 }
+Banner.propTypes = {
+  imgUrl: PropTypes.string.isRequired,
+};

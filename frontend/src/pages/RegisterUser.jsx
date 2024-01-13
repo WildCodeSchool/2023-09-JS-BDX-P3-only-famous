@@ -1,18 +1,22 @@
 import { useEffect, useState } from "react";
+import { Button, Container, Fieldset, Input } from "@mantine/core";
 import { useUserContext } from "../context/UserContext";
-import InputField from "../components/InputField";
 import RegisterCoord from "./RegisterCoord";
+import Banner from "../components/Banner";
+import MyAlert from "../components/MyAlert";
 
 export default function RegisterUser() {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [message, setMessage] = useState("");
   const [next, setNext] = useState(false);
+  const [error, setError] = useState(false);
 
   const { formValue, setFormValue } = useUserContext();
 
   function checkError() {
     if (firstname === "" || lastname === "") {
+      setError(true);
       setMessage("Les nom et prénom sont obligatoires!!!");
     } else {
       setFormValue({ ...formValue, firstname, lastname });
@@ -25,33 +29,35 @@ export default function RegisterUser() {
   }, []);
   return !next ? (
     <div className="inscription_container">
-      <div className="banner" />
-      <h2>Créer votre compte</h2>
-      <h4>Saisissez votre nom</h4>
-      <ul className="informations_inscription">
-        <li>
-          <InputField
-            type="text"
-            title="Prenom"
-            id="firstname"
+      <Container size="xs">
+        <Banner imgUrl="./src/assets/banner.png" />
+        <h2>Nom et prénom</h2>
+        <Fieldset legend="Coordonnées" radius="sm" className="transparent">
+          <Input
+            placeholder="Prénom"
             value={firstname}
-            setValue={setFirstname}
+            onChange={(e) => setFirstname(e.currentTarget.value)}
           />
-        </li>
-        <li>
-          <InputField
-            type="text"
-            title="nom"
-            id="lastname"
+          <Input
+            placeholder="Nom"
             value={lastname}
-            setValue={setLastname}
+            onChange={(event) => setLastname(event.currentTarget.value)}
+            rightSectionPointerEvents="all"
+            mt="md"
+            type="text"
           />
-        </li>
-        <p style={{ color: "red" }}>{message}</p>
-        <button type="button" onClick={checkError} className="mybtn">
+          {error && (
+            <MyAlert color="var(--font-light-grey)" message={message} />
+          )}
+        </Fieldset>
+        <Button
+          type="button"
+          onClick={() => checkError()}
+          className="invisible-button-with-border"
+        >
           Suivant
-        </button>
-      </ul>
+        </Button>
+      </Container>
     </div>
   ) : (
     <RegisterCoord />
