@@ -236,13 +236,13 @@ async function updatePassword(req, res) {
           .status(200)
           .json({ message: "Mot de passe actualisé!!!", result: true });
       } else {
-        res.status(500).json({ message: "Erreur coté serveur", result: false });
+        res.status(200).json({ message: "Erreur coté serveur", result: false });
       }
     } else {
-      res.status(500).json({ message: "Mauvais code", result: false });
+      res.status(200).json({ message: "Mauvais code", result: false });
     }
   } catch (err) {
-    res.status(409).json({ message: err.message });
+    res.status(409).json({ message: err.message, result: false });
   }
 }
 
