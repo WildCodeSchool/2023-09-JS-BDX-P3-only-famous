@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
-import InputField from "../components/InputField";
+import { Button, Container, Fieldset, Input } from "@mantine/core";
 import { useUserContext } from "../context/UserContext";
+import Banner from "../components/Banner";
+import MyAlert from "../components/MyAlert";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
+  const [messageBack, setMessageBack] = useState("");
   const [message, setMessage] = useState("");
+
   const { sendResetLink } = useUserContext();
+  const [error, setError] = useState(false);
 
   const validateEmail = (mail) => {
     return String(mail)
@@ -16,9 +21,17 @@ export default function ForgotPassword() {
   };
   async function sendLink() {
     if (validateEmail(email)) {
+      setError(false);
       const res = await sendResetLink(email);
-      setMessage(res.message);
+      if (res.success) {
+        setError(false);
+        setMessageBack(res.message);
+      } else {
+        setError(true);
+        setMessageBack(res.message);
+      }
     } else {
+      setError(true);
       setMessage("Email invalide");
     }
   }
@@ -29,30 +42,34 @@ export default function ForgotPassword() {
 
   return (
     <div className="inscription_container">
-      <div className="user-page container-md">
-        <div
-          className="banner-user"
-          style={{ backgroundImage: `url("./src/assets/banner.png")` }}
-        />
-        <div>
-          <h2>Changer votre mot de passe</h2>
-          <ul className="informations_inscription">
-            <li>
-              <InputField
-                type="email"
-                title="Email"
-                id="email"
-                value={email}
-                setValue={setEmail}
-              />
-            </li>
-            <button type="button" className="mybtn" onClick={sendLink}>
-              réinitialiser
-            </button>
-            <p>{message}</p>
-          </ul>
-        </div>
-      </div>
+      <Container size="xs">
+        <Banner imgUrl="./src/assets/banner.png" />
+        <h2>Nom et prénom</h2>
+        <Fieldset legend="Coordonnées" radius="sm" className="transparent">
+          <Input
+            placeholder="Votre email"
+            value={email}
+            onChange={(e) => setEmail(e.currentTarget.value)}
+            type="email"
+          />
+          {error && (
+            <MyAlert color="var(--font-light-grey)" message={message} />
+          )}
+          <MyAlert
+            color="var(--font-light-grey)"
+            message={messageBack}
+            title="Message"
+            variant="dark"
+          />
+        </Fieldset>
+        <Button
+          type="button"
+          className="invisible-button-with-border"
+          onClick={() => sendLink()}
+        >
+          Réinitialiser
+        </Button>
+      </Container>
     </div>
   );
 }

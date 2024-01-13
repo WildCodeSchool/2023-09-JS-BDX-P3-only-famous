@@ -249,20 +249,19 @@ async function updatePassword(req, res) {
 async function sendResetPassword(req, res) {
   try {
     const { email } = req.body;
-
-    const { affectedRows } = userManager.createResetCode(email);
+    const { affectedRows, message } = await userManager.createResetCode(email);
+    // console.log("message from controller :", message);
     if (affectedRows !== 0) {
-      res.status(200).json({ message: "email envoyé !!! ", affectedRow: 0 });
+      res.status(200).json({ message, affectedRow: 0 });
     } else {
-      res
-        .status(404)
-        .json({ message: "Cet compte n'existe pas !!! ", affectedRow: 0 });
+      res.status(404).json({ message, affectedRow: 0 });
     }
   } catch (err) {
     console.error(err.message);
     res.status(404).json({ message: err.message, affectedRow: 0 });
   }
 }
+
 async function resetPassword(req, res) {
   const { password, code, email } = req.body;
   const userdb = await userManager.readUserViaEmail(email);

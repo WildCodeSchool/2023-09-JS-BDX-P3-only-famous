@@ -96,10 +96,11 @@ export default function UserContextProvider({ children }) {
         credentials
       );
       setMessageUser(data.message);
-      navigate("/user");
+      return true;
     } catch (err) {
       console.error(err);
       setMessageUser("Erreur : ", err.response.data.message);
+      return false;
     }
   }
 
@@ -109,10 +110,9 @@ export default function UserContextProvider({ children }) {
       const { data } = await axios.post("http://localhost:3310/api/sendreset", {
         email,
       });
-      return { message: data.message };
+      return { message: data.message, success: true };
     } catch (err) {
-      console.error(err);
-      return { message: err.response.data.message };
+      return { message: err.response.data.message, success: false };
     }
   }
 

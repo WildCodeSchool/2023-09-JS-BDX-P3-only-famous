@@ -194,18 +194,29 @@ class UserManager {
     // Execute the SQL INSERT query to add a new item to the "item" table
     const randomCode = uuid();
     try {
-      const [res] = await database.query(
-        "update user set activationCode = ?  WHERE email = ?",
-        [randomCode, email]
-      );
-      activationManager.sendResetCode(email, randomCode);
-      return { affectedRows: res.affectedRows };
+      const emailSent = await UserManager.readUserViaEmail(email);
+      if (emailSent) {
+        const [res] = await database.query(
+          "update user set activationCode = ?  WHERE email = ?",
+          [randomCode, email]
+        );
+        activationManager.sendResetCode(email, randomCode);
+        return {
+          affectedRows: res.affectedRows,
+          message: "Un email de réinitialisation vient d'être envoyé ",
+        };
+      }
+      // console.log(`Ce compte ${email} n'existe pas !!!`);
+      return {
+        message: `Ce compte ${email} n'existe pas !!!`,
+        affectedRows: 0,
+      };
     } catch (err) {
       console.error(
         "error while creating new reset code in user manager: ",
         err
       );
-      return { message: "failed to create new validation!!!", insertId: 0 };
+      return { message: "Aucun email envoyé !!!", insertId: 0 };
     }
 
     // Return the ID of the newly inserted item
