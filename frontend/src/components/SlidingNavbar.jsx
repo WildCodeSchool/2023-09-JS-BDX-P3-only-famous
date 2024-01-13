@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
+import DropDownMenu from "./DropDownMenu";
 
 export default function SlidingNavbar() {
   const navigate = useNavigate();
@@ -34,42 +35,6 @@ export default function SlidingNavbar() {
 
   return (
     <div className="navbar-full">
-      <div className="navbar-flat">
-        <button
-          type="button"
-          onClick={() => {
-            // console.log("mobile? ", mobileMode);
-            if (mobileMode) {
-              openNav();
-              // refLinks.current.style.transform = `translate(600px, 0)`;
-              // refLinks.current.classList.toggle("slide-left");
-            } else {
-              navigate("/");
-            }
-          }}
-        >
-          <img src="./src/assets/logo.png" alt="logo" className="logo" />
-        </button>
-
-        {!mobileMode && (
-          <div className="navbar-links" ref={refLinks}>
-            <Link to="/">
-              <span>Accueil</span>
-            </Link>
-            <Link to={user.isConnected ? "/user" : "/connexion"}>
-              <span>{user.isConnected ? "Utilisateur" : "Connexion"}</span>
-            </Link>
-            {user.isAdmin ? (
-              <Link to="/admin">
-                <span>Admin</span>
-              </Link>
-            ) : (
-              ""
-            )}
-          </div>
-        )}
-        <h4 className="title-site">La Banque de Tutos</h4>
-      </div>
       {mobileMode && (
         <div className="navbar-burger">
           <div
@@ -129,6 +94,67 @@ export default function SlidingNavbar() {
           </div>
         </div>
       )}
+      <div className="navbar-flat">
+        <button
+          type="button"
+          onClick={() => {
+            // console.log("mobile? ", mobileMode);
+            if (mobileMode) {
+              openNav();
+              // refLinks.current.style.transform = `translate(600px, 0)`;
+              // refLinks.current.classList.toggle("slide-left");
+            } else {
+              navigate("/");
+            }
+          }}
+        >
+          <img src="./src/assets/logo.png" alt="logo" className="logo" />
+        </button>
+
+        {/* <h4 className="title-site">La Banque de Tutos</h4> */}
+        {!mobileMode && (
+          <div className="navbar-links" ref={refLinks}>
+            <Link to="/">
+              <span>Accueil</span>
+            </Link>
+            <Link to={user.isConnected ? "/user" : "/connexion"}>
+              <span>{user.isConnected ? "Utilisateur" : "Connexion"}</span>
+            </Link>
+            {user.isAdmin ? (
+              <Link to="/admin">
+                <span>Admin</span>
+              </Link>
+            ) : (
+              ""
+            )}
+          </div>
+        )}
+        <div className="user">
+          <DropDownMenu />
+          {/* <button
+            type="button"
+            onClick={() => {
+              // console.log("mobile? ", mobileMode);
+              if (mobileMode) {
+                openNav();
+                // refLinks.current.style.transform = `translate(600px, 0)`;
+                // refLinks.current.classList.toggle("slide-left");
+              } else {
+                navigate("/");
+              }
+            }}
+          >
+            {" "}
+            <FaUsers
+              style={{
+                width: "40px",
+                height: "40px",
+                backgroundColor: "transparent",
+              }}
+            />
+          </button> */}
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,9 +1,3 @@
-import { MDBBtn } from "mdb-react-ui-kit";
-import PropTypes from "prop-types";
-
-export default function Tag({ tag }) {
-  return <MDBBtn color="warning">{tag ?? "my tag"}</MDBBtn>;
+export default function Tag() {
+  return <button type="button"> tag </button>;
 }
-Tag.propTypes = {
-  tag: PropTypes.string.isRequired,
-};

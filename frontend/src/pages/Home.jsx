@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import Carroussel from "../components/Carroussel";
 import Keyborad from "../components/Keyboard";
+import PrimeCarousel from "../components/PrimeCarousel";
 
 function Home() {
   const [active, setActive] = useState(false);
@@ -22,11 +22,10 @@ function Home() {
   return (
     <div>
       {active && <p>activé</p>}
-      {/* <Map /> */}
       <Keyborad />
-      <Carroussel playlistId="PLjwdMgw5TTLUEOKPg5Z5TgwAOeWkjGL69" />
-      <Carroussel playlistId="PLjwdMgw5TTLX1tQ1qDNHTsy_lrkCt4VW3" />
-      <Carroussel playlistId="PLjwdMgw5TTLXz1GRhKxSWYyDHwVW-gqrm" />
+      <PrimeCarousel playlistId="PLjwdMgw5TTLUEOKPg5Z5TgwAOeWkjGL69" />
+      <PrimeCarousel playlistId="PLjwdMgw5TTLUEOKPg5Z5TgwAOeWkjGL69" />
+      <PrimeCarousel playlistId="PLjwdMgw5TTLUEOKPg5Z5TgwAOeWkjGL69" />
     </div>
   );
 }
