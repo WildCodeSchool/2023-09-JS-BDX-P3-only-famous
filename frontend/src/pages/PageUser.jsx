@@ -1,13 +1,28 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Center, Container, Progress, Spoiler } from "@mantine/core";
+import {
+  Alert,
+  Button,
+  Center,
+  Container,
+  Fieldset,
+  Grid,
+  Input,
+  Progress,
+  Spoiler,
+} from "@mantine/core";
 import { useUserContext } from "../context/UserContext";
 import MyAlert from "../components/MyAlert";
 
 export default function PageUser() {
   const navigate = useNavigate();
-  const { user, setUser } = useUserContext();
+  const { user, setUser, sendResetLink } = useUserContext();
+  const [firstname, setFirstname] = useState(user.firstname);
+  const [lastname, setLastname] = useState(user.lastname);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState(false);
+
   const [urlImage, setUrlImage] = useState({ preview: user.imgUrl });
 
   async function handleChange(e) {
@@ -22,6 +37,12 @@ export default function PageUser() {
       formData
     );
     setUser({ ...user, imgUrl });
+  }
+
+  async function ResetEmail() {
+    const res = await sendResetLink(user.email);
+    setMessage(res.message);
+    setError(res.success);
   }
 
   useEffect(() => {
@@ -92,6 +113,73 @@ export default function PageUser() {
       >
         <h2>Éditer votre profil</h2>
       </Center>
+
+      <Grid gutter={{ base: 5, xs: "md", md: "xl", xl: 50 }}>
+        <Grid.Col span={6}>
+          {" "}
+          <Input.Wrapper label="Prénom" withAsterisk description="obligatoire">
+            <Input
+              placeholder="Votre prénom"
+              value={firstname}
+              onChange={(e) => setFirstname(e.currentTarget.value)}
+            />
+          </Input.Wrapper>
+        </Grid.Col>
+        <Grid.Col span={6}>
+          {" "}
+          <Input.Wrapper label="Nom" withAsterisk description="obligatoire">
+            <Input
+              placeholder="Votre nom"
+              value={lastname}
+              onChange={(e) => setLastname(e.currentTarget.value)}
+            />
+          </Input.Wrapper>
+        </Grid.Col>
+      </Grid>
+      <Button type="button" className="invisible-button-with-border">
+        Suivant
+      </Button>
+
+      <Container>
+        <Fieldset legend="Coordonnées" radius="sm" className="transparent">
+          <Center
+            maw={1200}
+            h={50}
+            bg="var(--mantine-color-gray-light)"
+            className="banner"
+          >
+            <Button
+              type="button"
+              className="invisible-button-with-border"
+              onClick={() => ResetEmail()}
+            >
+              Réinitialiser le mot de passe
+            </Button>
+          </Center>
+          <h5 style={{ color: "var(--mantine-color-red-8)" }}>
+            Un email de validation sera envoyé à cette adresse mail{" "}
+          </h5>
+          <Input
+            placeholder="Votre email"
+            value={user.email}
+            type="email"
+            disabled
+          />
+          {error && (
+            <Alert
+              variant="dark"
+              color="red"
+              radius="md"
+              title="Message "
+              style={{ margin: "15px 0" }}
+            >
+              <span style={{ color: `var(--mantine-color-red-8)` }}>
+                {message}
+              </span>
+            </Alert>
+          )}
+        </Fieldset>
+      </Container>
     </Container>
   );
 }
