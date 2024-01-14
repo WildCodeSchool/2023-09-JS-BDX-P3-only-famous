@@ -7,6 +7,7 @@ import { Container } from "@mantine/core";
 // import RastaMenu from "./components/RastaMenu";
 import SlidingNavbar from "./components/SlidingNavbar";
 import { useUserContext } from "./context/UserContext";
+import Footer from "./components/Footer";
 
 function App() {
   const { setMobileMode } = useUserContext();
@@ -23,6 +24,7 @@ function App() {
         <Container size="lg">
           <Outlet />
         </Container>
+        <Footer />
       </div>
     </>
   );
