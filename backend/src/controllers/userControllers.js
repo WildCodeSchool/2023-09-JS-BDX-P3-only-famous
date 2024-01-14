@@ -38,51 +38,51 @@ const browse = async (req, res, next) => {
     next(err);
   }
 };
-// The R of BREAD - Read operation
-const read = async (req, res, next) => {
-  try {
-    const { email, password } = req.body;
-    // Fetch a specific item from the database based on the provided ID
-    const item = await userManager.read(email, password);
-    // console.log("item ", item);
-    // If the item is not found, respond with HTTP 404 (Not Found)
-    // Otherwise, respond with the item in JSON format
-    if (item == null) {
-      res.status(404).json({ message: "Mauvais identifiants!!!" });
-    } else {
-      res.json(item);
-    }
-  } catch (err) {
-    res.status(404).json({ message: "Mauvais identifiants!!!" });
-    // Pass any errors to the error-handling middleware
-    next(err);
-  }
-};
-// The E of BREAD - Edit (Update) operation
-async function edit(req, res) {
-  try {
-    const user = req.body;
-    // console.log("user from body", user);
-    // Fetch a specific item from the database based on the provided ID
-    const affectedRow = await userManager.update(user);
+// // The R of BREAD - Read operation
+// const read = async (req, res, next) => {
+//   try {
+//     const { email, password } = req.body;
+//     // Fetch a specific item from the database based on the provided ID
+//     const item = await userManager.read(email, password);
+//     // console.log("item ", item);
+//     // If the item is not found, respond with HTTP 404 (Not Found)
+//     // Otherwise, respond with the item in JSON format
+//     if (item == null) {
+//       res.status(404).json({ message: "Mauvais identifiants!!!" });
+//     } else {
+//       res.json(item);
+//     }
+//   } catch (err) {
+//     res.status(404).json({ message: "Mauvais identifiants!!!" });
+//     // Pass any errors to the error-handling middleware
+//     next(err);
+//   }
+// };
+// // The E of BREAD - Edit (Update) operation
+// async function edit(req, res) {
+//   try {
+//     const user = req.body;
+//     // console.log("user from body", user);
+//     // Fetch a specific item from the database based on the provided ID
+//     const affectedRow = await userManager.update(user);
 
-    // console.log("row affected ", affectedRow);
-    // If the item is not found, respond with HTTP 404 (Not Found)
-    // Otherwise, respond with the item in JSON format
-    if (+affectedRow === 0) {
-      res.status(500).json({
-        message: "Aucune modification réalisée, sans erreurs",
-        affectedRow: 0,
-      });
-    } else {
-      res.status(202).json({ message: "Utilisateur modifé", affectedRow });
-    }
-  } catch (err) {
-    res
-      .status(401)
-      .json({ message: "Aucune modification réalisée", affectedRow: 0 });
-  }
-}
+//     // console.log("row affected ", affectedRow);
+//     // If the item is not found, respond with HTTP 404 (Not Found)
+//     // Otherwise, respond with the item in JSON format
+//     if (+affectedRow === 0) {
+//       res.status(500).json({
+//         message: "Aucune modification réalisée, sans erreurs",
+//         affectedRow: 0,
+//       });
+//     } else {
+//       res.status(202).json({ message: "Utilisateur modifé", affectedRow });
+//     }
+//   } catch (err) {
+//     res
+//       .status(401)
+//       .json({ message: "Aucune modification réalisée", affectedRow: 0 });
+//   }
+// }
 // The A of BREAD - Add (Create) operation
 async function add(req, res) {
   // Extract the item data from the request body
@@ -155,12 +155,11 @@ async function destroy(req, res) {
     res.status(401).json({ message: "Suppression non autorisée" });
   }
 }
-
+// update imgUrl f
 async function updateImage(req, res) {
   try {
     const token = req.headers.authorization.split(" ")[1];
     const { email } = jwtDecode.jwtDecode(token);
-    // const result = await userManager.updateImage(email, req.newPath);
     const result = await userManager.update({
       email,
       imgUrl: req.newPath,
@@ -178,14 +177,10 @@ async function updateImage(req, res) {
     res.status(401).json({ message: "Action non autorisée", result: 0 });
   }
 }
-
+// activer email f
 async function activate(req, res) {
   try {
     const { code, email } = req.params;
-
-    // const { activationCode, isActive } = await userManager.getActivationCode(
-    //   email
-    // );
     const { activationCode, isActive } = await userManager.readUserViaEmail(
       email
     );
@@ -212,6 +207,7 @@ async function activate(req, res) {
   }
 }
 
+// envoie email de validation f
 async function generateNewActivation(req, res) {
   const { email } = req.body;
   const { affectedRows } = await userManager.createActivationCode(email);
@@ -222,6 +218,7 @@ async function generateNewActivation(req, res) {
   }
 }
 
+// update password f
 async function updatePassword(req, res) {
   try {
     const { password, code, email } = req.body;
@@ -246,11 +243,34 @@ async function updatePassword(req, res) {
   }
 }
 
+// update name f
+async function updateName(req, res) {
+  try {
+    const { firstname, lastname, email } = req.body;
+    const { affectedRows } = await userManager.update({
+      firstname,
+      lastname,
+      email,
+    });
+    if (affectedRows !== 0) {
+      res
+        .status(200)
+        .json({ message: "Nom et prénom actualisés!!!", result: true });
+    } else {
+      res
+        .status(404)
+        .json({ message: "Utilisateur non existant", result: false });
+    }
+  } catch (err) {
+    res.status(404).json({ message: err.message, result: false });
+  }
+}
+
+// send reset password email
 async function sendResetPassword(req, res) {
   try {
     const { email } = req.body;
     const { affectedRows, message } = await userManager.createResetCode(email);
-    // console.log("message from controller :", message);
     if (affectedRows !== 0) {
       res.status(200).json({ message, affectedRow: 0 });
     } else {
@@ -285,9 +305,9 @@ async function resetPassword(req, res) {
 // Ready to export the controller functions
 module.exports = {
   browse,
-  read,
+  // read,
   add,
-  edit,
+  // edit,
   destroy,
   check,
   updateImage,
@@ -296,4 +316,5 @@ module.exports = {
   activate,
   sendResetPassword,
   resetPassword,
+  updateName,
 };

@@ -17,11 +17,12 @@ import MyAlert from "../components/MyAlert";
 
 export default function PageUser() {
   const navigate = useNavigate();
-  const { user, setUser, sendResetLink } = useUserContext();
+  const { user, setUser, sendResetLink, updateName } = useUserContext();
   const [firstname, setFirstname] = useState(user.firstname);
   const [lastname, setLastname] = useState(user.lastname);
   const [message, setMessage] = useState("");
   const [error, setError] = useState(false);
+  const [messageUpdateInfos, setMessageUpdateInfos] = useState("test");
 
   const [urlImage, setUrlImage] = useState({ preview: user.imgUrl });
 
@@ -43,6 +44,18 @@ export default function PageUser() {
     const res = await sendResetLink(user.email);
     setMessage(res.message);
     setError(res.success);
+  }
+
+  async function updateInfos() {
+    if (firstname && firstname.length >= 3 && lastname && lastname.length > 4) {
+      const res = await updateName({ email: user.email, firstname, lastname });
+      setMessageUpdateInfos(res.message);
+      if (res.result) {
+        setUser({ ...user, firstname, lastname });
+      }
+    } else {
+      setMessageUpdateInfos("Nom ou prénom pas conformes");
+    }
   }
 
   useEffect(() => {
@@ -136,9 +149,25 @@ export default function PageUser() {
           </Input.Wrapper>
         </Grid.Col>
       </Grid>
-      <Button type="button" className="invisible-button-with-border">
+      <Button
+        type="button"
+        className="invisible-button-with-border"
+        onClick={() => updateInfos()}
+      >
         Suivant
       </Button>
+
+      <Alert
+        variant="dark"
+        color="red"
+        radius="md"
+        title="Message "
+        style={{ margin: "15px 0" }}
+      >
+        <span style={{ color: `var(--mantine-color-red-8)` }}>
+          {messageUpdateInfos}
+        </span>
+      </Alert>
 
       <Container>
         <Fieldset legend="Coordonnées" radius="sm" className="transparent">

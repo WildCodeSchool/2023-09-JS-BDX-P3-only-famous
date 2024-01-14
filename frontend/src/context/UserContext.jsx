@@ -47,27 +47,13 @@ export default function UserContextProvider({ children }) {
   // function that decode token and store data from it in the user state
   function decodeToken(token) {
     const decoded = jwtDecode(token);
-    if (decoded && decoded.exp > Date.now() / 1000) {
-      localStorage.setItem("user", JSON.stringify(token));
-      setUser({
-        isAdmin: decoded.isAdmin,
-        isConnected: true,
-        firstname: decoded.firstname,
-        lastname: decoded.lastname,
-        email: decoded.email,
-        imgUrl: decoded.imgUrl,
-        isActive: decoded.isActive,
-      });
-
+    if (decoded.exp > Date.now() / 1000) {
       axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-      if (decoded.isAdmin === 1) {
-        navigate("/admin");
-      } else {
-        navigate("/");
-      }
-    } else {
-      localStorage.removeItem("user");
+      return true;
     }
+    localStorage.removeItem("token");
+    localStorage.removeItem("users");
+    return false;
   }
   // function used to send login and password to back end to check its validity
   // then get back the token and the  user's data from the back-end
@@ -104,6 +90,32 @@ export default function UserContextProvider({ children }) {
     }
   }
 
+  // update localStorage
+  function updateLocalStorage(userInfo) {
+    localStorage.setItem("token", JSON.stringify(userInfo.token));
+    localStorage.setItem("users", JSON.stringify(userInfo.users));
+  }
+  function emptyStorage() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("users");
+  }
+
+  // function to update firstname and lastname
+  async function updateName(credentials) {
+    try {
+      const { data } = await axios.post(
+        "http://localhost:3310/api/updatename",
+        credentials
+      );
+      setMessageUser(data.message);
+      return { message: data.message, result: true };
+    } catch (err) {
+      console.error(err);
+      setMessageUser("Erreur : ", err.response.data.message);
+      return { message: err.response.data.message, result: false };
+    }
+  }
+
   // send reset link
   async function sendResetLink(email) {
     try {
@@ -121,7 +133,7 @@ export default function UserContextProvider({ children }) {
   async function login(credentials) {
     const { headers, userdb, message } = await checkCredentials(credentials);
     if (userdb) {
-      localStorage.setItem("user", JSON.stringify(headers.token));
+      updateLocalStorage({ token: headers.token, users: userdb });
       setUser({
         isAdmin: userdb.isAdmin,
         isConnected: true,
@@ -132,8 +144,6 @@ export default function UserContextProvider({ children }) {
         isActive: userdb.isActive,
       });
       axios.defaults.headers.common.Authorization = `Bearer ${headers.token}`;
-      // console.log("userdb :", userdb);
-      // decodeToken(headers.token);
       navigate("/user");
       setMessageUser(message);
     } else {
@@ -164,7 +174,7 @@ export default function UserContextProvider({ children }) {
   // function called to logout use, it empty the localstorage as well
   function logout() {
     setUser({ admin: false, isConnected: false });
-    localStorage.removeItem("user");
+    emptyStorage();
   }
 
   // activate account
@@ -187,9 +197,18 @@ export default function UserContextProvider({ children }) {
   }
 
   function onLoadPage() {
-    const token = JSON.parse(localStorage.getItem("user"));
-    if (token) {
-      decodeToken(token);
+    const userLs = JSON.parse(localStorage.getItem("users"));
+    const token = JSON.parse(localStorage.getItem("token"));
+
+    if (token && decodeToken(token)) {
+      setUser({
+        isAdmin: userLs.isAdmin,
+        isConnected: true,
+        firstname: userLs.firstname,
+        lastname: userLs.lastname,
+        isActive: userLs.isActive,
+        imgUrl: userLs.imgUrl,
+      });
     } else {
       setUser({
         isAdmin: 0,
@@ -220,6 +239,7 @@ export default function UserContextProvider({ children }) {
       setMobileMode,
       resetPassword,
       sendResetLink,
+      updateName,
     }),
     [
       user,
@@ -237,6 +257,7 @@ export default function UserContextProvider({ children }) {
       setMobileMode,
       resetPassword,
       sendResetLink,
+      updateName,
     ]
   );
   return (
