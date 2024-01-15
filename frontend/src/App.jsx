@@ -21,7 +21,7 @@ function App() {
     <>
       <SlidingNavbar />
       <div className="App">
-        <Container size="lg">
+        <Container size="fluid">
           <Outlet />
         </Container>
         <Footer />

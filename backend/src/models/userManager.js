@@ -84,7 +84,9 @@ class UserManager {
 
   static async readAll() {
     // Execute the SQL SELECT query to retrieve all items from the "item" table
-    const [rows] = await database.query(`select * from user`);
+    const [rows] = await database.query(
+      `select email, firstname, lastname, isActive from user`
+    );
 
     // Return the array of items
     return rows;

@@ -73,6 +73,11 @@
   margin: 0;
   padding-left: 20px;
   justify-content: space-between;
+  mask-image: linear-gradient(
+    to bottom,
+    var(--primary-me) 70%,
+    transparent 100%
+  );
   button {
     background-color: transparent;
     outline: none;

@@ -18,6 +18,7 @@ import RegisterUser from "./pages/RegisterUser";
 import PageUser from "./pages/PageUser";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import UsersList from "./admin/UsersList";
 
 // async function timeOut(time = 3000){
 //   setTimeout(() => {
@@ -75,6 +76,12 @@ const router = createBrowserRouter([
           </AdminContextProvider>
         ),
         path: "/admin",
+        children: [
+          {
+            path: "/admin/users",
+            element: <UsersList />,
+          },
+        ],
       },
     ],
   },

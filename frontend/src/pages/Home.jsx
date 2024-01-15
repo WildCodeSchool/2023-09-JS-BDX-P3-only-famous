@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { Container } from "@mantine/core";
 import Keyborad from "../components/Keyboard";
 import PrimeCarousel from "../components/PrimeCarousel";
 
@@ -20,13 +21,13 @@ function Home() {
     setActive(searchParams.get("activated") === "true");
   });
   return (
-    <div>
+    <Container size="lg">
       {active && <p>activé</p>}
       <Keyborad />
       <PrimeCarousel playlistId="PLjwdMgw5TTLUEOKPg5Z5TgwAOeWkjGL69" />
       <PrimeCarousel playlistId="PLjwdMgw5TTLUEOKPg5Z5TgwAOeWkjGL69" />
       <PrimeCarousel playlistId="PLjwdMgw5TTLUEOKPg5Z5TgwAOeWkjGL69" />
-    </div>
+    </Container>
   );
 }
 
