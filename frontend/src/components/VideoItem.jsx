@@ -28,7 +28,7 @@ export default function VideoItem({
     if (ADuration[0]) {
       seconds = +ADuration[0] < 10 ? `0${ADuration[0]}` : `${ADuration[0]}`;
     }
-    return `${hours}:${minutes}:${seconds}`;
+    return `${hours}:${seconds}:${minutes}`;
   }
   return (
     <button

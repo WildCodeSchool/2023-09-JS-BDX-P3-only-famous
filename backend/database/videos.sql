@@ -1,61 +1,36 @@
-create table
-    user(
-        id int unsigned primary key auto_increment not null,
-        firstname varchar(255) not null,
-        lastname VARCHAR(255) not null,
-        email varchar(255) not null UNIQUE,
-        birthday VARCHAR(255) not null,
-        password VARCHAR(255) not null,
-        isAdmin BOOLEAN DEFAULT false,
-        imgUrl varchar(255) null,
-        activationCode VARCHAR(255) null,
-    );
-
-insert INTO
+CREATE TABLE
     user (
-        firstname,
-        lastname,
-        email,
-        password,
-        birthday,
-        isAdmin
-    )
-VALUES (
-        "Mahdi",
-        "Mcheik",
-        "mahdi.mcheik@hotmail.fr",
-        "1234",
-        "21-04-1986",
-        true
-    ), (
-        "Ali",
-        "Mcheik",
-        "mahdi.mcheik@hotmail.com",
-        "1234",
-        "21-04-1986",
-        false
+        id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
+        firstname VARCHAR(255) NOT NULL,
+        lastname VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL UNIQUE,
+        birthday VARCHAR(255) NOT NULL,
+        password VARCHAR(255) NOT NULL,
+        isAdmin BOOLEAN DEFAULT false,
+        isActive BOOLEAN DEFAULT false,
+        imgUrl VARCHAR(255) NULL
     );
 
-create table
-    video(
-        id int unsigned primary key auto_increment not null,
-        ytId varchar(255) not null,
-        title varchar(255) not null,
-        playlistTitle VARCHAR(255) not null,
-        playlistId VARCHAR(255) not null,
-        description TEXT null,
-        thumbnails VARCHAR(255) not null,
-        duration varchar(50) not null,
-        publishDate date not null,
-        tags TEXT null
+CREATE TABLE
+    video (
+        id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
+        ytId VARCHAR(255) NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        playlistTitle VARCHAR(255) NOT NULL,
+        playlistId VARCHAR(255) NOT NULL,
+        description TEXT NULL,
+        thumbnails VARCHAR(255) NOT NULL,
+        duration VARCHAR(50) NOT NULL,
+        publishDate DATE NOT NULL,
+        tags TEXT NULL
     );
 
-create table
-    playlist(
-        id int unsigned primary key auto_increment not null,
-        playlistId VARCHAR(255) not null,
-        playlistTitle VARCHAR(255) not null,
-        category VARCHAR(255) not null
+CREATE TABLE
+    playlist (
+        id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
+        playlistId VARCHAR(255) NOT NULL,
+        playlistTitle VARCHAR(255) NOT NULL,
+        category VARCHAR(255) NOT NULL
     );
 
 insert INTO

@@ -7,7 +7,7 @@ import {
   Progress,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -36,15 +36,22 @@ export default function Admin() {
             visibleFrom="sm"
             size="sm"
           />
-          <img
-            src="./src/assets/logo.png"
-            alt="logo"
-            className="logo"
-            height="50"
+          <Link
+            to="/"
             style={{
               margin: "0 auto",
             }}
-          />
+          >
+            <img
+              src="./src/assets/logo.png"
+              alt="logo"
+              className="logo-admin"
+              height="50"
+              style={{
+                margin: "0 auto",
+              }}
+            />
+          </Link>
         </Group>
       </AppShell.Header>
       <AppShell.Navbar p="lg" className="side-bar">

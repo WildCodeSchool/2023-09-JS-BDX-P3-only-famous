@@ -83,13 +83,17 @@ class UserManager {
   }
 
   static async readAll() {
-    // Execute the SQL SELECT query to retrieve all items from the "item" table
-    const [rows] = await database.query(
-      `select email, firstname, lastname, isActive from user`
-    );
+    try {
+      // Execute the SQL SELECT query to retrieve all items from the "item" table
+      const [rows] = await database.query(
+        `select email, firstname, lastname, isActive, isAdmin from user`
+      );
 
-    // Return the array of items
-    return rows;
+      // Return the array of items
+      return rows;
+    } catch (err) {
+      throw new Error(err.message);
+    }
   }
 
   // The U of CRUD - Update operation
@@ -147,6 +151,26 @@ class UserManager {
           // console.log("res ", res);
           return res.affectedRows;
         }
+      }
+      return 0;
+    } catch (err) {
+      // console.log("Error ", err.message);
+      throw new Error(err.message);
+    }
+  }
+
+  static async deleteAdmin(email) {
+    try {
+      const [user] = await database.query(
+        "select * from user WHERE email = ?",
+        [email]
+      );
+      if (user[0]) {
+        const res = await database.query("delete from user WHERE email = ?", [
+          email,
+        ]);
+        // console.log("res ", res);
+        return res.affectedRows;
       }
       return 0;
     } catch (err) {

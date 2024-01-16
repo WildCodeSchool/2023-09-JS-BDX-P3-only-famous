@@ -1,0 +1,12 @@
+.logo-admin {
+  position: relative;
+  top: 4px;
+  width: 40px;
+  height: 40px;
+  filter: drop-shadow(0 0 4px var(--secondary-me));
+  transition: all 0.2s ease;
+}
+.logo-admin:hover {
+  filter: drop-shadow(0 0 8px var(--secondary-me));
+  transform: scale(1.1);
+}

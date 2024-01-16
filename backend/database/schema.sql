@@ -7,6 +7,7 @@ create table
         birthday VARCHAR(255) not null,
         password VARCHAR(255) not null,
         isAdmin BOOLEAN DEFAULT false,
+        isActive BOOLEAN DEFAULT false,
         imgUrl varchar(255) null,
-        activationCode VARCHAR(255) null,
+        activationCode VARCHAR(255) null
     );
