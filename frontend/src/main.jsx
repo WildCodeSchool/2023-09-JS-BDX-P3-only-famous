@@ -19,6 +19,7 @@ import PageUser from "./pages/PageUser";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import UsersList from "./admin/UsersList";
+import Videos from "./admin/Videos";
 
 // async function timeOut(time = 3000){
 //   setTimeout(() => {
@@ -80,6 +81,10 @@ const router = createBrowserRouter([
           {
             path: "/admin/users",
             element: <UsersList />,
+          },
+          {
+            path: "/admin/videos",
+            element: <Videos />,
           },
         ],
       },

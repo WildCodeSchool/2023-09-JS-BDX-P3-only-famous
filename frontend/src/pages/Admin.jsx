@@ -64,6 +64,13 @@ export default function Admin() {
           Utilisateur
         </Button>
         <Progress h={4} className="gray-8" />
+        <Button
+          className="sidebar-titles gray-8"
+          onClick={() => navigate("/admin/videos")}
+        >
+          Videos
+        </Button>
+        <Progress h={4} className="gray-8" />
       </AppShell.Navbar>
       <AppShell.Main pt={0}>
         <Container size="fluid" p={0}>
