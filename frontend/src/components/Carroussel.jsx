@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import axios from "axios";
 import PropTypes from "prop-types";
 import VideoItem from "./VideoItem";
+import { useVideoContext } from "../context/videoContext";
 
 function Carroussel({ playlistId }) {
   const videoListRef = useRef(null);
+  const { getVideoListFromPlaylist } = useVideoContext();
   const scrollLeft = () => {
     if (videoListRef.current) {
       videoListRef.current.scrollLeft -= 200;
@@ -51,15 +52,16 @@ function Carroussel({ playlistId }) {
   const [playlistTitle, setPlaylistTitle] = useState([]);
   const [showGrid, setShowGrid] = useState(true);
   useEffect(() => {
-    async function getData() {
-      const { data } = await axios.get("http://localhost:3310/api/playlist", {
-        // params: { playlistId: "PLjwdMgw5TTLUEOKPg5Z5TgwAOeWkjGL69" },
-        params: { playlistId },
-      });
-      setVideos(data.rows);
-      setPlaylistTitle(data.title);
-    }
-    getData();
+    // async function getData() {
+    //   const { data } = await axios.get("http://localhost:3310/api/playlist", {
+    //     // params: { playlistId: "PLjwdMgw5TTLUEOKPg5Z5TgwAOeWkjGL69" },
+    //     params: { playlistId },
+    //   });
+    //   setVideos(data.rows);
+    //   setPlaylistTitle(data.title);
+    // }
+    // getData();
+    getVideoListFromPlaylist(playlistId, setVideos, setPlaylistTitle);
     if (window.innerWidth > 600) {
       setShowGrid(true);
     } else {

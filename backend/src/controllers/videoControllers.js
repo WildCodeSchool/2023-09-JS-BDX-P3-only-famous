@@ -32,22 +32,25 @@ const read = async (req, res, next) => {
   }
 };
 
-const readPlaylist = async (req, res, next) => {
+const readPlaylist = async (req, res) => {
   try {
     const { playlistId } = req.query;
     // Fetch a specific item from the database based on the provided ID
     const { rows, title } = await videoManager.readPlayList(playlistId);
     if (rows == null) {
-      res.sendStatus(404);
+      res
+        .status(200)
+        .json({ message: "Playliste non existante", success: true });
     } else {
-      res.json({ rows, title });
+      res
+        .status(200)
+        .json({ rows, title, message: "play list récu", success: true });
     }
   } catch (err) {
     // Pass any errors to the error-handling middleware
-    next(err);
+    res.status(404).json({ message: err.message, success: false });
   }
 };
-
 // The E of BREAD - Edit (Update) operation
 // This operation is not yet implemented
 async function edit(req, res, next) {
@@ -112,13 +115,19 @@ async function check(req, res) {
 // The D of BREAD - Destroy (Delete) operation
 // This operation is not yet implemented
 async function destroy(req, res) {
-  const { ytId } = req.body;
-  const result = await videoManager.delete(ytId);
-  // console.log("deleted rows number", result);
-  if (+result !== 0) {
-    res.status(200).json({ deleted: result });
-  } else {
-    res.status(404).send("element not found");
+  try {
+    const { ytId } = req.params;
+
+    const result = await videoManager.delete(ytId);
+    if (+result !== 0) {
+      res.status(200).json({ message: "Vidéo supprimé e ", success: true });
+    } else {
+      res
+        .status(404)
+        .json({ message: "Aucune vidéo supprimée ", success: false });
+    }
+  } catch (error) {
+    res.status(404).json({ message: error.message, success: false });
   }
 }
 

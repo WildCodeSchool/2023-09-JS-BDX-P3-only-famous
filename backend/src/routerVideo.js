@@ -58,7 +58,7 @@ routerVideo.post("/video", videoControllers.check);
 routerVideo.put("/video", videoControllers.edit);
 
 // Route to delete existed users
-routerVideo.delete("/video", videoControllers.destroy);
+routerVideo.delete("/video/:ytId", videoControllers.destroy);
 
 /* ************************************************************************* */
 

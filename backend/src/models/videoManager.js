@@ -92,10 +92,14 @@ class VideoManager {
   // TODO: Implement the delete operation to remove an item by its ID
 
   static async delete(ytId) {
-    const res = await database.query("delete from video WHERE ytId = ?", [
-      ytId,
-    ]);
-    return res.affectedRows;
+    try {
+      const [res] = await database.query("delete from video WHERE ytId = ?", [
+        ytId,
+      ]);
+      return res.affectedRows;
+    } catch (error) {
+      throw new Error(error.message);
+    }
   }
 }
 

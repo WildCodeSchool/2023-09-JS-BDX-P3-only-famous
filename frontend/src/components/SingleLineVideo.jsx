@@ -1,14 +1,17 @@
 import { MdModeEdit, MdDelete } from "react-icons/md";
 import { Button, Center, Checkbox, Grid } from "@mantine/core";
 import PropTypes from "prop-types";
+import { useVideoContext } from "../context/videoContext";
 
 export default function SingleLineVideo({
+  ytId,
   titre,
   isHidden,
   isPublic,
   duration,
   playList,
 }) {
+  const { deleteVideoBId } = useVideoContext();
   return (
     <Grid justify="center" align="center">
       <Grid.Col span={3}>
@@ -64,7 +67,11 @@ export default function SingleLineVideo({
               {isPublic ? "Liberer" : "Restreindre"}
             </span>
           </Button>
-          <Button onClick={() => {}}>
+          <Button
+            onClick={() => {
+              deleteVideoBId(ytId);
+            }}
+          >
             <MdDelete style={{ width: "20px", height: "20px" }} stroke={1.5} />
             <span style={{ marginLeft: "5px" }}>Supprimer</span>
           </Button>
@@ -75,6 +82,7 @@ export default function SingleLineVideo({
 }
 
 SingleLineVideo.propTypes = {
+  ytId: PropTypes.string.isRequired,
   titre: PropTypes.string.isRequired,
   isPublic: PropTypes.string.isRequired,
   isHidden: PropTypes.string.isRequired,
