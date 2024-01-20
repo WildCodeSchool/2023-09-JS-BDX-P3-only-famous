@@ -10,8 +10,35 @@ export default function SingleLineVideo({
   isPublic,
   duration,
   playList,
+  playListId,
 }) {
-  const { deleteVideoBId } = useVideoContext();
+  const { deleteVideoBId, updateVideoById, getVideoListFromPlaylist } =
+    useVideoContext();
+
+  async function handlePublish() {
+    await updateVideoById(ytId, {
+      isHidden,
+      isPublic: !isPublic,
+    });
+    await getVideoListFromPlaylist(playListId);
+  }
+
+  async function handleEdit() {
+    if (isHidden) {
+      const { message } = await updateVideoById(ytId, {
+        isHidden: false,
+        isPublic,
+      });
+      console.warn("Message", message);
+    } else {
+      const { message } = await updateVideoById(ytId, {
+        isHidden: true,
+        isPublic: false,
+      });
+      console.warn("Message", message);
+    }
+    await getVideoListFromPlaylist(playListId);
+  }
   return (
     <Grid justify="center" align="center">
       <Grid.Col span={3}>
@@ -25,7 +52,6 @@ export default function SingleLineVideo({
           color="yellow.3"
           iconColor="dark.8"
           className="checkbox-navbar"
-          onChange={() => {}}
         />
       </Grid.Col>
       <Grid.Col span={1}>
@@ -36,7 +62,6 @@ export default function SingleLineVideo({
           color="yellow.3"
           iconColor="dark.8"
           className="checkbox-navbar"
-          onChange={() => {}}
         />
 
         {/* <input type="checkbox" checked={isAdmin} onChange={() => {}} /> */}
@@ -49,7 +74,7 @@ export default function SingleLineVideo({
       </Grid.Col>
       <Grid.Col span={4}>
         <Center>
-          <Button mr={20}>
+          <Button mr={20} onClick={() => handleEdit()} name="hidden">
             <MdModeEdit
               style={{ width: "20px", height: "20px" }}
               stroke={1.5}
@@ -58,13 +83,13 @@ export default function SingleLineVideo({
               {isHidden ? "Publier" : "Retirer"}
             </span>
           </Button>
-          <Button mr={20}>
+          <Button mr={20} onClick={() => handlePublish()} name="public">
             <MdModeEdit
               style={{ width: "20px", height: "20px" }}
               stroke={1.5}
             />
             <span style={{ marginLeft: "5px" }}>
-              {isPublic ? "Liberer" : "Restreindre"}
+              {!isPublic ? "Liberer" : "Restreindre"}
             </span>
           </Button>
           <Button
@@ -88,4 +113,5 @@ SingleLineVideo.propTypes = {
   isHidden: PropTypes.string.isRequired,
   duration: PropTypes.number.isRequired,
   playList: PropTypes.string.isRequired,
+  playListId: PropTypes.string.isRequired,
 };

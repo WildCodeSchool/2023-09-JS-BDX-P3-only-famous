@@ -50,7 +50,6 @@ class VideoManager {
   static async readAll() {
     // Execute the SQL SELECT query to retrieve all items from the "item" table
     const [rows] = await database.query(`select * from video`);
-
     // Return the array of items
     return rows;
   }
@@ -73,19 +72,19 @@ class VideoManager {
   // The U of CRUD - Update operation
   // TODO: Implement the update operation to modify an existing item
 
-  static async update(ytId, title, isPublic) {
-    const [videodb] = await database.query(
-      `select * from video where ytId = ?`,
-      [ytId]
-    );
-    if (videodb[0]) {
-      const [res] = await database.query(
-        "update video set title = ?, isPublic = ?   WHERE ytId = ?",
-        [title, isPublic, ytId]
-      );
-      return res.affectedRows;
+  static async update(ytId, video) {
+    // console.log(video);
+    let sql = "UPDATE video set";
+    const sqlValues = [];
+    for (const [key, value] of Object.entries(video)) {
+      sql += `${sqlValues.length ? "," : ""} ${key} = ?`;
+
+      sqlValues.push(value);
     }
-    return 0;
+    sql += " where ytId = ?";
+    sqlValues.push(ytId);
+    const [res] = await database.query(sql, sqlValues);
+    return res.affectedRows;
   }
 
   // The D of CRUD - Delete operation

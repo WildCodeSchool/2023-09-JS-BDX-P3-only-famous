@@ -55,7 +55,7 @@ routerVideo.post("/videos", videoControllers.add);
 routerVideo.post("/video", videoControllers.check);
 
 // Route to edit existed user readPlaylist
-routerVideo.put("/video", videoControllers.edit);
+routerVideo.patch("/video/:ytId", videoControllers.edit);
 
 // Route to delete existed users
 routerVideo.delete("/video/:ytId", videoControllers.destroy);

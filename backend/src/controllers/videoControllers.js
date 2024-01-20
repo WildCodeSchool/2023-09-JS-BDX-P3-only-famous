@@ -53,17 +53,19 @@ const readPlaylist = async (req, res) => {
 };
 // The E of BREAD - Edit (Update) operation
 // This operation is not yet implemented
-async function edit(req, res, next) {
+async function edit(req, res) {
   try {
-    const { ytId, title, isPublic } = req.body;
+    const { ytId } = req.params;
+    const video = req.body;
+
     // console.log("user from body", user);
     // Fetch a specific item from the database based on the provided ID
-    const affectedRow = await videoManager.update(ytId, title, isPublic);
+    const affectedRows = await videoManager.update(ytId, video);
 
     // console.log("row affected ", affectedRow);
     // If the item is not found, respond with HTTP 404 (Not Found)
     // Otherwise, respond with the item in JSON format
-    if (+affectedRow === 0) {
+    if (+affectedRows === 0) {
       res
         .status(500)
         .send({ message: "Video n'est pas mise à jour!!!", affectedRow: 0 });
@@ -72,7 +74,7 @@ async function edit(req, res, next) {
     }
   } catch (err) {
     // Pass any errors to the error-handling middleware
-    next(err);
+    res.status(404).json({ message: "Erreur !!!", affectedRow: 0 });
   }
 }
 

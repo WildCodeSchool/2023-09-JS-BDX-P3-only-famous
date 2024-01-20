@@ -5,12 +5,10 @@ import SingleLineVideo from "../components/SingleLineVideo";
 import { useVideoContext } from "../context/videoContext";
 
 export default function Videos() {
-  const { videos } = useVideoContext();
-
-  const { getVideoListFromPlaylist } = useVideoContext();
+  const { videos, getVideoListFromPlaylist } = useVideoContext();
 
   useEffect(() => {
-    getVideoListFromPlaylist("PLjwdMgw5TTLXz1GRhKxSWYyDHwVW-gqrm");
+    getVideoListFromPlaylist("PLjwdMgw5TTLUEOKPg5Z5TgwAOeWkjGL69");
   }, []);
   return (
     <Container size="fluid">
@@ -26,21 +24,15 @@ export default function Videos() {
           <Center>Action</Center>
         </Grid.Col>
       </Grid>
-      <SingleLineVideo
-        titre="test"
-        isHidden={0}
-        isPublic={1}
-        duration="10:00"
-        playList="playlist"
-      />
       {videos.map((ele) => (
         <SingleLineVideo
           ytId={ele.ytId}
           titre={ele.title}
-          isHidden={0}
-          isPublic={1}
+          isHidden={ele.isHidden}
+          isPublic={ele.isPublic}
           duration={ele.duration}
           playList={ele.playlistTitle}
+          playListId={ele.playlistId}
         />
       ))}
     </Container>
