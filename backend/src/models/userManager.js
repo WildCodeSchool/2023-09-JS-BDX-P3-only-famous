@@ -96,6 +96,20 @@ class UserManager {
     }
   }
 
+  static async readAllByEmail(email) {
+    try {
+      // Execute the SQL SELECT query to retrieve all items from the "item" table
+      const [rows] = await database.query(
+        `select email, firstname, lastname, isActive, isAdmin, birthday from user where email like '${email}%'`
+      );
+
+      // Return the array of items
+      return rows;
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  }
+
   // The U of CRUD - Update operation
   // TODO: Implement the update operation to modify an existing item
 

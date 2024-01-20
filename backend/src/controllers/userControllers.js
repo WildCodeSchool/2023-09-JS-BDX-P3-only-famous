@@ -38,6 +38,20 @@ const browse = async (req, res, next) => {
     next(err);
   }
 };
+
+const browseByEmail = async (req, res) => {
+  try {
+    const { email } = req.params;
+    // Fetch all items from the database
+    const items = await userManager.readAllByEmail(email);
+
+    // Respond with the items in JSON format
+    res.status(200).json(items);
+  } catch (err) {
+    // Pass any errors to the error-handling middleware
+    res.status(400).json({ message: "Erreur coté back end" });
+  }
+};
 // // The R of BREAD - Read operation
 // const read = async (req, res, next) => {
 //   try {
@@ -317,4 +331,5 @@ module.exports = {
   sendResetPassword,
   resetPassword,
   updateName,
+  browseByEmail,
 };

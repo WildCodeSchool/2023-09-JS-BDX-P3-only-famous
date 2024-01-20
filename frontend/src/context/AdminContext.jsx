@@ -1,6 +1,7 @@
 import { createContext, useContext, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { useUserContext } from "./UserContext";
 import AdminService from "../services/AdminService";
 
@@ -20,6 +21,16 @@ export default function AdminContextProvider({ children }) {
       throw new Error(error.message);
     }
   }
+
+  async function runSearch(e) {
+    const { data } = await axios.get(`http://localhost:3310/api/users/${e}`);
+    if (data && data.length > 0) {
+      setUsers([...data]);
+    } else {
+      setUsers([]);
+    }
+  }
+
   async function deleteUser(email) {
     try {
       const { success, message } = await AdminService.deleteUser(email);
@@ -35,8 +46,16 @@ export default function AdminContextProvider({ children }) {
     }
   }
   const adminData = useMemo(
-    () => ({ isAdmin, setisAdmin, getUsers, users, setUsers, deleteUser }),
-    [isAdmin, setisAdmin, getUsers, users, setUsers, deleteUser]
+    () => ({
+      isAdmin,
+      setisAdmin,
+      getUsers,
+      users,
+      setUsers,
+      deleteUser,
+      runSearch,
+    }),
+    [isAdmin, setisAdmin, getUsers, users, setUsers, deleteUser, runSearch]
   );
   if (!user.isAdmin) {
     navigate("/");

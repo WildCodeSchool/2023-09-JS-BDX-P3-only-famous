@@ -46,6 +46,8 @@ const userControllers = require("./controllers/userControllers");
 // Route to get a list of items
 router.get("/users", userControllers.browse);
 
+router.get("/users/:email", userControllers.browseByEmail);
+
 // Route to get a specific item by ID
 // router.get("/users", userControllers.read);
 
