@@ -1,0 +1,16 @@
+.invisible-button {
+  background-color: transparent;
+  color: var(--secondary-me);
+}
+.invisible-button-with-border {
+  background-color: transparent;
+  color: var(--secondary-me);
+  border: 2px solid var(--secondary-me);
+  border-radius: 4px;
+  margin: 10px 0;
+}
+.transparent {
+  background-color: transparent;
+  color: var(--secondary-me);
+  border-color: var(--secondary-me);
+}

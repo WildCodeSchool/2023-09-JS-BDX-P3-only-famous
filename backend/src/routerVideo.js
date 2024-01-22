@@ -46,7 +46,7 @@ routerVideo.get("/playlist", videoControllers.readPlaylist);
 routerVideo.get("/videos", videoControllers.browse);
 
 // Route to get a specific item by ID
-routerVideo.get("/video", videoControllers.read);
+routerVideo.get("/video/:ytId", videoControllers.read);
 
 // Route to add a new item
 routerVideo.post("/videos", videoControllers.add);
@@ -55,11 +55,22 @@ routerVideo.post("/videos", videoControllers.add);
 routerVideo.post("/video", videoControllers.check);
 
 // Route to edit existed user readPlaylist
-routerVideo.put("/video", videoControllers.edit);
+routerVideo.patch("/video/:ytId", videoControllers.edit);
 
 // Route to delete existed users
-routerVideo.delete("/video", videoControllers.destroy);
+routerVideo.delete("/video/:ytId", videoControllers.destroy);
 
+// route to get specific all playlists
+routerVideo.get("/playlists", videoControllers.getPlaylists);
+
+// route to get all playlists by category
+routerVideo.get(
+  "/playlists/:category",
+  videoControllers.getPlaylistsByCategory
+);
+/* **
+// route to get specific playlist by id
+routerVideo.get("/playlists/:playlistId", videoControllers.getPlaylistById);
 /* ************************************************************************* */
 
 module.exports = routerVideo;

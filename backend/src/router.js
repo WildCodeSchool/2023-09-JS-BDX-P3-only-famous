@@ -1,6 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const multerMiddle = require("./middlewares/multerMiddle");
+const userMiddle = require("./middlewares/userMiddle");
 
 const router = express.Router();
 
@@ -45,8 +46,10 @@ const userControllers = require("./controllers/userControllers");
 // Route to get a list of items
 router.get("/users", userControllers.browse);
 
+router.get("/users/:email", userControllers.browseByEmail);
+
 // Route to get a specific item by ID
-router.get("/users", userControllers.read);
+// router.get("/users", userControllers.read);
 
 // Route to add a new item
 router.post("/users", userControllers.add);
@@ -55,7 +58,7 @@ router.post("/users", userControllers.add);
 router.post("/user", userControllers.check);
 
 // Route to edit existed user
-router.put("/user", userControllers.edit);
+// router.put("/user", userControllers.edit);
 
 // Route to delete existed users
 router.delete("/user", userControllers.destroy);
@@ -64,6 +67,7 @@ router.delete("/user", userControllers.destroy);
 const upload = multer({ dest: "./public/uploads/" });
 router.post(
   "/userimage",
+  userMiddle.verifyToken,
   // multerMiddle.saveFile,
   upload.single("file"),
   multerMiddle.renameFile, // fonction pour renomer le fichier
@@ -74,11 +78,13 @@ router.get("/validation/:code/:email", userControllers.activate);
 // re-send activation code
 router.post("/reactivate", userControllers.generateNewActivation);
 // re-send activation code
-router.patch("/npassword", userControllers.updatePassword);
+// router.patch("/npassword", userControllers.updatePassword);
 // resend code  used to reset password
 router.post("/sendreset", userControllers.sendResetPassword);
 // reset password
 router.post("/reset", userControllers.updatePassword);
+// update first and lastname
+router.post("/updatename", userMiddle.verifyToken, userControllers.updateName);
 /* ************************************************************************* */
 
 module.exports = router;

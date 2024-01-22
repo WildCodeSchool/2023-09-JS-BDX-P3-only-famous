@@ -1,5 +1,4 @@
 .navbar-burger {
-  background-color: red;
   body {
     font-family: "Lato", sans-serif;
   }
@@ -24,6 +23,7 @@
 
   .overlay-content {
     position: relative;
+
     top: 25%;
     width: 100%;
     text-align: center;
@@ -66,19 +66,29 @@
 }
 
 .navbar-flat {
+  background-color: var(--primary-me-dark);
   display: flex;
+  height: 56px;
   align-items: center;
-  margin: 10px 0;
-  padding: 0 10px;
+  margin: 0;
+  padding-left: 20px;
+  justify-content: space-between;
+  mask-image: linear-gradient(
+    to bottom,
+    var(--primary-me) 70%,
+    transparent 100%
+  );
   button {
     background-color: transparent;
     outline: none;
     border: none;
     color: white;
+    display: flex;
+    align-items: center;
   }
   .logo {
-    width: 35px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
     filter: drop-shadow(0 0 4px var(--secondary-me));
     transition: all 0.2s ease;
   }
@@ -116,5 +126,17 @@
     span:focus {
       color: #f1f1f1;
     }
+  }
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  button {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    color: white;
+    margin: 0 10px;
   }
 }

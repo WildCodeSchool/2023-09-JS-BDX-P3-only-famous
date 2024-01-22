@@ -1,0 +1,36 @@
+.user-card {
+  display: flex;
+  .user-image {
+    padding: 10%;
+    width: 50%;
+    aspect-ratio: 1 / 1;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin: 20px;
+    border-radius: 20px;
+  }
+  .user-details {
+    margin: 20px;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    input {
+      background-color: transparent;
+      color: var(--secondary-me);
+    }
+  }
+}
+@media screen and (max-width: 600px) {
+  .user-card {
+    flex-direction: column;
+    .user-image {
+      width: 100%;
+      margin: 20px auto;
+    }
+    .user-details {
+      margin: 0 auto;
+      width: 100%;
+    }
+  }
+}

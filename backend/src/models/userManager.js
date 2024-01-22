@@ -83,11 +83,31 @@ class UserManager {
   }
 
   static async readAll() {
-    // Execute the SQL SELECT query to retrieve all items from the "item" table
-    const [rows] = await database.query(`select * from user`);
+    try {
+      // Execute the SQL SELECT query to retrieve all items from the "item" table
+      const [rows] = await database.query(
+        `select email, firstname, lastname, isActive, isAdmin from user`
+      );
 
-    // Return the array of items
-    return rows;
+      // Return the array of items
+      return rows;
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  }
+
+  static async readAllByEmail(email) {
+    try {
+      // Execute the SQL SELECT query to retrieve all items from the "item" table
+      const [rows] = await database.query(
+        `select email, firstname, lastname, isActive, isAdmin, birthday from user where email like '${email}%'`
+      );
+
+      // Return the array of items
+      return rows;
+    } catch (err) {
+      throw new Error(err.message);
+    }
   }
 
   // The U of CRUD - Update operation
@@ -153,6 +173,26 @@ class UserManager {
     }
   }
 
+  static async deleteAdmin(email) {
+    try {
+      const [user] = await database.query(
+        "select * from user WHERE email = ?",
+        [email]
+      );
+      if (user[0]) {
+        const res = await database.query("delete from user WHERE email = ?", [
+          email,
+        ]);
+        // console.log("res ", res);
+        return res.affectedRows;
+      }
+      return 0;
+    } catch (err) {
+      // console.log("Error ", err.message);
+      throw new Error(err.message);
+    }
+  }
+
   static async activateAccount(email) {
     const [res] = await database.query(
       "update user set isActive = 1  WHERE email = ?",
@@ -194,18 +234,29 @@ class UserManager {
     // Execute the SQL INSERT query to add a new item to the "item" table
     const randomCode = uuid();
     try {
-      const [res] = await database.query(
-        "update user set activationCode = ?  WHERE email = ?",
-        [randomCode, email]
-      );
-      activationManager.sendResetCode(email, randomCode);
-      return { affectedRows: res.affectedRows };
+      const emailSent = await UserManager.readUserViaEmail(email);
+      if (emailSent) {
+        const [res] = await database.query(
+          "update user set activationCode = ?  WHERE email = ?",
+          [randomCode, email]
+        );
+        activationManager.sendResetCode(email, randomCode);
+        return {
+          affectedRows: res.affectedRows,
+          message: "Un email de réinitialisation vient d'être envoyé ",
+        };
+      }
+      // console.log(`Ce compte ${email} n'existe pas !!!`);
+      return {
+        message: `Ce compte ${email} n'existe pas !!!`,
+        affectedRows: 0,
+      };
     } catch (err) {
       console.error(
         "error while creating new reset code in user manager: ",
         err
       );
-      return { message: "failed to create new validation!!!", insertId: 0 };
+      return { message: "Aucun email envoyé !!!", insertId: 0 };
     }
 
     // Return the ID of the newly inserted item

@@ -1,8 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import "mdb-react-ui-kit/dist/css/mdb.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import { MantineProvider } from "@mantine/core";
+import "@mantine/core/styles.css";
+import "@mantine/carousel/styles.css";
 
 import App from "./App";
 import Connexion from "./pages/Connexion";
@@ -16,6 +18,11 @@ import RegisterUser from "./pages/RegisterUser";
 import PageUser from "./pages/PageUser";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import UsersList from "./admin/UsersList";
+import Videos from "./admin/Videos";
+import VideoContextProvider from "./context/videoContext";
+import AdminMain from "./admin/AdminMain";
+import Playlists from "./admin/Playlists";
 
 // async function timeOut(time = 3000){
 //   setTimeout(() => {
@@ -26,9 +33,13 @@ import ResetPassword from "./pages/ResetPassword";
 const router = createBrowserRouter([
   {
     element: (
-      <UserContextProvider>
-        <App />
-      </UserContextProvider>
+      <VideoContextProvider>
+        <UserContextProvider>
+          <MantineProvider>
+            <App />
+          </MantineProvider>
+        </UserContextProvider>
+      </VideoContextProvider>
     ),
     path: "/",
     children: [
@@ -71,6 +82,24 @@ const router = createBrowserRouter([
           </AdminContextProvider>
         ),
         path: "/admin",
+        children: [
+          {
+            path: "/admin/users",
+            element: <UsersList />,
+          },
+          {
+            path: "/admin/videos",
+            element: <Videos />,
+          },
+          {
+            path: "/admin/",
+            element: <AdminMain />,
+          },
+          {
+            path: "/admin/playlists",
+            element: <Playlists />,
+          },
+        ],
       },
     ],
   },

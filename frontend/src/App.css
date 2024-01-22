@@ -8,11 +8,11 @@
   position: relative;
   min-height: 100vh;
   margin: 0 auto;
-  padding-bottom: 80px;
-  padding-top: 30px;
+  padding-bottom: 100px;
 }
 body {
   background-color: #333333;
+  color: var(--font-light);
 }
 :root {
   --primary-me: #333333;

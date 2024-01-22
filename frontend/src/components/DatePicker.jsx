@@ -10,8 +10,25 @@ export default function DatePicker({ date, setDate }) {
 
   return (
     <div className="input-with-placeholder">
-      <input type="date" onChange={handleChange} ref={dateInputRef} />
-      <p>Date de naissance: {date}</p>
+      <p
+        style={{
+          marginTop: `15px `,
+        }}
+      >
+        Date de naissance: {date}
+      </p>
+      <input
+        type="date"
+        onChange={handleChange}
+        ref={dateInputRef}
+        style={{
+          width: `100%`,
+          padding: "0 10px",
+          color: "#ADB5BD",
+          height: `40px`,
+          borderRadius: `6px`,
+        }}
+      />
     </div>
   );
 }
