@@ -3,7 +3,9 @@ import axios from "axios";
 export default class AdminService {
   static async getUsers() {
     try {
-      const { data } = await axios.get("http://localhost:3310/admin/users");
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/admin/users`
+      );
       return {
         users: data.users,
         message: data.message,
@@ -17,7 +19,7 @@ export default class AdminService {
   static async deleteUser(email) {
     try {
       const { data } = await axios.delete(
-        `http://localhost:3310/admin/users/${email}`
+        `${import.meta.env.VITE_BACKEND_URL}/admin/users/${email}`
       );
       return {
         success: data.success,

@@ -1,12 +1,18 @@
+import { useVideoContext } from "../../context/videoContext";
+
 export default function Tab() {
-  async function handleclick() {
+  const { getAllPlaylistsByCategory } = useVideoContext();
+
+  async function handleclick(e) {
     console.warn("test");
+    await getAllPlaylistsByCategory(e.target.name);
+    console.warn(e.target.name);
   }
   return (
-    <div className="container">
+    <div className="container-tab">
       <button
         className="item javascript"
-        name="javascrit"
+        name="javascript"
         onClick={handleclick}
         type="button"
       >

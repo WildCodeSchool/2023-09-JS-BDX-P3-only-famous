@@ -44,7 +44,9 @@ export default function AdminContextProvider({ children }) {
   }
 
   async function runSearch(e) {
-    const { data } = await axios.get(`http://localhost:3310/api/users/${e}`);
+    const { data } = await axios.get(
+      `${import.meta.env.VITE_BACKEND_URL}/api/users/${e}`
+    );
     if (data && data.length > 0) {
       setUsers([...data]);
     } else {
