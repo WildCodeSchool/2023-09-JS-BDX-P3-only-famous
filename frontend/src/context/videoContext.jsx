@@ -6,6 +6,7 @@ const videoContext = createContext();
 export default function VideoContextProvider({ children }) {
   const [videos, setVideos] = useState([]);
   const [playlists, setPlaylists] = useState([]);
+  const [playlistsHome, setPlaylistsHome] = useState([]);
 
   const video = useRef({});
 
@@ -46,6 +47,17 @@ export default function VideoContextProvider({ children }) {
     }
   }
 
+  async function getAllPlaylistsByCategory(category) {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:3310/api/playlists/${category}`
+      );
+      setPlaylistsHome([...data.playlists]);
+    } catch (err) {
+      setPlaylistsHome([]);
+    }
+  }
+
   async function updateVideoById(ytId, { isHidden, isPublic }) {
     const { data } = await axios.patch(
       `http://localhost:3310/api/video/${ytId}`,
@@ -67,6 +79,9 @@ export default function VideoContextProvider({ children }) {
       playlists,
       setPlaylists,
       getAllPlaylists,
+      playlistsHome,
+      setPlaylistsHome,
+      getAllPlaylistsByCategory,
     }),
     [
       videos,
@@ -79,6 +94,9 @@ export default function VideoContextProvider({ children }) {
       playlists,
       setPlaylists,
       getAllPlaylists,
+      playlistsHome,
+      setPlaylistsHome,
+      getAllPlaylistsByCategory,
     ]
   );
 

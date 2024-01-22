@@ -62,7 +62,7 @@ async function getPlaylists(req, res) {
 
 async function getPlaylistsByCategory(req, res) {
   try {
-    const category = req.params;
+    const { category } = req.params;
     const playlists = await videoManager.readAllPlaylistsByCategory(category);
     res.status(200).json({ playlists, message: "all good" });
   } catch (err) {
