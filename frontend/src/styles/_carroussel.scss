@@ -1,0 +1,96 @@
+.video-carroussel {
+  padding: 0 0px;
+
+  .btn-car {
+    position: relative;
+  }
+  .button-left {
+    position: absolute;
+    left: -0px;
+  }
+  .button-right {
+    position: absolute;
+    right: -0px;
+  }
+  .button-left,
+  .button-right {
+    width: 50px;
+    height: 100%;
+    opacity: 0.5;
+    outline: none;
+    border: none;
+    background-color: transparent;
+
+    z-index: 2;
+  }
+  .button-right {
+    mask-image: linear-gradient(to right, var(--primary-me), transparent);
+  }
+  .button-left {
+    mask-image: linear-gradient(to left, var(--primary-me), transparent);
+  }
+  .button-left:active,
+  .button-right:active {
+    opacity: 0.75;
+  }
+  .carousel-top {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  button.browse {
+    color: var(--secondary-me);
+  }
+
+  h2 {
+    color: var(--font-light-grey);
+  }
+  h3 {
+    color: white;
+    font-size: 12px;
+    font-family: "Raleway", sans-serif;
+  }
+  iframe {
+    border-radius: 10px;
+  }
+  .video-list {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+    gap: 20px;
+    scroll-snap-type: x mandatory;
+  }
+  @media screen and (min-width: 600px) {
+    .video-list {
+      overflow-x: hidden;
+    }
+  }
+}
+.video-carroussel::-webkit-scrollbar {
+  display: none;
+}
+
+.video-card {
+  text-align: center;
+  scroll-snap-align: start;
+  flex: none;
+  background-image: url("https://picsum.photos/120/90");
+  width: 120px;
+  height: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  h3 {
+    background-color: rgba(13, 94, 108, 0.5);
+    padding: 2px;
+  }
+}
+.video-carroussel {
+  .flex-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+}

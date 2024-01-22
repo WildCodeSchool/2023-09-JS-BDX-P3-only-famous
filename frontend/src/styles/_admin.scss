@@ -1,0 +1,44 @@
+.dashboard {
+  .admin-burger {
+    background-color: var(--secondary-me);
+    color: var(--secondary-me);
+  }
+  .side-bar {
+    background-color: var(--primary-me-dark);
+  }
+  .sidebar-titles {
+    margin: 5px 0;
+  }
+}
+.gray-8 {
+  color: var(--mantine-color-gray-8);
+  background-color: var(--mantine-color-yellow-1);
+}
+.gray-8:hover {
+  color: var(--mantine-color-gray-9);
+  background-color: var(--mantine-color-orange-3);
+}
+.yellow-3 {
+  color: var(--mantine-color-yellow-3);
+  background-color: var(--mantine-color-yellow-5);
+}
+.yellow-3:hover {
+  color: var(--mantine-color-yellow-5);
+  background-color: var(--mantine-color-yellow-7);
+}
+.taskbar {
+  color: var(--mantine-color-gray-2);
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+}
+.sidebar-main {
+  padding-top: 0;
+}
+.checkbox-navbar {
+  color: var(--secondary-me);
+}
+.singleUserLine {
+  display: flex;
+  align-items: center;
+}

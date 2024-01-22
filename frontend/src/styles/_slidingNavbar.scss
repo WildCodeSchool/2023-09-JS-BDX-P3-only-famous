@@ -1,0 +1,142 @@
+.navbar-burger {
+  body {
+    font-family: "Lato", sans-serif;
+  }
+  button {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    color: white;
+  }
+
+  .overlay {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    overflow-x: hidden;
+    transition: 0.5s;
+  }
+
+  .overlay-content {
+    position: relative;
+
+    top: 25%;
+    width: 100%;
+    text-align: center;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .overlay span {
+    padding: 8px;
+    text-decoration: none;
+    font-size: 36px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+  }
+
+  .overlay span:hover,
+  .overlay span:focus {
+    color: #f1f1f1;
+  }
+
+  .overlay .closebtn {
+    position: absolute;
+    top: 20px;
+    right: 45px;
+    font-size: 60px;
+  }
+
+  @media screen and (max-height: 450px) {
+    .overlay a {
+      font-size: 20px;
+    }
+    .overlay .closebtn {
+      font-size: 40px;
+      top: 15px;
+      right: 35px;
+    }
+  }
+}
+
+.navbar-flat {
+  background-color: var(--primary-me-dark);
+  display: flex;
+  height: 56px;
+  align-items: center;
+  margin: 0;
+  padding-left: 20px;
+  justify-content: space-between;
+  mask-image: linear-gradient(
+    to bottom,
+    var(--primary-me) 70%,
+    transparent 100%
+  );
+  button {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    color: white;
+    display: flex;
+    align-items: center;
+  }
+  .logo {
+    width: 40px;
+    height: 40px;
+    filter: drop-shadow(0 0 4px var(--secondary-me));
+    transition: all 0.2s ease;
+  }
+  .logo:hover {
+    filter: drop-shadow(0 0 8px var(--secondary-me));
+    transform: scale(1.1);
+  }
+  .slide-left {
+    transform: translate(1200px, 0);
+    transition: all 0.2s ease;
+  }
+
+  .navbar-links {
+    position: relative;
+    margin: 0 30px;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    height: 40px;
+    transition: all 0.2s ease;
+
+    border: 2px solid var(--secondary-me);
+    border-radius: 20px;
+
+    span {
+      padding: 8px;
+      text-decoration: none;
+      font-size: 18px;
+      color: var(--font-light-grey);
+      display: block;
+      transition: 0.3s;
+    }
+
+    span:hover,
+    span:focus {
+      color: #f1f1f1;
+    }
+  }
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  button {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    color: white;
+    margin: 0 10px;
+  }
+}
