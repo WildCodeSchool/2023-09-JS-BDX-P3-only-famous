@@ -73,7 +73,7 @@ export default function Admin() {
         <Progress h={4} className="gray-8" />
         <Button
           className="sidebar-titles gray-8"
-          onClick={() => navigate("/admin/videos")}
+          onClick={() => navigate("/admin/playlists")}
         >
           Playlistes
         </Button>

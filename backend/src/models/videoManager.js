@@ -54,6 +54,31 @@ class VideoManager {
     return rows;
   }
 
+  static async readAllPlaylists() {
+    // Execute the SQL SELECT query to retrieve all items from the "item" table
+    const [rows] = await database.query(`select * from playlist`);
+    // Return the array of items
+    return rows;
+  }
+
+  static async readPlaylistById(playlistId) {
+    // Execute the SQL SELECT query to retrieve all items from the "item" table
+    const [rows] = await database.query(
+      `select * from video where playlistId like '${playlistId}%'`
+    );
+    // Return the array of items
+    return rows[0];
+  }
+
+  static async readAllById(ytId) {
+    // Execute the SQL SELECT query to retrieve all items from the "item" table
+    const [rows] = await database.query(
+      `select * from video where ytId like '${ytId}%'`
+    );
+    // Return the array of items
+    return rows;
+  }
+
   static async readPlayList(playListId) {
     // Execute the SQL SELECT query to retrieve all items from the "item" table
     const [rows] = await database.query(

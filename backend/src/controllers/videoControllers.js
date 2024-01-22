@@ -15,22 +15,50 @@ const browse = async (req, res, next) => {
   }
 };
 
-// The R of BREAD - Read operation
-const read = async (req, res, next) => {
+const browsePlaylists = async (req, res, next) => {
   try {
-    const { ytId } = req.body;
-    // Fetch a specific item from the database based on the provided ID
-    const item = await videoManager.read(ytId);
-    if (item == null) {
-      res.sendStatus(404);
-    } else {
-      res.json(item);
-    }
+    // Fetch all items from the database
+    const items = await videoManager.readAllPlaylists();
+
+    // Respond with the items in JSON format
+    res.json(items);
   } catch (err) {
     // Pass any errors to the error-handling middleware
     next(err);
   }
 };
+
+// The R of BREAD - Read operation
+const read = async (req, res) => {
+  try {
+    const { ytId } = req.params;
+    // Fetch a specific item from the database based on the provided ID
+    const rows = await videoManager.readAllById(ytId);
+    res.status(200).json({ rows, message: "Vidéo reçue", success: true });
+  } catch (err) {
+    res.sendStatus(404);
+  }
+};
+
+async function getPlaylistById(req, res) {
+  try {
+    const playlistId = req.params;
+    const playlist = videoManager.readPlaylistById(playlistId);
+    res.status(200).json({ playlist, message: "all good" });
+  } catch (err) {
+    res.sendStatus(404);
+  }
+}
+
+async function getPlaylists(req, res) {
+  try {
+    const playlistId = req.params;
+    const playlists = await videoManager.readAllPlaylists(playlistId);
+    res.status(200).json({ playlists, message: "all good" });
+  } catch (err) {
+    res.sendStatus(404);
+  }
+}
 
 const readPlaylist = async (req, res) => {
   try {
@@ -142,4 +170,7 @@ module.exports = {
   destroy,
   check,
   readPlaylist,
+  browsePlaylists,
+  getPlaylistById,
+  getPlaylists,
 };

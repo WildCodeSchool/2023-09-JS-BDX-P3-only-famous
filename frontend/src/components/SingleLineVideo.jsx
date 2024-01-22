@@ -49,6 +49,7 @@ export default function SingleLineVideo({
           ml={30}
           defaultValue={isHidden}
           checked={isHidden}
+          defaultChecked={isHidden}
           color="yellow.3"
           iconColor="dark.8"
           className="checkbox-navbar"

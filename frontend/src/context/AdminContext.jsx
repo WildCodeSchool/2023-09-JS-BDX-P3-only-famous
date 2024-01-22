@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useMemo, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -9,14 +9,35 @@ const adminContext = createContext();
 export default function AdminContextProvider({ children }) {
   const navigate = useNavigate();
   const { user, setMessageUser } = useUserContext();
-  const [isAdmin, setisAdmin] = useState(true);
+  const active = useRef(false);
+  const admin = useRef(false);
+
   const [users, setUsers] = useState([]);
 
   async function getUsers() {
     try {
       const usersdb = await AdminService.getUsers();
       // console.log("users db", usersdb.users);
-      setUsers([...usersdb.users]);
+      const result = usersdb.users;
+      setUsers(
+        result.filter(
+          (ele) => !ele.isAdmin === !admin.current && !ele.isActive === !active
+        )
+        // && !ele.isActive === !active
+      );
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  async function getUsersFiltered() {
+    try {
+      setUsers(
+        users.filter(
+          (ele) => !ele.isAdmin === !admin.current && !ele.isActive === !active
+        )
+        // && !ele.isActive === !active
+      );
     } catch (error) {
       throw new Error(error.message);
     }
@@ -47,15 +68,25 @@ export default function AdminContextProvider({ children }) {
   }
   const adminData = useMemo(
     () => ({
-      isAdmin,
-      setisAdmin,
+      admin,
       getUsers,
       users,
       setUsers,
       deleteUser,
       runSearch,
+      active,
+      getUsersFiltered,
     }),
-    [isAdmin, setisAdmin, getUsers, users, setUsers, deleteUser, runSearch]
+    [
+      admin,
+      getUsers,
+      users,
+      setUsers,
+      deleteUser,
+      runSearch,
+      active,
+      getUsersFiltered,
+    ]
   );
   if (!user.isAdmin) {
     navigate("/");

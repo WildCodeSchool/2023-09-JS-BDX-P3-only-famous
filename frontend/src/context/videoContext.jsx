@@ -5,13 +5,26 @@ import PropTypes from "prop-types";
 const videoContext = createContext();
 export default function VideoContextProvider({ children }) {
   const [videos, setVideos] = useState([]);
+  const [playlists, setPlaylists] = useState([]);
+
   const video = useRef({});
 
   async function getVideoListFromPlaylist(playlistId) {
-    const { data } = await axios.get("http://localhost:3310/api/playlist", {
+    const { data } = await axios.get("http://localhost:3310/api/video", {
       params: { playlistId },
     });
     setVideos(data.rows);
+  }
+
+  async function runSearchVideo(ytId) {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:3310/api/video/${ytId}`
+      );
+      setVideos([...data.rows]);
+    } catch (err) {
+      setVideos([]);
+    }
   }
 
   async function deleteVideoBId(ytId) {
@@ -23,6 +36,16 @@ export default function VideoContextProvider({ children }) {
       setVideos([...result]);
     }
   }
+
+  async function getAllPlaylists() {
+    try {
+      const { data } = await axios.get("http://localhost:3310/api/playlists");
+      setPlaylists([...data.playlists]);
+    } catch (err) {
+      setPlaylists([]);
+    }
+  }
+
   async function updateVideoById(ytId, { isHidden, isPublic }) {
     const { data } = await axios.patch(
       `http://localhost:3310/api/video/${ytId}`,
@@ -40,6 +63,10 @@ export default function VideoContextProvider({ children }) {
       deleteVideoBId,
       updateVideoById,
       video,
+      runSearchVideo,
+      playlists,
+      setPlaylists,
+      getAllPlaylists,
     }),
     [
       videos,
@@ -48,6 +75,10 @@ export default function VideoContextProvider({ children }) {
       deleteVideoBId,
       updateVideoById,
       video,
+      runSearchVideo,
+      playlists,
+      setPlaylists,
+      getAllPlaylists,
     ]
   );
 

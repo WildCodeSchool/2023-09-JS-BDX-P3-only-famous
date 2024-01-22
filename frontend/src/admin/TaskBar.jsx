@@ -6,10 +6,8 @@ import { FaSearch } from "react-icons/fa";
 import { useAdmin } from "../context/AdminContext";
 
 export default function TaskBar() {
-  const [admin, setAdmin] = useState(false);
-  const [active, setActive] = useState(false);
   const [email, setEmail] = useState([]);
-  const { runSearch } = useAdmin();
+  const { runSearch, admin, active, getUsersFiltered } = useAdmin();
 
   const icon = (
     <FaSearch style={{ width: "25px", height: "25px" }} stroke={1.5} />
@@ -31,8 +29,11 @@ export default function TaskBar() {
 
       <Checkbox
         ml={10}
-        checked={admin}
-        onChange={() => setAdmin(!admin)}
+        checked={admin.current}
+        onChange={() => {
+          admin.current = !admin.current;
+          getUsersFiltered();
+        }}
         label="Admin?"
         color="yellow.3"
         iconColor="dark.8"
@@ -40,8 +41,11 @@ export default function TaskBar() {
       />
       <Checkbox
         ml={30}
-        checked={active}
-        onChange={() => setActive(!active)}
+        checked={active.current}
+        onChange={() => {
+          active.current = !active.current;
+          getUsersFiltered();
+        }}
         label="Active?"
         color="yellow.3"
         iconColor="dark.8"

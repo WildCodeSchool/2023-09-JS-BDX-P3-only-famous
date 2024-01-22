@@ -22,6 +22,7 @@ import UsersList from "./admin/UsersList";
 import Videos from "./admin/Videos";
 import VideoContextProvider from "./context/videoContext";
 import AdminMain from "./admin/AdminMain";
+import Playlists from "./admin/Playlists";
 
 // async function timeOut(time = 3000){
 //   setTimeout(() => {
@@ -93,6 +94,10 @@ const router = createBrowserRouter([
           {
             path: "/admin/",
             element: <AdminMain />,
+          },
+          {
+            path: "/admin/playlists",
+            element: <Playlists />,
           },
         ],
       },
