@@ -23,6 +23,7 @@
     "@tiptap/starter-kit": "^2.1.16",
     "axios": "^1.6.2",
     "dayjs": "^1.11.10",
+    "dotenv": "^16.3.2",
     "embla-carousel-react": "^7.1.0",
     "jwt-decode": "^4.0.0",
     "prop-types": "^15.8.1",

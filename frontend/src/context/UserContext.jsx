@@ -25,7 +25,7 @@ export default function UserContextProvider({ children }) {
     lastname: "",
     birthday: "",
     isAdmin: 0,
-    imgUrl: "http://localhost:3310/uploads/default.png",
+    imgUrl: `${import.meta.env.VITE_BACKEND_URL}/uploads/default.png`,
   });
   // message used to show message received from back-end mainly
   const [messageUser, setMessageUser] = useState("");
@@ -60,7 +60,7 @@ export default function UserContextProvider({ children }) {
   async function checkCredentials(credentials) {
     try {
       const { headers, data } = await axios.post(
-        "http://localhost:3310/api/user",
+        `${import.meta.env.VITE_BACKEND_URL}/api/user`,
         credentials
       );
       return {
@@ -78,7 +78,7 @@ export default function UserContextProvider({ children }) {
   async function resetPassword(credentials) {
     try {
       const { data } = await axios.post(
-        "http://localhost:3310/api/reset",
+        `${import.meta.env.VITE_BACKEND_URL}/api/reset`,
         credentials
       );
       setMessageUser(data.message);
@@ -104,7 +104,7 @@ export default function UserContextProvider({ children }) {
   async function updateName(credentials) {
     try {
       const { data } = await axios.post(
-        "http://localhost:3310/api/updatename",
+        `${import.meta.env.VITE_BACKEND_URL}/api/updatename`,
         credentials
       );
       setMessageUser(data.message);
@@ -119,9 +119,12 @@ export default function UserContextProvider({ children }) {
   // send reset link
   async function sendResetLink(email) {
     try {
-      const { data } = await axios.post("http://localhost:3310/api/sendreset", {
-        email,
-      });
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/sendreset`,
+        {
+          email,
+        }
+      );
       return { message: data.message, success: true };
     } catch (err) {
       return { message: err.response.data.message, success: false };
@@ -155,7 +158,7 @@ export default function UserContextProvider({ children }) {
   async function register(newUser) {
     try {
       const { message, insertId } = await axios.post(
-        "http://localhost:3310/api/users",
+        `${import.meta.env.VITE_BACKEND_URL}/api/users`,
         newUser
       );
       if (+insertId === 0) {
@@ -181,7 +184,7 @@ export default function UserContextProvider({ children }) {
   async function activateAccount(email, code) {
     try {
       const { affectedRows } = await axios.patch(
-        "http://localhost:3310/api/activate",
+        `${import.meta.env.VITE_BACKEND_URL}/api/activate`,
         { email, code }
       );
       if (affectedRows !== 0) {
