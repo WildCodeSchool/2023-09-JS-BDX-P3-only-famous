@@ -61,6 +61,15 @@ class VideoManager {
     return rows;
   }
 
+  static async readAllPlaylistsByCategory(category) {
+    // Execute the SQL SELECT query to retrieve all items from the "item" table
+    const [rows] = await database.query(
+      `select * from playlist where category like '%${category}%'`
+    );
+    // Return the array of items
+    return rows;
+  }
+
   static async readPlaylistById(playlistId) {
     // Execute the SQL SELECT query to retrieve all items from the "item" table
     const [rows] = await database.query(

@@ -1,0 +1,70 @@
+.container {
+  margin: 0 auto;
+  height: 400px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.item {
+  flex-grow: 1;
+  height: 400px;
+  background-color: darkred;
+  position: relative;
+  border: 1px solid lighten(black, 10);
+  border-radius: 10px;
+
+  transition: all 200ms ease-in-out;
+  text-align: center;
+  background-position: center;
+  background-size: cover;
+
+  &:hover {
+    cursor: pointer;
+    flex-grow: 4.3;
+    background-color: lighten(darkred, 20);
+  } // hover
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:before {
+    content: attr(data-order);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+  } // before
+} // item
+@media screen and (max-width: 600px) {
+  .container {
+    flex-direction: column;
+  }
+  .item {
+    width: 100%;
+    background-size: cover;
+  }
+  .item:hover {
+    height: 800px;
+  }
+}
+.javascript {
+  background-image: url("https://img-c.udemycdn.com/course/750x422/5396824_9f3d_3.jpg");
+  background-position: center;
+}
+.dotnet {
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Microsoft_.NET_logo.svg/800px-Microsoft_.NET_logo.svg.png");
+}
+.php {
+  background-image: url("https://blog.secur-cloud.fr/wp-content/uploads/2023/02/php.png");
+  background-position: center;
+}
+.angular {
+  background-image: url("https://kinsta.com/wp-content/uploads/2022/06/angular-logo.png");
+  background-position: center;
+}
+.react {
+  background-image: url("https://i2.wp.com/d585tldpucybw.cloudfront.net/sfimages/default-source/blogs/templates/social/reactt-light_1200x628.png");
+  background-position: center;
+}

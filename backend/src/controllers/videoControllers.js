@@ -60,6 +60,16 @@ async function getPlaylists(req, res) {
   }
 }
 
+async function getPlaylistsByCategory(req, res) {
+  try {
+    const category = req.params;
+    const playlists = await videoManager.readAllPlaylistsByCategory(category);
+    res.status(200).json({ playlists, message: "all good" });
+  } catch (err) {
+    res.sendStatus(404);
+  }
+}
+
 const readPlaylist = async (req, res) => {
   try {
     const { playlistId } = req.query;
@@ -173,4 +183,5 @@ module.exports = {
   browsePlaylists,
   getPlaylistById,
   getPlaylists,
+  getPlaylistsByCategory,
 };
