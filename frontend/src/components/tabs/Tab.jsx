@@ -9,7 +9,7 @@ export default function Tab() {
     console.warn(e.target.name);
   }
   return (
-    <div className="container">
+    <div className="container-tab">
       <button
         className="item javascript"
         name="javascript"
