@@ -2,41 +2,6 @@ const express = require("express");
 
 const routerVideo = express.Router();
 
-// const jwt = require("jsonwebtoken");
-
-// generation du token
-
-// function generateAccessToken(req, res, next) {
-//   const user = req.body;
-//   req.body.token = jwt.sign(user, process.env.APP_SECRET, {
-//     expiresIn: "3600s",
-//   });
-//   next();
-// }
-
-// function authenticateToken(req, res, next) {
-//   const authHeader = req.headers.authorization;
-//   const token = authHeader && authHeader.split(" ")[1];
-
-//   if (token == null) return res.sendStatus(401);
-
-//   jwt.verify(token, process.env.APP_SECRET, (err, user) => {
-//     if (err) {
-//       res.sendStatus(401);
-//       return;
-//     }
-//     req.user = user;
-//     next();
-//   });
-//   console.log(result);
-// }
-
-// authentificate Token
-
-/* ************************************************************************* */
-// Define Your API Routes Here
-/* ************************************************************************* */
-
 // Import itemControllers module for handling item-related operations
 const videoControllers = require("./controllers/videoControllers");
 

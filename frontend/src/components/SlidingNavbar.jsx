@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
 import DropDownMenu from "./DropDownMenu";
+import logo from "../assets/Logo.png";
 
 export default function SlidingNavbar() {
   const navigate = useNavigate();
@@ -108,7 +109,7 @@ export default function SlidingNavbar() {
             }
           }}
         >
-          <img src="./src/assets/logo.png" alt="logo" className="logo" />
+          <img src={logo} alt="logo" className="logo" />
         </button>
 
         {/* <h4 className="title-site">La Banque de Tutos</h4> */}

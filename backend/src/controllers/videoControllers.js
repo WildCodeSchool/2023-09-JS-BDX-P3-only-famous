@@ -143,7 +143,7 @@ async function check(req, res) {
     const { ytId } = req.body;
     const videodb = await videoManager.read(ytId);
     if (!videodb) {
-      res.sendStatus(404).send(null);
+      res.sendStatus(404);
     } else {
       res.status(200).json({ message: "Video existe" });
     }

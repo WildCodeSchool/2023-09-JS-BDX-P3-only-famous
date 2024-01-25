@@ -1,14 +1,10 @@
-import { useEffect, useState } from "react";
 import { AspectRatio, Container } from "@mantine/core";
 import Accordion from "../components/Accordion";
 import { useUserContext } from "../context/UserContext";
 
 export default function OneVideo() {
   const { linkToVideo } = useUserContext();
-  const [fullLink, setFullLink] = useState("");
-  useEffect(() => {
-    setFullLink(`https://www.youtube.com/embed/${linkToVideo.link}`);
-  }, []);
+  const fullLink = `https://www.youtube.com/embed/${linkToVideo.link}`;
   return (
     <Container size="lg">
       <AspectRatio ratio={16 / 9} maw={1200} mx="auto">

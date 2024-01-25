@@ -1,10 +1,9 @@
-// const { google } = require("googleapis");
+const { google } = require("googleapis");
 const { OAuth2Client } = require("google-auth-library");
-// const fs = require("fs");
+const fs = require("fs");
 require("dotenv").config();
 
 let details = {};
-// let youtube = null;
 
 async function getData(req, res) {
   details = req.body;
@@ -40,6 +39,42 @@ async function getYoutubeCodeBackUp(req, res) {
   }
 }
 
+async function uploadVideo(req, res) {
+  try {
+    const youtube = google.youtube({
+      version: "v3",
+      auth: oauth2Client,
+    });
+
+    const resUpload = await youtube.videos.insert({
+      part: "snippet,status",
+      requestBody: {
+        snippet: {
+          title: `${details.title ?? "Titre générique"}`,
+          description: `${details.description ?? "Description générique"}`,
+          categoryId: 28,
+          tags: details.tags ?? [],
+        },
+        status: {
+          privacyStatus: "unlisted",
+        },
+      },
+      media: {
+        body: fs.createReadStream(`${details.filename ?? "uploads/video.mp4"}`), // Adjust the video file path
+      },
+      onUploadProgress: () => {
+        // const progress = (evt.bytesRead / evt.bytesTotal) * 100;
+        // console.log(`Uploading... ${progress.toFixed(2)}% complete`);
+      },
+    });
+
+    res.redirect("http://localhost:3000/admin").send(resUpload.data);
+  } catch (error) {
+    console.error("Error uploading video:", error.message);
+    res.status(500).send("Error uploading video");
+  }
+}
+
 // Callback endpoint after user grants permissions
 async function oAuth2Callback(req, res) {
   const authorizationCode = req.query.code;
@@ -50,36 +85,36 @@ async function oAuth2Callback(req, res) {
     oauth2Client.setCredentials(tokens);
 
     // Use the YouTube API to upload the video
-    // const youtube = google.youtube({
-    //   version: "v3",
-    //   auth: oauth2Client,
-    // });
+    const youtube = google.youtube({
+      version: "v3",
+      auth: oauth2Client,
+    });
 
-    // const resUpload = await youtube.videos.insert({
-    //   part: "snippet,status",
-    //   requestBody: {
-    //     snippet: {
-    //       title: `${details.title ?? "Titre générique"}`,
-    //       description: `${details.description ?? "Description générique"}`,
-    //       categoryId: 28,
-    //       tags: details.tags ?? [],
-    //     },
-    //     status: {
-    //       privacyStatus: "unlisted", // You can set this to 'public' if needed
-    //     },
-    //   },
-    //   media: {
-    //     body: fs.createReadStream(`${details.filename ?? "uploads/video.mp4"}`), // Adjust the video file path
-    //   },
-    //   onUploadProgress: () => {
-    //     // const progress = (evt.bytesRead / evt.bytesTotal) * 100;
-    //     // console.log(`Uploading... ${progress.toFixed(2)}% complete`);
-    //   },
-    // });
+    const resUpload = await youtube.videos.insert({
+      part: "snippet,status",
+      requestBody: {
+        snippet: {
+          title: `${details.title ?? "Titre générique"}`,
+          description: `${details.description ?? "Description générique"}`,
+          categoryId: 28,
+          tags: details.tags ?? [],
+        },
+        status: {
+          privacyStatus: "unlisted",
+        },
+      },
+      media: {
+        body: fs.createReadStream(`${details.filename ?? "uploads/video.mp4"}`), // Adjust the video file path
+      },
+      onUploadProgress: () => {
+        // const progress = (evt.bytesRead / evt.bytesTotal) * 100;
+        // console.log(`Uploading... ${progress.toFixed(2)}% complete`);
+      },
+    });
 
     // Handle the successful video upload
     // console.log("Video uploaded successfully:", resUpload.data);
-    res.redirect("http://localhost:3000/admin");
+    res.redirect("http://localhost:3000/admin").send(resUpload.data);
   } catch (error) {
     console.error("Error uploading video:", error.message);
     res.status(500).send("Error uploading video");
@@ -91,4 +126,5 @@ module.exports = {
   oAuth2Callback,
   getData,
   getYoutubeCodeBackUp,
+  uploadVideo,
 };

@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Navigate } from "react-router-dom";
 import axios from "axios";
 import {
   Alert,
@@ -16,7 +16,6 @@ import { useUserContext } from "../context/UserContext";
 import MyAlert from "../components/MyAlert";
 
 export default function PageUser() {
-  const navigate = useNavigate();
   const { user, setUser, sendResetLink, updateName } = useUserContext();
   const [firstname, setFirstname] = useState(user.firstname);
   const [lastname, setLastname] = useState(user.lastname);
@@ -58,13 +57,7 @@ export default function PageUser() {
     }
   }
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    if (!user.isConnected) {
-      navigate("/");
-    }
-  }, []);
-  return (
+  return user.isConnected ? (
     <Container size="md">
       <Center
         maw={1200}
@@ -210,5 +203,7 @@ export default function PageUser() {
         </Fieldset>
       </Container>
     </Container>
+  ) : (
+    <Navigate to="/" />
   );
 }

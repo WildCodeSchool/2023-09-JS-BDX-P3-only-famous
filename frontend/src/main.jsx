@@ -24,12 +24,6 @@ import VideoContextProvider from "./context/videoContext";
 import AdminMain from "./admin/AdminMain";
 import Playlists from "./admin/Playlists";
 
-// async function timeOut(time = 3000){
-//   setTimeout(() => {
-//     console.log('timeout done ');
-//   }, time);
-// }
-
 const router = createBrowserRouter([
   {
     element: (
