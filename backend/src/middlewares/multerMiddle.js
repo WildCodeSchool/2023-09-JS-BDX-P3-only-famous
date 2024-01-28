@@ -9,9 +9,7 @@ function renameFile(req, res, next) {
   const { originalname, filename } = req.file;
   const relativePath = `uploads/${Date.now()}_${originalname}`;
   const newPath = `./public/${relativePath}`;
-  const fullPath = `http://${host}/${relativePath}`;
-  // console.log("host", host);
-  // console.log("host env", process.env.BACKEND_URL);
+  const fullPath = `${req.protocol}://${host}/${relativePath}`;
 
   fs.rename(`./public/uploads/${filename}`, newPath, (err) => {
     if (err) {
