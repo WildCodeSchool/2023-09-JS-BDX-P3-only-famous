@@ -12,7 +12,7 @@ export default function VideoContextProvider({ children }) {
 
   async function getVideoListFromPlaylist(playlistId) {
     const { data } = await axios.get(
-      `${import.meta.env.VITE_BACKEND_URL}/api/video`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/playlist`,
       {
         params: { playlistId },
       }

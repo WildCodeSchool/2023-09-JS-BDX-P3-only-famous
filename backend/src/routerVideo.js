@@ -33,9 +33,5 @@ routerVideo.get(
   "/playlists/:category",
   videoControllers.getPlaylistsByCategory
 );
-/* **
-// route to get specific playlist by id
-routerVideo.get("/playlists/:playlistId", videoControllers.getPlaylistById);
-/* ************************************************************************* */
 
 module.exports = routerVideo;

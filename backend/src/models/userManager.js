@@ -15,10 +15,8 @@ class UserManager {
   }
 
   static async create(user) {
-    // Execute the SQL INSERT query to add a new item to the "item" table
     const hashedPassword = await this.Hashing(user.password);
     try {
-      // const randomCode = Math.ceil(Math.random() * (9999 - 1000) + 1000);
       const randomCode = uuid();
       const [result] = await database.query(
         `insert into user (firstname, lastname, email, password, birthday, isAdmin, imgUrl, activationCode) values (?,?,?,?,?,?,?,?)`,
@@ -37,17 +35,11 @@ class UserManager {
       activationManager.sendValidationCode(user.email, randomCode);
       return { message: "Utilisateur ajouté!!!", insertId: result.insertId };
     } catch (err) {
-      // console.error("error while inserting new user in user manager: ", err);
-      // return { message: "Email existant!!!", insertId: 0 };
       throw new Error(err.message);
     }
-
-    // Return the ID of the newly inserted item
   }
-  // The Rs of CRUD - Read operations
 
   static async read(email, password) {
-    // Execute the SQL SELECT query to retrieve a specific item by its ID
     try {
       const [rows] = await database.query(
         `select * from user where email = ?`,
@@ -79,17 +71,13 @@ class UserManager {
     } catch (err) {
       throw new Error(err.message);
     }
-    // Execute the SQL SELECT query to retrieve a specific item by its ID
   }
 
   static async readAll() {
     try {
-      // Execute the SQL SELECT query to retrieve all items from the "item" table
       const [rows] = await database.query(
         `select email, firstname, lastname, isActive, isAdmin from user`
       );
-
-      // Return the array of items
       return rows;
     } catch (err) {
       throw new Error(err.message);
@@ -98,20 +86,14 @@ class UserManager {
 
   static async readAllByEmail(email) {
     try {
-      // Execute the SQL SELECT query to retrieve all items from the "item" table
       const [rows] = await database.query(
         `select email, firstname, lastname, isActive, isAdmin, birthday from user where email like '${email}%'`
       );
-
-      // Return the array of items
       return rows;
     } catch (err) {
       throw new Error(err.message);
     }
   }
-
-  // The U of CRUD - Update operation
-  // TODO: Implement the update operation to modify an existing item
 
   static async update(user) {
     try {
@@ -147,8 +129,19 @@ class UserManager {
     }
   }
 
-  // The D of CRUD - Delete operation
-  // TODO: Implement the delete operation to remove an item by its ID
+  static async updateGeneric(email, props) {
+    let sql = `UPDATE user set`;
+    const sqlValues = [];
+    for (const [key, value] of Object.entries(props)) {
+      sql += `${sqlValues.length ? "," : ""} ${key} = ?`;
+
+      sqlValues.push(value);
+    }
+    sql += `where email = ?`;
+    sqlValues.push(email);
+    const [res] = await database.query(sql, sqlValues);
+    return res.affectedRows;
+  }
 
   static async delete(email, password) {
     try {
@@ -162,13 +155,11 @@ class UserManager {
           const res = await database.query("delete from user WHERE email = ?", [
             email,
           ]);
-          // console.log("res ", res);
           return res.affectedRows;
         }
       }
       return 0;
     } catch (err) {
-      // console.log("Error ", err.message);
       throw new Error(err.message);
     }
   }
@@ -183,12 +174,10 @@ class UserManager {
         const res = await database.query("delete from user WHERE email = ?", [
           email,
         ]);
-        // console.log("res ", res);
         return res.affectedRows;
       }
       return 0;
     } catch (err) {
-      // console.log("Error ", err.message);
       throw new Error(err.message);
     }
   }
@@ -210,7 +199,6 @@ class UserManager {
   }
 
   static async createActivationCode(email) {
-    // Execute the SQL INSERT query to add a new item to the "item" table
     const randomCode = uuid();
     try {
       const [res] = await database.query(
@@ -226,12 +214,9 @@ class UserManager {
       );
       return { message: "failed to create new validation!!!", insertId: 0 };
     }
-
-    // Return the ID of the newly inserted item
   }
 
   static async createResetCode(email) {
-    // Execute the SQL INSERT query to add a new item to the "item" table
     const randomCode = uuid();
     try {
       const emailSent = await UserManager.readUserViaEmail(email);
@@ -246,7 +231,6 @@ class UserManager {
           message: "Un email de réinitialisation vient d'être envoyé ",
         };
       }
-      // console.log(`Ce compte ${email} n'existe pas !!!`);
       return {
         message: `Ce compte ${email} n'existe pas !!!`,
         affectedRows: 0,
@@ -258,8 +242,6 @@ class UserManager {
       );
       return { message: "Aucun email envoyé !!!", insertId: 0 };
     }
-
-    // Return the ID of the newly inserted item
   }
 
   static async updatePassword({ email, password }) {

@@ -40,16 +40,6 @@ const read = async (req, res) => {
   }
 };
 
-async function getPlaylistById(req, res) {
-  try {
-    const playlistId = req.params;
-    const playlist = videoManager.readPlaylistById(playlistId);
-    res.status(200).json({ playlist, message: "all good" });
-  } catch (err) {
-    res.sendStatus(404);
-  }
-}
-
 async function getPlaylists(req, res) {
   try {
     const playlistId = req.params;
@@ -181,7 +171,6 @@ module.exports = {
   check,
   readPlaylist,
   browsePlaylists,
-  getPlaylistById,
   getPlaylists,
   getPlaylistsByCategory,
 };

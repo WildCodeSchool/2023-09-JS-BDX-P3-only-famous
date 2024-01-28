@@ -174,8 +174,12 @@ async function updateImage(req, res) {
   try {
     const token = req.headers.authorization.split(" ")[1];
     const { email } = jwtDecode.jwtDecode(token);
-    const result = await userManager.update({
-      email,
+    // const result = await userManager.update({
+    //   email,
+    //   imgUrl: req.newPath,
+    // });
+
+    const result = await userManager.updateGeneric(email, {
       imgUrl: req.newPath,
     });
 

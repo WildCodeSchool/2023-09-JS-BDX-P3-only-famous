@@ -1,18 +1,18 @@
 const fs = require("fs");
+// const path = require("path");
+
+// const absolutePath = path.join(__dirname, "../public");
 
 function renameFile(req, res, next) {
+  const proxyHost = req.headers["x-forwarded-host"];
+  const host = proxyHost ?? req.headers.host;
   const { originalname, filename } = req.file;
-
-  // const token = req.headers.authorization?.split(" ")[1] ?? "";
-  // if (token) {
-  //   console.log("token", token);
-  // } else {
-  //   res.sendStatus(404);
-  //   return;
-  // }
   const relativePath = `uploads/${Date.now()}_${originalname}`;
   const newPath = `./public/${relativePath}`;
-  const fullPath = `http://localhost:3310/${relativePath}`;
+  const fullPath = `http://${host}/${relativePath}`;
+  // console.log("host", host);
+  // console.log("host env", process.env.BACKEND_URL);
+
   fs.rename(`./public/uploads/${filename}`, newPath, (err) => {
     if (err) {
       return;

@@ -34,10 +34,8 @@ class VideoManager {
       return { message: "Video non ajoutée!!!", insertId: 0 };
     }
   }
-  // The Rs of CRUD - Read operations
 
   static async read(ytId) {
-    // Execute the SQL SELECT query to retrieve a specific item by its ID
     const [rows] = await database.query(`select * from video where ytId = ?`, [
       ytId,
     ]);
@@ -48,48 +46,30 @@ class VideoManager {
   }
 
   static async readAll() {
-    // Execute the SQL SELECT query to retrieve all items from the "item" table
     const [rows] = await database.query(`select * from video`);
-    // Return the array of items
     return rows;
   }
 
   static async readAllPlaylists() {
-    // Execute the SQL SELECT query to retrieve all items from the "item" table
     const [rows] = await database.query(`select * from playlist`);
-    // Return the array of items
     return rows;
   }
 
   static async readAllPlaylistsByCategory(category) {
-    // Execute the SQL SELECT query to retrieve all items from the "item" table
     const [rows] = await database.query(
       `select * from playlist where category like '%${category}%'`
     );
-    // Return the array of items
     return rows;
   }
 
-  static async readPlaylistById(playlistId) {
-    // Execute the SQL SELECT query to retrieve all items from the "item" table
-    const [rows] = await database.query(
-      `select * from video where playlistId like '${playlistId}%'`
-    );
-    // Return the array of items
-    return rows[0];
-  }
-
   static async readAllById(ytId) {
-    // Execute the SQL SELECT query to retrieve all items from the "item" table
     const [rows] = await database.query(
       `select * from video where ytId like '${ytId}%'`
     );
-    // Return the array of items
     return rows;
   }
 
   static async readPlayList(playListId) {
-    // Execute the SQL SELECT query to retrieve all items from the "item" table
     const [rows] = await database.query(
       `select * from video where playlistId = ? `,
       [playListId]
@@ -99,15 +79,10 @@ class VideoManager {
       [playListId]
     );
 
-    // Return the array of items
     return { rows, title: playlist[0].playlistTitle };
   }
 
-  // The U of CRUD - Update operation
-  // TODO: Implement the update operation to modify an existing item
-
   static async update(ytId, video) {
-    // console.log(video);
     let sql = "UPDATE video set";
     const sqlValues = [];
     for (const [key, value] of Object.entries(video)) {
@@ -120,9 +95,6 @@ class VideoManager {
     const [res] = await database.query(sql, sqlValues);
     return res.affectedRows;
   }
-
-  // The D of CRUD - Delete operation
-  // TODO: Implement the delete operation to remove an item by its ID
 
   static async delete(ytId) {
     try {
