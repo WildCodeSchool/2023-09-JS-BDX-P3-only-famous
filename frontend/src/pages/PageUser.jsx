@@ -32,6 +32,8 @@ export default function PageUser() {
     });
     const formData = new FormData();
     formData.append("file", e.target.files[0]);
+    formData.append("message", "testing");
+
     const { imgUrl } = await axios.post(
       "http://localhost:3310/api/userimage",
       formData

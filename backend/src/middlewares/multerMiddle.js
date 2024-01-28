@@ -1,7 +1,4 @@
 const fs = require("fs");
-// const path = require("path");
-
-// const absolutePath = path.join(__dirname, "../public");
 
 function renameFile(req, res, next) {
   const proxyHost = req.headers["x-forwarded-host"];
@@ -16,8 +13,8 @@ function renameFile(req, res, next) {
       return;
     }
     req.newPath = fullPath;
+    req.relativePath = relativePath;
     next();
   });
 }
-
 module.exports = { renameFile };

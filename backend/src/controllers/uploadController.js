@@ -3,11 +3,12 @@ const { OAuth2Client } = require("google-auth-library");
 const fs = require("fs");
 require("dotenv").config();
 
-let details = {};
+// let details = {};
+let tokensGoogle = null;
 
 async function getData(req, res) {
-  details = req.body;
-  res.status(200).json({ message: "Data received", details });
+  // details = req.body;
+  res.status(200).json({ message: "Data received" });
 }
 
 // Set up OAuth2Client with your client ID and client secret
@@ -25,7 +26,8 @@ const authUrl = oauth2Client.generateAuthUrl({
 
 // Endpoint to initiate YouTube authentication // "/initiate-auth",
 async function initiateAuth(req, res) {
-  res.redirect(authUrl);
+  // console.log(authUrl);
+  res.send(authUrl);
 }
 
 async function getYoutubeCodeBackUp(req, res) {
@@ -33,13 +35,16 @@ async function getYoutubeCodeBackUp(req, res) {
   try {
     const { tokens } = await oauth2Client.getToken(authorizationCode);
     oauth2Client.setCredentials(tokens);
-    res.send(tokens);
+    tokensGoogle = tokens;
+    res.send(tokensGoogle);
   } catch (error) {
     console.error(error.message);
   }
 }
 
 async function uploadVideo(req, res) {
+  const details = req.body;
+  // console.log("lolus", req.body);
   try {
     const youtube = google.youtube({
       version: "v3",
@@ -60,15 +65,13 @@ async function uploadVideo(req, res) {
         },
       },
       media: {
-        body: fs.createReadStream(`${details.filename ?? "uploads/video.mp4"}`), // Adjust the video file path
-      },
-      onUploadProgress: () => {
-        // const progress = (evt.bytesRead / evt.bytesTotal) * 100;
-        // console.log(`Uploading... ${progress.toFixed(2)}% complete`);
+        body: fs.createReadStream(
+          `public/${req.relativePath ?? "uploads/video.mp4"}`
+        ), // Adjust the video file path
       },
     });
-
-    res.redirect("http://localhost:3000/admin").send(resUpload.data);
+    // console.log(resUpload);
+    res.status(200).send(resUpload);
   } catch (error) {
     console.error("Error uploading video:", error.message);
     res.status(500).send("Error uploading video");
@@ -78,7 +81,7 @@ async function uploadVideo(req, res) {
 // Callback endpoint after user grants permissions
 async function oAuth2Callback(req, res) {
   const authorizationCode = req.query.code;
-
+  const details = req.body;
   try {
     // Exchange authorization code for access and refresh tokens
     const { tokens } = await oauth2Client.getToken(authorizationCode);
