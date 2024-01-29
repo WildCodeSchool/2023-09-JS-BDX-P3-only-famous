@@ -10,7 +10,7 @@ class ActivationManager {
         pass: process.env.NODE_MAILER_KEY,
       },
     });
-    const lien = `http://localhost:3310/api/validation/${randomCode}/${email}`;
+    const lien = `${process.env.BACKEND_URL}/api/validation/${randomCode}/${email}`;
     const mailOptions = {
       from: process.env.NODE_USER,
       to: email,
@@ -58,7 +58,7 @@ class ActivationManager {
         pass: process.env.NODE_MAILER_KEY,
       },
     });
-    const lien = `http://localhost:3000/resetpassword?code=${randomCode}&email=${email}`;
+    const lien = `${process.env.FRONTEND_URL}/resetpassword?code=${randomCode}&email=${email}`;
     const mailOptions = {
       from: process.env.NODE_USER,
       to: email,

@@ -135,7 +135,7 @@ async function oAuth2Callback(req, res) {
 
     // Handle the successful video upload
     // console.log("Video uploaded successfully:", resUpload.data);
-    res.redirect("http://localhost:3000/admin").send(resUpload.data);
+    res.redirect(`${process.env.FRONTEND_URL}/admin`).send(resUpload.data);
   } catch (error) {
     console.error("Error uploading video:", error.message);
     res.status(500).send("Error uploading video");

@@ -208,7 +208,7 @@ async function activate(req, res) {
       if (affectedRows) {
         // delete activation code when account is validated
         await userManager.deleteActivationCode(email);
-        res.redirect("http://localhost:3000?activated=true");
+        res.redirect(`${process.env.FRONTEND_URL}?activated=true`);
         // res
         //   .status(200)
         //   .json({ message: "Votre compte est activé!!!", affectedRows });
