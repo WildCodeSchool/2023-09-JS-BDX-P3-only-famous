@@ -1,10 +1,12 @@
 const { google } = require("googleapis");
 const { OAuth2Client } = require("google-auth-library");
 const fs = require("fs");
+const VideoManager = require("../models/videoManager");
+// const path = require("path");
 require("dotenv").config();
 
 // let details = {};
-let tokensGoogle = null;
+// let tokensGoogle = null;
 
 async function getData(req, res) {
   // details = req.body;
@@ -26,7 +28,6 @@ const authUrl = oauth2Client.generateAuthUrl({
 
 // Endpoint to initiate YouTube authentication // "/initiate-auth",
 async function initiateAuth(req, res) {
-  // console.log(authUrl);
   res.send(authUrl);
 }
 
@@ -35,8 +36,10 @@ async function getYoutubeCodeBackUp(req, res) {
   try {
     const { tokens } = await oauth2Client.getToken(authorizationCode);
     oauth2Client.setCredentials(tokens);
-    tokensGoogle = tokens;
-    res.send(tokensGoogle);
+    // tokensGoogle = tokens;
+    // const halfPath = path.join(__dirname, "../../public");
+    // res.sendFile(`${halfPath}/test.html`);
+    res.send(tokens);
   } catch (error) {
     console.error(error.message);
   }
@@ -52,7 +55,7 @@ async function uploadVideo(req, res) {
     });
 
     const resUpload = await youtube.videos.insert({
-      part: "snippet,status",
+      part: "snippet,status,contentDetails",
       requestBody: {
         snippet: {
           title: `${details.title ?? "Titre générique"}`,
@@ -70,7 +73,22 @@ async function uploadVideo(req, res) {
         ), // Adjust the video file path
       },
     });
-    // console.log(resUpload);
+    const video = {
+      title: resUpload.data.snippet.title,
+      ytId: resUpload.data.id,
+      playlistId: "123456789",
+      playlistTitle: "testus occulus",
+      duration: "10:00",
+      publishedAt: resUpload.data.snippet.publishedAt.split("T")[0],
+      description:
+        resUpload.data.snippet.description?.replace(/['"*`]/g, "") ??
+        "sans description",
+      isPublic: 1,
+      thumbnails: "lorem",
+      tags: resUpload.data.snippet.tags,
+    };
+    const result = await VideoManager.create(video);
+    console.warn(result);
     res.status(200).send(resUpload);
   } catch (error) {
     console.error("Error uploading video:", error.message);

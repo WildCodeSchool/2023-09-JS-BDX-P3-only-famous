@@ -25,7 +25,7 @@ class VideoManager {
           video.duration,
           video.publishDate,
           video.tags,
-          video.isPublic ?? 0,
+          video.isPublic ?? 1,
         ]
       );
       return { message: "Vidéo ajoutée!!!", insertId: result.insertId };

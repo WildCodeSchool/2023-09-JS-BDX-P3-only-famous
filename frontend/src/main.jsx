@@ -23,7 +23,7 @@ import Videos from "./admin/Videos";
 import VideoContextProvider from "./context/videoContext";
 import AdminMain from "./admin/AdminMain";
 import Playlists from "./admin/Playlists";
-import VideoUpload from "./pages/VideoUpload";
+import VideoUpload from "./admin/VideoUpload";
 
 const router = createBrowserRouter([
   {
