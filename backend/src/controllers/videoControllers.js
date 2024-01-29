@@ -40,26 +40,6 @@ const read = async (req, res) => {
   }
 };
 
-async function getPlaylists(req, res) {
-  try {
-    const playlistId = req.params;
-    const playlists = await videoManager.readAllPlaylists(playlistId);
-    res.status(200).json({ playlists, message: "all good" });
-  } catch (err) {
-    res.sendStatus(404);
-  }
-}
-
-async function getPlaylistsByCategory(req, res) {
-  try {
-    const { category } = req.params;
-    const playlists = await videoManager.readAllPlaylistsByCategory(category);
-    res.status(200).json({ playlists, message: "all good" });
-  } catch (err) {
-    res.sendStatus(404);
-  }
-}
-
 const readPlaylist = async (req, res) => {
   try {
     const { playlistId } = req.query;
@@ -228,6 +208,25 @@ async function editPlaylist(req, res) {
   }
 }
 
+async function getPlaylistsByCategory(req, res) {
+  try {
+    const { category } = req.params;
+    const playlists = await videoManager.readAllPlaylistsByCategory(category);
+    res.status(200).json({ playlists, message: "all good" });
+  } catch (err) {
+    res.sendStatus(404);
+  }
+}
+
+async function getPlaylists(req, res) {
+  try {
+    const playlistId = req.params;
+    const playlists = await videoManager.readAllPlaylists(playlistId);
+    res.status(200).json({ playlists, message: "all good" });
+  } catch (err) {
+    res.sendStatus(404);
+  }
+}
 // Ready to export the controller functions
 module.exports = {
   browse,

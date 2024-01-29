@@ -49,20 +49,20 @@ export default function SingleLineVideo({
           ml={30}
           defaultValue={isHidden}
           checked={isHidden}
-          defaultChecked={isHidden}
           color="yellow.3"
           iconColor="dark.8"
           className="checkbox-navbar"
+          readOnly
         />
       </Grid.Col>
       <Grid.Col span={1}>
         <Checkbox
           ml={30}
-          defaultValue={isPublic}
           checked={isPublic}
           color="yellow.3"
           iconColor="dark.8"
           className="checkbox-navbar"
+          readOnly
         />
 
         {/* <input type="checkbox" checked={isAdmin} onChange={() => {}} /> */}

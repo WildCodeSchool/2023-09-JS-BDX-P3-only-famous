@@ -58,8 +58,10 @@ export default function VideoContextProvider({ children }) {
         `${import.meta.env.VITE_BACKEND_URL}/api/playlists/${category}`
       );
       setPlaylistsHome([...data.playlists]);
+      setPlaylists([...data.playlists]);
     } catch (err) {
       setPlaylistsHome([]);
+      setPlaylists([]);
     }
   }
 

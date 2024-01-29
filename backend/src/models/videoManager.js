@@ -51,15 +51,12 @@ class VideoManager {
   }
 
   static async readAllPlaylists() {
-    const [rows] = await database.query(`select * from playlist`);
-    return rows;
-  }
-
-  static async readAllPlaylistsByCategory(category) {
-    const [rows] = await database.query(
-      `select * from playlist where category like '%${category}%'`
-    );
-    return rows;
+    try {
+      const [rows] = await database.query(`select * from playlist`);
+      return rows;
+    } catch (error) {
+      throw new Error(error.message);
+    }
   }
 
   static async readAllById(ytId) {
@@ -151,6 +148,17 @@ class VideoManager {
       return res.affectedRows;
     } catch (err) {
       throw new Error(err.message);
+    }
+  }
+
+  static async readAllPlaylistsByCategory(category) {
+    try {
+      const [rows] = await database.query(
+        `select * from playlist where category like '%${category}%'`
+      );
+      return rows;
+    } catch (error) {
+      throw new Error(error.message);
     }
   }
 }
