@@ -34,4 +34,12 @@ routerVideo.get(
   videoControllers.getPlaylistsByCategory
 );
 
+// Route to add a new item
+routerVideo.post("/playlists", videoControllers.addPlaylist);
+
+routerVideo.delete("/playlists/:playlistId", videoControllers.destroyPlaylist);
+
+// Route to edit existed user readPlaylist
+routerVideo.patch("/playlists/:playlistId", videoControllers.editPlaylist);
+
 module.exports = routerVideo;

@@ -161,6 +161,73 @@ async function destroy(req, res) {
   }
 }
 
+// playlist manipulation
+async function addPlaylist(req, res) {
+  try {
+    const playlist = req.body;
+    // console.log("user added : ", user);
+    // Insert the item into the database
+    const { insertId, message } = await videoManager.createPlaylist(playlist);
+
+    // Respond with HTTP 201 (Created) and the ID of the newly inserted item
+    if (+insertId !== 0) {
+      res.status(201).json({ message, insertId });
+    } else {
+      res.status(500).json({ message, insertId });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message, insertId: 0 });
+  }
+}
+
+async function destroyPlaylist(req, res) {
+  try {
+    const { playlistId } = req.params;
+
+    const result = await videoManager.deletePlaylist(playlistId);
+    if (+result !== 0) {
+      res.status(200).json({ message: "Playliste supprimée ", success: true });
+    } else {
+      res
+        .status(404)
+        .json({ message: "Aucune playliste supprimée ", success: false });
+    }
+  } catch (error) {
+    res.status(404).json({ message: error.message, success: false });
+  }
+}
+
+async function editPlaylist(req, res) {
+  try {
+    const { playlistId } = req.params;
+    const playlist = req.body;
+
+    // console.log("user from body", user);
+    // Fetch a specific item from the database based on the provided ID
+    const affectedRows = await videoManager.updatePlaylist(
+      playlistId,
+      playlist
+    );
+
+    // console.log("row affected ", affectedRow);
+    // If the item is not found, respond with HTTP 404 (Not Found)
+    // Otherwise, respond with the item in JSON format
+    if (+affectedRows === 0) {
+      res.status(500).send({
+        message: "Playliste n'est pas mise à jour!!!",
+        affectedRow: 0,
+      });
+    } else {
+      res
+        .status(203)
+        .json({ message: "Playliste mise à jour!!!", affectedRow: 1 });
+    }
+  } catch (err) {
+    // Pass any errors to the error-handling middleware
+    res.status(404).json({ message: err.message, affectedRow: 0 });
+  }
+}
+
 // Ready to export the controller functions
 module.exports = {
   browse,
@@ -173,4 +240,7 @@ module.exports = {
   browsePlaylists,
   getPlaylists,
   getPlaylistsByCategory,
+  addPlaylist,
+  destroyPlaylist,
+  editPlaylist,
 };

@@ -106,6 +106,53 @@ class VideoManager {
       throw new Error(error.message);
     }
   }
+
+  // playlists manipulation
+  static async createPlaylist(playlist) {
+    try {
+      const [result] = await database.query(
+        `insert into playlist (
+        playlistTitle,
+        playlistId,
+        category)
+         values (?,?,?)`,
+        [playlist.playlistTitle, playlist.playlistId, playlist.category]
+      );
+      return { message: "Playliste ajoutée!!!", insertId: result.insertId };
+    } catch (err) {
+      throw new Error("Playlist non ajoutée");
+    }
+  }
+
+  static async deletePlaylist(playlistId) {
+    try {
+      const [res] = await database.query(
+        "delete from playlist WHERE playlistId = ?",
+        [playlistId]
+      );
+      return res.affectedRows;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  static async updatePlaylist(playlistId, playlist) {
+    try {
+      let sql = "UPDATE playlist set";
+      const sqlValues = [];
+      for (const [key, value] of Object.entries(playlist)) {
+        sql += `${sqlValues.length ? "," : ""} ${key} = ?`;
+
+        sqlValues.push(value);
+      }
+      sql += " where playlistId = ?";
+      sqlValues.push(playlistId);
+      const [res] = await database.query(sql, sqlValues);
+      return res.affectedRows;
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  }
 }
 
 module.exports = VideoManager;
