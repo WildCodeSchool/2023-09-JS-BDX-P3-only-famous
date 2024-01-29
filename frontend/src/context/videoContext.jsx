@@ -52,6 +52,19 @@ export default function VideoContextProvider({ children }) {
     }
   }
 
+  async function getAllPlaylistsPagination(start, offset) {
+    try {
+      const { data } = await axios.get(
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/api/playlistspagination?start=${start}&offset=${offset}`
+      );
+      setPlaylists([...data.playlists]);
+    } catch (err) {
+      setPlaylists([]);
+    }
+  }
+
   async function getAllPlaylistsByCategory(category) {
     try {
       const { data } = await axios.get(
@@ -74,6 +87,24 @@ export default function VideoContextProvider({ children }) {
     return data;
   }
 
+  async function deletePlaylistById(playlistId) {
+    const { data } = await axios.delete(
+      `${import.meta.env.VITE_BACKEND_URL}/api/playlists/${playlistId}`
+    );
+    if (data.success) {
+      const result = playlists.filter((ele) => ele.playlistId !== playlistId);
+      setPlaylists([...result]);
+    }
+  }
+
+  async function updatePlaylistById(playlistId, newPlaylist) {
+    const { data } = await axios.patch(
+      `${import.meta.env.VITE_BACKEND_URL}/api/playlists/${playlistId}`,
+      newPlaylist
+    );
+    return data;
+  }
+
   const adminData = useMemo(
     () => ({
       videos,
@@ -89,6 +120,9 @@ export default function VideoContextProvider({ children }) {
       playlistsHome,
       setPlaylistsHome,
       getAllPlaylistsByCategory,
+      deletePlaylistById,
+      updatePlaylistById,
+      getAllPlaylistsPagination,
     }),
     [
       videos,
@@ -104,6 +138,9 @@ export default function VideoContextProvider({ children }) {
       playlistsHome,
       setPlaylistsHome,
       getAllPlaylistsByCategory,
+      deletePlaylistById,
+      updatePlaylistById,
+      getAllPlaylistsPagination,
     ]
   );
 

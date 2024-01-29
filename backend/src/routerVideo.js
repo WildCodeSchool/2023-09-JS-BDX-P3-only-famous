@@ -42,4 +42,10 @@ routerVideo.delete("/playlists/:playlistId", videoControllers.destroyPlaylist);
 // Route to edit existed user readPlaylist
 routerVideo.patch("/playlists/:playlistId", videoControllers.editPlaylist);
 
+// getPlaylistsPagination
+routerVideo.get(
+  "/playlistspagination",
+  videoControllers.getPlaylistsPagination
+);
+
 module.exports = routerVideo;

@@ -188,10 +188,6 @@ async function editPlaylist(req, res) {
       playlistId,
       playlist
     );
-
-    // console.log("row affected ", affectedRow);
-    // If the item is not found, respond with HTTP 404 (Not Found)
-    // Otherwise, respond with the item in JSON format
     if (+affectedRows === 0) {
       res.status(500).send({
         message: "Playliste n'est pas mise à jour!!!",
@@ -227,6 +223,23 @@ async function getPlaylists(req, res) {
     res.sendStatus(404);
   }
 }
+
+async function getPlaylistsPagination(req, res) {
+  try {
+    const { start, offset } = req.query;
+    const playlists = await videoManager.readAllPlaylistsPagination(
+      start,
+      offset
+    );
+    res.status(200).json({
+      playlists: playlists.rows,
+      count: playlists.length,
+      message: "all good",
+    });
+  } catch (err) {
+    res.sendStatus(404);
+  }
+}
 // Ready to export the controller functions
 module.exports = {
   browse,
@@ -242,4 +255,5 @@ module.exports = {
   addPlaylist,
   destroyPlaylist,
   editPlaylist,
+  getPlaylistsPagination,
 };

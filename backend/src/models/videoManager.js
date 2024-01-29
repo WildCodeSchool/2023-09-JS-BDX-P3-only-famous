@@ -50,15 +50,6 @@ class VideoManager {
     return rows;
   }
 
-  static async readAllPlaylists() {
-    try {
-      const [rows] = await database.query(`select * from playlist`);
-      return rows;
-    } catch (error) {
-      throw new Error(error.message);
-    }
-  }
-
   static async readAllById(ytId) {
     const [rows] = await database.query(
       `select * from video where ytId like '${ytId}%'`
@@ -157,6 +148,34 @@ class VideoManager {
         `select * from playlist where category like '%${category}%'`
       );
       return rows;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  static async readAllPlaylists() {
+    try {
+      const [rows] = await database.query(`select * from playlist`);
+      return rows;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  // pagination
+
+  static async readAllPlaylistsPagination(start, offset) {
+    try {
+      // console.log("test");
+      const [count] = await database.query(
+        `select count(*) as length  from playlist`
+      );
+      // console.log(count[0]);
+      const [rows] = await database.query(
+        `select * from playlist limit ${start}, ${offset}`
+      );
+      // console.log(rows);
+      return { rows, ...count[0] };
     } catch (error) {
       throw new Error(error.message);
     }

@@ -5,10 +5,11 @@ import PlaylistTopLine from "../components/playlist/PlaylistTop";
 import TaskBarPlaylist from "../components/playlist/TaskBarPlaylist";
 
 export default function Playlists() {
-  const { playlists, getAllPlaylists } = useVideoContext();
+  const { playlists, getAllPlaylistsPagination } = useVideoContext();
+  // getAllPlaylists,
 
   useEffect(() => {
-    getAllPlaylists();
+    getAllPlaylistsPagination(0, 5);
   }, []);
   return (
     <>
