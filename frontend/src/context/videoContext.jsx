@@ -6,20 +6,24 @@ const videoContext = createContext();
 export default function VideoContextProvider({ children }) {
   const [videos, setVideos] = useState([]);
   const [playlists, setPlaylists] = useState([]);
+  const [playlistsHome, setPlaylistsHome] = useState([]);
 
   const video = useRef({});
 
   async function getVideoListFromPlaylist(playlistId) {
-    const { data } = await axios.get("http://localhost:3310/api/video", {
-      params: { playlistId },
-    });
+    const { data } = await axios.get(
+      `${import.meta.env.VITE_BACKEND_URL}/api/video`,
+      {
+        params: { playlistId },
+      }
+    );
     setVideos(data.rows);
   }
 
   async function runSearchVideo(ytId) {
     try {
       const { data } = await axios.get(
-        `http://localhost:3310/api/video/${ytId}`
+        `${import.meta.env.VITE_BACKEND_URL}/api/video/${ytId}`
       );
       setVideos([...data.rows]);
     } catch (err) {
@@ -29,7 +33,7 @@ export default function VideoContextProvider({ children }) {
 
   async function deleteVideoBId(ytId) {
     const { data } = await axios.delete(
-      `http://localhost:3310/api/video/${ytId}`
+      `${import.meta.env.VITE_BACKEND_URL}/api/video/${ytId}`
     );
     if (data.success) {
       const result = videos.filter((ele) => ele.ytId !== ytId);
@@ -39,16 +43,29 @@ export default function VideoContextProvider({ children }) {
 
   async function getAllPlaylists() {
     try {
-      const { data } = await axios.get("http://localhost:3310/api/playlists");
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/playlists`
+      );
       setPlaylists([...data.playlists]);
     } catch (err) {
       setPlaylists([]);
     }
   }
 
+  async function getAllPlaylistsByCategory(category) {
+    try {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/playlists/${category}`
+      );
+      setPlaylistsHome([...data.playlists]);
+    } catch (err) {
+      setPlaylistsHome([]);
+    }
+  }
+
   async function updateVideoById(ytId, { isHidden, isPublic }) {
     const { data } = await axios.patch(
-      `http://localhost:3310/api/video/${ytId}`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/video/${ytId}`,
       { isHidden, isPublic }
     );
 
@@ -67,6 +84,9 @@ export default function VideoContextProvider({ children }) {
       playlists,
       setPlaylists,
       getAllPlaylists,
+      playlistsHome,
+      setPlaylistsHome,
+      getAllPlaylistsByCategory,
     }),
     [
       videos,
@@ -79,6 +99,9 @@ export default function VideoContextProvider({ children }) {
       playlists,
       setPlaylists,
       getAllPlaylists,
+      playlistsHome,
+      setPlaylistsHome,
+      getAllPlaylistsByCategory,
     ]
   );
 
