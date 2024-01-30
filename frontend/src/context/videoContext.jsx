@@ -7,6 +7,7 @@ export default function VideoContextProvider({ children }) {
   const [videos, setVideos] = useState([]);
   const [playlists, setPlaylists] = useState([]);
   const [playlistsHome, setPlaylistsHome] = useState([]);
+  const [count, setcount] = useState(1);
 
   const video = useRef({});
 
@@ -60,6 +61,8 @@ export default function VideoContextProvider({ children }) {
         }/api/playlistspagination?start=${start}&offset=${offset}`
       );
       setPlaylists([...data.playlists]);
+      setcount(data.count);
+      // console.log(data);
     } catch (err) {
       setPlaylists([]);
     }
@@ -123,6 +126,8 @@ export default function VideoContextProvider({ children }) {
       deletePlaylistById,
       updatePlaylistById,
       getAllPlaylistsPagination,
+      count,
+      setcount,
     }),
     [
       videos,
@@ -141,6 +146,8 @@ export default function VideoContextProvider({ children }) {
       deletePlaylistById,
       updatePlaylistById,
       getAllPlaylistsPagination,
+      count,
+      setcount,
     ]
   );
 
