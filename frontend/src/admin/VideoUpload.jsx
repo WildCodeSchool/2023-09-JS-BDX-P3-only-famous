@@ -19,6 +19,7 @@ export default function VideoUpload() {
     description: "",
     tags: "",
     playlistId: "",
+    playlistTitle: "",
   });
   async function handleChange(e) {
     formData.append("file", e.target.files[0]);
@@ -47,6 +48,8 @@ export default function VideoUpload() {
       formData.append("description", datas.description);
       formData.append("tags", datas.tags);
       formData.append("playlistId", datas.playlistId);
+      formData.append("playlistTitle", datas.playlistTitle);
+
       setIsUploading(true);
       const { data } = await axios.post(
         "http://localhost:3310/upload/video",
@@ -136,7 +139,7 @@ export default function VideoUpload() {
             />
           </Input.Wrapper>
         </Grid.Col>{" "}
-        <Grid.Col span={12}>
+        <Grid.Col span={6}>
           <Input.Wrapper
             label="Playlist Id"
             withAsterisk
@@ -150,8 +153,21 @@ export default function VideoUpload() {
             />
           </Input.Wrapper>
         </Grid.Col>
+        <Grid.Col span={6}>
+          <Input.Wrapper
+            label="Titre playlist"
+            withAsterisk
+            description="Titre playliste"
+          >
+            <Input
+              name="playlistTitle"
+              placeholder="Titre playliste"
+              value={datas.playlistTitle}
+              onChange={(e) => handleInput(e)}
+            />
+          </Input.Wrapper>
+        </Grid.Col>
       </Grid>
-
       <Grid gutter={{ base: 5, xs: "md", md: "xl", xl: 50 }}>
         <Grid.Col span={3}>
           <Button
@@ -162,7 +178,7 @@ export default function VideoUpload() {
             Upload
           </Button>
         </Grid.Col>
-        <Grid.Col span={6}>{isUploading && <Loader size={28} />}</Grid.Col>
+        <Grid.Col span={6}>{isUploading && <Loader size={16} />}</Grid.Col>
       </Grid>
 
       <h2>{message}</h2>

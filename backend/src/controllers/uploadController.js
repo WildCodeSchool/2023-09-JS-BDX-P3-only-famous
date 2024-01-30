@@ -53,7 +53,6 @@ async function uploadVideo(req, res) {
       version: "v3",
       auth: oauth2Client,
     });
-
     const resUpload = await youtube.videos.insert({
       part: "snippet,status,contentDetails",
       requestBody: {
@@ -76,15 +75,16 @@ async function uploadVideo(req, res) {
     const video = {
       title: resUpload.data.snippet.title,
       ytId: resUpload.data.id,
-      playlistId: "123456789",
-      playlistTitle: "testus occulus",
+      playlistId: details.playlistId,
+      playlistTitle: details.playlistTitle ?? "playlist",
       duration: "10:00",
-      publishedAt: resUpload.data.snippet.publishedAt.split("T")[0],
+      publishDate:
+        resUpload.data.snippet.publishedAt.split("T")[0] ?? "1986-04-21",
       description:
         resUpload.data.snippet.description?.replace(/['"*`]/g, "") ??
         "sans description",
       isPublic: 1,
-      thumbnails: "lorem",
+      thumbnails: resUpload.data.snippet.thumbnails.high.url,
       tags: resUpload.data.snippet.tags,
     };
     const result = await VideoManager.create(video);
