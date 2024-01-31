@@ -32,6 +32,7 @@ async function initiateAuth(req, res) {
 }
 
 async function getYoutubeCodeBackUp(req, res) {
+  // console.log("called route ");
   const authorizationCode = req.query.code;
   try {
     const { tokens } = await oauth2Client.getToken(authorizationCode);
@@ -39,7 +40,11 @@ async function getYoutubeCodeBackUp(req, res) {
     // tokensGoogle = tokens;
     // const halfPath = path.join(__dirname, "../../public");
     // res.sendFile(`${halfPath}/test.html`);
-    res.send(tokens);
+    // console.log("token", tokens);
+    res.sendStatus(200);
+    // console.log("after sendinf answer");
+    res.end();
+    // console.log("after end answer");
   } catch (error) {
     console.error(error.message);
   }
