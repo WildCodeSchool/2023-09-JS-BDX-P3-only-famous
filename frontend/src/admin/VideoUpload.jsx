@@ -28,8 +28,11 @@ export default function VideoUpload() {
     setDatas({ ...datas, [e.currentTarget.name]: e.currentTarget.value });
   }
   async function redirection() {
-    const { data } = await axios.get("http://localhost:3310/upload/initialize");
+    const { data } = await axios.get(
+      `${import.meta.env.VITE_BACKEND_URL}/upload/initialize`
+    );
     setGoogleAuth(data);
+    window.open(data, "_blank").focus();
     // console.log(data);
   }
 
@@ -52,7 +55,7 @@ export default function VideoUpload() {
 
       setIsUploading(true);
       const { data } = await axios.post(
-        "http://localhost:3310/upload/video",
+        `${import.meta.env.VITE_BACKEND_URL}/upload/video`,
         formData
       );
       setIsUploading(false);

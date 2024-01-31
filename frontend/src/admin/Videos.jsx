@@ -26,6 +26,7 @@ export default function Videos() {
       </Grid>
       {videos.map((ele) => (
         <SingleLineVideo
+          key={ele.ytId}
           ytId={ele.ytId}
           titre={ele.title}
           isHidden={ele.isHidden}

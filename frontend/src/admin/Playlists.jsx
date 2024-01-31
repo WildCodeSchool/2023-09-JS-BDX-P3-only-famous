@@ -25,12 +25,13 @@ export default function Playlists() {
     <>
       <TaskBarPlaylist />
       <PlaylistTopLine />
-      {playlists.map((ele) => (
-        <h2>
+      {playlists.map((ele, index) => (
+        <h2 key={ele.playlistId}>
           <SingleLinePlaylist
             playlistId={ele.playlistId}
             playlistTitle={ele.playlistTitle}
             category={ele.category}
+            index={index}
           />
         </h2>
       ))}

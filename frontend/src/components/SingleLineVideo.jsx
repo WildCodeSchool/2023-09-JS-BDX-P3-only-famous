@@ -112,7 +112,7 @@ SingleLineVideo.propTypes = {
   titre: PropTypes.string.isRequired,
   isPublic: PropTypes.string.isRequired,
   isHidden: PropTypes.string.isRequired,
-  duration: PropTypes.number.isRequired,
+  duration: PropTypes.string.isRequired,
   playList: PropTypes.string.isRequired,
   playListId: PropTypes.string.isRequired,
 };

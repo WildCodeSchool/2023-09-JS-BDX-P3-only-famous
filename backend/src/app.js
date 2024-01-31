@@ -99,12 +99,14 @@ const router = require("./router");
 const routerVideo = require("./routerVideo");
 const routerAdmin = require("./routerAdmin");
 const routerUpload = require("./routerUpload");
+const routerYoutube = require("./routerYoutube");
 
 // Mount the API routes under the "/api" endpoint
 app.use("/api", router);
 app.use("/api", routerVideo);
 app.use("/admin", routerAdmin);
 app.use("/upload", routerUpload);
+app.use("/youtube", routerYoutube);
 
 /* ************************************************************************* */
 

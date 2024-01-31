@@ -8,9 +8,16 @@ export default function SingleLinePlaylist({
   playlistId,
   playlistTitle,
   category,
+  index,
 }) {
+  const { playlists, setPlaylists } = useVideoContext();
   const [showUpdate, setShowUpdate] = useState(false);
   const { deletePlaylistById } = useVideoContext();
+  const toggleShowUpdate = (newValue) => {
+    setShowUpdate(!showUpdate);
+    playlists[index] = { ...playlists[index], ...newValue };
+    setPlaylists([...playlists]);
+  };
   return (
     <>
       <Grid>
@@ -47,6 +54,7 @@ export default function SingleLinePlaylist({
             playlistId={playlistId}
             oldCategory={category}
             oldTitle={playlistTitle}
+            callback={toggleShowUpdate}
           />
         </Grid>
       )}
@@ -58,4 +66,5 @@ SingleLinePlaylist.propTypes = {
   playlistTitle: PropTypes.string.isRequired,
   category: PropTypes.string.isRequired,
   playlistId: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
 };

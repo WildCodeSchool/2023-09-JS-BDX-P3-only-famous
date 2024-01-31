@@ -240,6 +240,11 @@ async function getPlaylistsPagination(req, res) {
     res.sendStatus(404);
   }
 }
+
+async function addPlaylistFromYoutube(req, res) {
+  const { playlistId } = req.prams;
+  res.send(playlistId);
+}
 // Ready to export the controller functions
 module.exports = {
   browse,
@@ -256,4 +261,5 @@ module.exports = {
   destroyPlaylist,
   editPlaylist,
   getPlaylistsPagination,
+  addPlaylistFromYoutube,
 };

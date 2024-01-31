@@ -4,16 +4,27 @@ import PropTypes from "prop-types";
 
 import { useVideoContext } from "../../context/videoContext";
 
-export default function UpdatePlaylist({ playlistId, oldTitle, oldCategory }) {
+export default function UpdatePlaylist({
+  playlistId,
+  oldTitle,
+  oldCategory,
+  callback,
+}) {
   const [title, setTitle] = useState(oldTitle);
   const [category, setCategory] = useState(oldCategory);
   const { updatePlaylistById } = useVideoContext();
 
   async function update() {
-    await updatePlaylistById(playlistId, {
-      playlistTitle: title,
-      category,
-    });
+    try {
+      const newValue = {
+        playlistTitle: title,
+        category,
+      };
+      await updatePlaylistById(playlistId, newValue);
+      callback(newValue);
+    } catch (error) {
+      console.error(error.message);
+    }
   }
   return (
     <Grid>
@@ -54,4 +65,5 @@ UpdatePlaylist.propTypes = {
   playlistId: PropTypes.string.isRequired,
   oldTitle: PropTypes.string.isRequired,
   oldCategory: PropTypes.string.isRequired,
+  callback: PropTypes.func.isRequired,
 };
