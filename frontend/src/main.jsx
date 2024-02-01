@@ -25,6 +25,7 @@ import VideoContextProvider from "./context/videoContext";
 import AdminMain from "./admin/AdminMain";
 import Playlists from "./admin/Playlists";
 import VideoUpload from "./admin/VideoUpload";
+import AddPlaylist from "./admin/AddPlaylist";
 
 const router = createBrowserRouter([
   {
@@ -115,6 +116,10 @@ const router = createBrowserRouter([
           {
             path: "/admin/playlists",
             element: <Playlists />,
+          },
+          {
+            path: "/admin/addplaylist",
+            element: <AddPlaylist />,
           },
           {
             path: "/admin/upload",

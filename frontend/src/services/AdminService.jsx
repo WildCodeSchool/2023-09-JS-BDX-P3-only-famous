@@ -30,4 +30,17 @@ export default class AdminService {
       return { success: false, message: err.response.data.message };
     }
   }
+
+  static async addPlaylist(playlist) {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/youtube/playlist`,
+        playlist
+      );
+      return data;
+    } catch (err) {
+      console.error(err);
+      return { success: false, message: err.response.data.message };
+    }
+  }
 }

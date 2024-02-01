@@ -30,9 +30,9 @@ class YoutubeController {
       });
 
       if (insertId !== 0) {
-        res.status(200).json({ message: "done" });
+        res.status(200).json({ message: "done", succeed: true });
       } else {
-        res.status(200).json({ message: "nothing done" });
+        res.status(200).json({ message: "nothing done", succeed: false });
       }
     }
   }
