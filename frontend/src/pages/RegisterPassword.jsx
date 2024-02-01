@@ -29,13 +29,13 @@ export default function RegisterPassword() {
         ...formValue,
         password,
         isAdmin: 0,
-        imgUrl: "http://localhost:3310/uploads/default.png",
+        imgUrl: `${import.meta.env.VITE_BACKEND_URL}/uploads/default.png`,
       });
       refUser.current = {
         ...formValue,
         password,
         isAdmin: 0,
-        imgUrl: "http://localhost:3310/uploads/default.png",
+        imgUrl: `${import.meta.env.VITE_BACKEND_URL}/uploads/default.png`,
       };
       const isDone = await register(refUser.current);
       setMessage(() => messageUser);
