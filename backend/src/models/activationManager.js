@@ -10,7 +10,7 @@ class ActivationManager {
         pass: process.env.NODE_MAILER_KEY,
       },
     });
-    const lien = `http://localhost:3310/api/validation/${randomCode}/${email}`;
+    const lien = `${process.env.BACKEND_URL}/api/validation/${randomCode}/${email}`;
     const mailOptions = {
       from: process.env.NODE_USER,
       to: email,
@@ -19,7 +19,6 @@ class ActivationManager {
       Félicitations ! Votre compte sur la Banque de tutos, a été créé avec succès. Nous sommes ravis de vous accueillir dans notre communauté.
       En revanche, votre compte n'est pas activé.  </p>
       Avant de commencer à profiter pleinement de toutes les fonctionnalités de la Banque de tutos, veuillez activer votre compte en utilisant le code de validation ci-dessous :
-             ${randomCode}
 
              Activer votre compte en cliquand sur ce lien:
              <a href="${lien}">${lien}</a>
@@ -33,7 +32,6 @@ class ActivationManager {
         <p>Félicitations ! Votre compte sur la Banque de tutos, a été créé avec succès. Nous sommes ravis de vous accueillir dans notre communauté.</p>
         <p>En revanche, votre compte n'est pas activé.  </p>
         <p>Avant de commencer à profiter pleinement de toutes les fonctionnalités de la Banque de tutos, veuillez activer votre compte en utilisant le code de validation ci-dessous :</p>
-        <h1>${randomCode}</h1>
         <p>Activer votre compte en cliquand sur ce lien:</p>
         <a href="${lien}">${lien}</a>
         <p>Nous sommes impatients de vous voir explorer notre application et de profiter de toutes les fonctionnalités et tutoriels que nous avons à offrir. Merci de faire partie de notre communauté !</p>
@@ -60,7 +58,7 @@ class ActivationManager {
         pass: process.env.NODE_MAILER_KEY,
       },
     });
-    const lien = `http://localhost:3000/resetpassword?code=${randomCode}&email=${email}`;
+    const lien = `${process.env.FRONTEND_URL}/resetpassword?code=${randomCode}&email=${email}`;
     const mailOptions = {
       from: process.env.NODE_USER,
       to: email,
@@ -69,7 +67,6 @@ class ActivationManager {
       Félicitations ! Votre compte sur la Banque de tutos, a été créé avec succès. Nous sommes ravis de vous accueillir dans notre communauté.
       En revanche, votre compte n'est pas activé.  
       Avant de commencer à profiter pleinement de toutes les fonctionnalités de la Banque de tutos, veuillez activer votre compte en utilisant le code de validation ci-dessous :
-             ${randomCode}
 
              Activer votre compte en cliquand sur ce lien:
              ${lien}

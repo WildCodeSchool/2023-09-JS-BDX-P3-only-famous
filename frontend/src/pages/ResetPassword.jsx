@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Button, Container, Fieldset, Input } from "@mantine/core";
 import { useUserContext } from "../context/UserContext";
@@ -6,21 +6,24 @@ import Banner from "../components/Banner";
 import MyAlert from "../components/MyAlert";
 
 export default function ResetPassword() {
-  const [coord, setCoord] = useState({ email: "", code: "" });
+  const [searchParams] = useSearchParams();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState(false);
   const [errorBack, setErrorBack] = useState(false);
 
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { resetPassword } = useUserContext();
 
   async function handleErrorAndSend() {
     try {
       if (password === confirmPassword && password.length >= 4) {
-        const res = await resetPassword({ ...coord, password });
+        const res = await resetPassword({
+          email: searchParams.get("email") ?? "",
+          code: searchParams.get("code") ?? "",
+          password,
+        });
         if (res) {
           setMessage(res.message);
           navigate("/connexion");
@@ -35,12 +38,6 @@ export default function ResetPassword() {
     }
   }
 
-  useEffect(() => {
-    setCoord({
-      email: searchParams.get("email"),
-      code: searchParams.get("code"),
-    });
-  }, []);
   return (
     <div className="inscription_container">
       <Container size="xs">

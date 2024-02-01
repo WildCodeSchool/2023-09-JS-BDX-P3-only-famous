@@ -6,6 +6,7 @@ const path = require("path");
 const app = express();
 
 app.use(express.static(path.join(__dirname, "../public")));
+
 // Configure it
 
 /* ************************************************************************* */
@@ -97,11 +98,15 @@ app.use(express.json());
 const router = require("./router");
 const routerVideo = require("./routerVideo");
 const routerAdmin = require("./routerAdmin");
+const routerUpload = require("./routerUpload");
+const routerYoutube = require("./routerYoutube");
 
 // Mount the API routes under the "/api" endpoint
 app.use("/api", router);
 app.use("/api", routerVideo);
 app.use("/admin", routerAdmin);
+app.use("/upload", routerUpload);
+app.use("/youtube", routerYoutube);
 
 /* ************************************************************************* */
 
@@ -128,9 +133,9 @@ app.use(express.static(reactBuildPath));
 
 // Redirect unhandled requests to the react index file
 
-app.get("*", (req, res) => {
-  res.sendFile(`${reactBuildPath}/index.html`);
-});
+// app.get("*", (req, res) => {
+//   res.sendFile(`${reactBuildPath}/index.html`);
+// });
 
 /* ************************************************************************* */
 
