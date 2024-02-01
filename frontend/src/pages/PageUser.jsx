@@ -35,7 +35,7 @@ export default function PageUser() {
     formData.append("message", "testing");
 
     const { imgUrl } = await axios.post(
-      "http://localhost:3310/api/userimage",
+      `${import.meta.env.VITE_BACKEND_URL}/api/userimage`,
       formData
     );
     setUser({ ...user, imgUrl });
