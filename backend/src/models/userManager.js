@@ -65,6 +65,7 @@ class UserManager {
         [email]
       );
       if (rows[0]) {
+        delete rows[0].password;
         return rows[0];
       }
       return null;
