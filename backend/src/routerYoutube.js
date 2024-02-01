@@ -6,6 +6,7 @@ const routerYoutube = express.Router();
 const youtubeController = require("./controllers/youtubeController");
 
 routerYoutube.get("/playlist/:playlistId", youtubeController.addPlaylist);
+
 routerYoutube.post("/playlist", youtubeController.fetchPlaylistById);
 
 module.exports = routerYoutube;

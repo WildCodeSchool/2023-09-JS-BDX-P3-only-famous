@@ -180,10 +180,6 @@ class VideoManager {
       throw new Error(error.message);
     }
   }
-
-  // add playlist from youtube
-
-  // static async addPlaylistFromYoutube(playlistId) {}
 }
 
 module.exports = VideoManager;
