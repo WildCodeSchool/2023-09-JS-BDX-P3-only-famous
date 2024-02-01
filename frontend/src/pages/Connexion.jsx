@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button, Container, Fieldset, Input } from "@mantine/core";
 import { useUserContext } from "../context/UserContext";
 import Banner from "../components/Banner";
 
 export default function Connexion() {
-  const { login, setMessageUser } = useUserContext();
+  const { login, setMessageUser } = useUserContext("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -24,10 +24,6 @@ export default function Connexion() {
       setMessageUser("Email ou mot de passe non conformes");
     }
   }
-  useEffect(() => {
-    setMessageUser("");
-    window.scrollTo(0, 0);
-  }, []);
   return (
     <Container size="xs">
       <Banner imgUrl="./src/assets/banner.png" />

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Container, Fieldset, Input } from "@mantine/core";
 import { useUserContext } from "../context/UserContext";
 import RegisterCoord from "./RegisterCoord";
@@ -24,9 +24,7 @@ export default function RegisterUser() {
       setNext(true);
     }
   }
-  useEffect(() => {
-    window.scrollTo(0, 250);
-  }, []);
+
   return !next ? (
     <div className="inscription_container">
       <Container size="xs">

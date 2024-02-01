@@ -1,13 +1,12 @@
 import { createContext, useContext, useMemo, useRef, useState } from "react";
 import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import axios from "axios";
 import { useUserContext } from "./UserContext";
 import AdminService from "../services/AdminService";
 
 const adminContext = createContext();
 export default function AdminContextProvider({ children }) {
-  const navigate = useNavigate();
   const { user, setMessageUser } = useUserContext();
   const active = useRef(false);
   const admin = useRef(false);
@@ -90,12 +89,11 @@ export default function AdminContextProvider({ children }) {
       getUsersFiltered,
     ]
   );
-  if (!user.isAdmin) {
-    navigate("/");
-  }
 
-  return (
+  return user.isAdmin ? (
     <adminContext.Provider value={adminData}>{children}</adminContext.Provider>
+  ) : (
+    <Navigate to="/" />
   );
 }
 AdminContextProvider.propTypes = {

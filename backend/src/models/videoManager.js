@@ -24,8 +24,8 @@ class VideoManager {
           video.thumbnails,
           video.duration,
           video.publishDate,
-          video.tags,
-          video.isPublic ?? 0,
+          video.tags.join(","),
+          video.isPublic ?? 1,
         ]
       );
       return { message: "Vidéo ajoutée!!!", insertId: result.insertId };
@@ -34,10 +34,8 @@ class VideoManager {
       return { message: "Video non ajoutée!!!", insertId: 0 };
     }
   }
-  // The Rs of CRUD - Read operations
 
   static async read(ytId) {
-    // Execute the SQL SELECT query to retrieve a specific item by its ID
     const [rows] = await database.query(`select * from video where ytId = ?`, [
       ytId,
     ]);
@@ -48,48 +46,18 @@ class VideoManager {
   }
 
   static async readAll() {
-    // Execute the SQL SELECT query to retrieve all items from the "item" table
     const [rows] = await database.query(`select * from video`);
-    // Return the array of items
     return rows;
-  }
-
-  static async readAllPlaylists() {
-    // Execute the SQL SELECT query to retrieve all items from the "item" table
-    const [rows] = await database.query(`select * from playlist`);
-    // Return the array of items
-    return rows;
-  }
-
-  static async readAllPlaylistsByCategory(category) {
-    // Execute the SQL SELECT query to retrieve all items from the "item" table
-    const [rows] = await database.query(
-      `select * from playlist where category like '%${category}%'`
-    );
-    // Return the array of items
-    return rows;
-  }
-
-  static async readPlaylistById(playlistId) {
-    // Execute the SQL SELECT query to retrieve all items from the "item" table
-    const [rows] = await database.query(
-      `select * from video where playlistId like '${playlistId}%'`
-    );
-    // Return the array of items
-    return rows[0];
   }
 
   static async readAllById(ytId) {
-    // Execute the SQL SELECT query to retrieve all items from the "item" table
     const [rows] = await database.query(
       `select * from video where ytId like '${ytId}%'`
     );
-    // Return the array of items
     return rows;
   }
 
   static async readPlayList(playListId) {
-    // Execute the SQL SELECT query to retrieve all items from the "item" table
     const [rows] = await database.query(
       `select * from video where playlistId = ? `,
       [playListId]
@@ -99,15 +67,10 @@ class VideoManager {
       [playListId]
     );
 
-    // Return the array of items
     return { rows, title: playlist[0].playlistTitle };
   }
 
-  // The U of CRUD - Update operation
-  // TODO: Implement the update operation to modify an existing item
-
   static async update(ytId, video) {
-    // console.log(video);
     let sql = "UPDATE video set";
     const sqlValues = [];
     for (const [key, value] of Object.entries(video)) {
@@ -121,9 +84,6 @@ class VideoManager {
     return res.affectedRows;
   }
 
-  // The D of CRUD - Delete operation
-  // TODO: Implement the delete operation to remove an item by its ID
-
   static async delete(ytId) {
     try {
       const [res] = await database.query("delete from video WHERE ytId = ?", [
@@ -134,6 +94,96 @@ class VideoManager {
       throw new Error(error.message);
     }
   }
+
+  // playlists manipulation
+  static async createPlaylist(playlist) {
+    try {
+      const [result] = await database.query(
+        `insert into playlist (
+        playlistTitle,
+        playlistId,
+        category)
+         values (?,?,?)`,
+        [playlist.playlistTitle, playlist.playlistId, playlist.category]
+      );
+      return { message: "Playliste ajoutée!!!", insertId: result.insertId };
+    } catch (err) {
+      throw new Error("Playlist non ajoutée");
+    }
+  }
+
+  static async deletePlaylist(playlistId) {
+    try {
+      const [res] = await database.query(
+        "delete from playlist WHERE playlistId = ?",
+        [playlistId]
+      );
+      return res.affectedRows;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  static async updatePlaylist(playlistId, playlist) {
+    try {
+      let sql = "UPDATE playlist set";
+      const sqlValues = [];
+      for (const [key, value] of Object.entries(playlist)) {
+        sql += `${sqlValues.length ? "," : ""} ${key} = ?`;
+
+        sqlValues.push(value);
+      }
+      sql += " where playlistId = ?";
+      sqlValues.push(playlistId);
+      const [res] = await database.query(sql, sqlValues);
+      return res.affectedRows;
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  }
+
+  static async readAllPlaylistsByCategory(category) {
+    try {
+      const [rows] = await database.query(
+        `select * from playlist where category like '%${category}%'`
+      );
+      return rows;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  static async readAllPlaylists() {
+    try {
+      const [rows] = await database.query(`select * from playlist`);
+      return rows;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  // pagination
+
+  static async readAllPlaylistsPagination(start, offset) {
+    try {
+      // console.log("test");
+      const [count] = await database.query(
+        `select count(*) as length  from playlist`
+      );
+      // console.log(count[0]);
+      const [rows] = await database.query(
+        `select * from playlist limit ${start}, ${offset}`
+      );
+      // console.log(rows);
+      return { rows, ...count[0] };
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  // add playlist from youtube
+
+  // static async addPlaylistFromYoutube(playlistId) {}
 }
 
 module.exports = VideoManager;

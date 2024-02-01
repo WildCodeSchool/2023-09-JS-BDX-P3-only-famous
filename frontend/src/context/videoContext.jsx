@@ -7,12 +7,13 @@ export default function VideoContextProvider({ children }) {
   const [videos, setVideos] = useState([]);
   const [playlists, setPlaylists] = useState([]);
   const [playlistsHome, setPlaylistsHome] = useState([]);
+  const [count, setcount] = useState(1);
 
   const video = useRef({});
 
   async function getVideoListFromPlaylist(playlistId) {
     const { data } = await axios.get(
-      `${import.meta.env.VITE_BACKEND_URL}/api/video`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/playlist`,
       {
         params: { playlistId },
       }
@@ -52,14 +53,31 @@ export default function VideoContextProvider({ children }) {
     }
   }
 
+  async function getAllPlaylistsPagination(start, offset) {
+    try {
+      const { data } = await axios.get(
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/api/playlistspagination?start=${start}&offset=${offset}`
+      );
+      setPlaylists([...data.playlists]);
+      setcount(data.count);
+      // console.log(data);
+    } catch (err) {
+      setPlaylists([]);
+    }
+  }
+
   async function getAllPlaylistsByCategory(category) {
     try {
       const { data } = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/api/playlists/${category}`
       );
       setPlaylistsHome([...data.playlists]);
+      setPlaylists([...data.playlists]);
     } catch (err) {
       setPlaylistsHome([]);
+      setPlaylists([]);
     }
   }
 
@@ -69,6 +87,24 @@ export default function VideoContextProvider({ children }) {
       { isHidden, isPublic }
     );
 
+    return data;
+  }
+
+  async function deletePlaylistById(playlistId) {
+    const { data } = await axios.delete(
+      `${import.meta.env.VITE_BACKEND_URL}/api/playlists/${playlistId}`
+    );
+    if (data.success) {
+      const result = playlists.filter((ele) => ele.playlistId !== playlistId);
+      setPlaylists([...result]);
+    }
+  }
+
+  async function updatePlaylistById(playlistId, newPlaylist) {
+    const { data } = await axios.patch(
+      `${import.meta.env.VITE_BACKEND_URL}/api/playlists/${playlistId}`,
+      newPlaylist
+    );
     return data;
   }
 
@@ -87,6 +123,11 @@ export default function VideoContextProvider({ children }) {
       playlistsHome,
       setPlaylistsHome,
       getAllPlaylistsByCategory,
+      deletePlaylistById,
+      updatePlaylistById,
+      getAllPlaylistsPagination,
+      count,
+      setcount,
     }),
     [
       videos,
@@ -102,6 +143,11 @@ export default function VideoContextProvider({ children }) {
       playlistsHome,
       setPlaylistsHome,
       getAllPlaylistsByCategory,
+      deletePlaylistById,
+      updatePlaylistById,
+      getAllPlaylistsPagination,
+      count,
+      setcount,
     ]
   );
 

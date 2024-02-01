@@ -1,11 +1,9 @@
-import { Checkbox, Container, Input } from "@mantine/core";
+import { Container, Input } from "@mantine/core";
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { useVideoContext } from "../context/videoContext";
 
 export default function VideoBar() {
-  const [isPublic, setIsPublic] = useState(false);
-  const [isHidden, setIsHidden] = useState(false);
   const [video, setVideo] = useState();
   const { runSearchVideo } = useVideoContext();
 
@@ -25,24 +23,6 @@ export default function VideoBar() {
           runSearchVideo(e.target.value);
           setVideo(e.currentTarget.value);
         }}
-      />
-      <Checkbox
-        ml={10}
-        checked={isPublic}
-        onChange={() => setIsPublic(!isPublic)}
-        label="Publique?"
-        color="yellow.3"
-        iconColor="dark.8"
-        className="checkbox-navbar"
-      />
-      <Checkbox
-        ml={10}
-        checked={isHidden}
-        onChange={() => setIsHidden(!isHidden)}
-        label="Cachée"
-        color="yellow.3"
-        iconColor="dark.8"
-        className="checkbox-navbar"
       />
     </Container>
   );

@@ -10,9 +10,12 @@ export default function PrimeCarousel({ playlistId }) {
   const [playlistTitle, setPlaylistTitle] = useState("");
   useEffect(() => {
     async function getData() {
-      const { data } = await axios.get("http://localhost:3310/api/playlist", {
-        params: { playlistId },
-      });
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/playlist`,
+        {
+          params: { playlistId },
+        }
+      );
       setVideos(data.rows);
       setPlaylistTitle(data.title);
     }

@@ -172,10 +172,15 @@ async function destroy(req, res) {
 // update imgUrl f
 async function updateImage(req, res) {
   try {
+    // console.log(req);
     const token = req.headers.authorization.split(" ")[1];
     const { email } = jwtDecode.jwtDecode(token);
-    const result = await userManager.update({
-      email,
+    // const result = await userManager.update({
+    //   email,
+    //   imgUrl: req.newPath,
+    // });
+
+    const result = await userManager.updateGeneric(email, {
       imgUrl: req.newPath,
     });
 
@@ -203,7 +208,7 @@ async function activate(req, res) {
       if (affectedRows) {
         // delete activation code when account is validated
         await userManager.deleteActivationCode(email);
-        res.redirect("http://localhost:3000?activated=true");
+        res.redirect(`${process.env.FRONTEND_URL}?activated=true`);
         // res
         //   .status(200)
         //   .json({ message: "Votre compte est activé!!!", affectedRows });

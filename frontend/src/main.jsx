@@ -23,12 +23,7 @@ import Videos from "./admin/Videos";
 import VideoContextProvider from "./context/videoContext";
 import AdminMain from "./admin/AdminMain";
 import Playlists from "./admin/Playlists";
-
-// async function timeOut(time = 3000){
-//   setTimeout(() => {
-//     console.log('timeout done ');
-//   }, time);
-// }
+import VideoUpload from "./admin/VideoUpload";
 
 const router = createBrowserRouter([
   {
@@ -98,6 +93,10 @@ const router = createBrowserRouter([
           {
             path: "/admin/playlists",
             element: <Playlists />,
+          },
+          {
+            path: "/admin/upload",
+            element: <VideoUpload />,
           },
         ],
       },
