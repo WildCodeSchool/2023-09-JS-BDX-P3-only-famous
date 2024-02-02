@@ -36,7 +36,7 @@ const router = createBrowserRouter([
         };
         try {
           const { data } = await axios.get(
-            "http://localhost:3310/api/getprofile"
+            `${import.meta.env.VITE_BACKEND_URL}/api/getprofile`
           );
           return data;
         } catch (err) {
