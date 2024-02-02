@@ -32,7 +32,8 @@ export default function VideoUpload() {
       `${import.meta.env.VITE_BACKEND_URL}/upload/initialize`
     );
     setGoogleAuth(data);
-    window.open(data, "_blank").focus();
+    window.location.href = data;
+    // window.open(data, "_blank").focus();
     // console.log(data);
   }
 

@@ -1,23 +1,18 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { createContext, useContext, useMemo, useState } from "react";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import axios from "axios";
-import { jwtDecode } from "jwt-decode";
 
 const userContext = createContext();
 
 export default function UserContextProvider({ children }) {
+  const userData = useLoaderData();
+
   const [user, setUser] = useState({
-    isAdmin: false,
-    isConnected: false,
-    firstname: "",
-    lastname: "",
-    email: "",
-    imgUrl: "",
-    isActive: 0,
+    ...userData,
+    isConnected: !!userData,
   });
   const [mobileMode, setMobileMode] = useState(true);
-  // state used in user creation request
   const [formValue, setFormValue] = useState({
     email: "",
     password: "",
@@ -27,36 +22,10 @@ export default function UserContextProvider({ children }) {
     isAdmin: 0,
     imgUrl: `${import.meta.env.VITE_BACKEND_URL}/uploads/default.png`,
   });
-  // message used to show message received from back-end mainly
   const [messageUser, setMessageUser] = useState("");
-  // Details of videos, links data.... used in Single page video, to show the video and play it
   const [linkToVideo, setLinkToVideo] = useState({});
   const navigate = useNavigate();
 
-  // function readAndCheckToken() {
-  //   const token = localStorage.getItem("token");
-  //   if (token) {
-  //     const decoded = jwtDecode(token);
-  //     axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-  //     return decoded.exp > Date.now();
-  //   }
-  //   axios.defaults.headers.common.Authorization = `Bearer ""`;
-  //   return false;
-  // }
-
-  // function that decode token and store data from it in the user state
-  function decodeToken(token) {
-    const decoded = jwtDecode(token);
-    if (decoded.exp > Date.now() / 1000) {
-      axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-      return true;
-    }
-    localStorage.removeItem("token");
-    localStorage.removeItem("users");
-    return false;
-  }
-  // function used to send login and password to back end to check its validity
-  // then get back the token and the  user's data from the back-end
   async function checkCredentials(credentials) {
     try {
       const { headers, data } = await axios.post(
@@ -74,7 +43,6 @@ export default function UserContextProvider({ children }) {
     }
   }
 
-  // function to update forgotten password
   async function resetPassword(credentials) {
     try {
       const { data } = await axios.post(
@@ -90,17 +58,13 @@ export default function UserContextProvider({ children }) {
     }
   }
 
-  // update localStorage
   function updateLocalStorage(userInfo) {
-    localStorage.setItem("token", JSON.stringify(userInfo.token));
-    localStorage.setItem("users", JSON.stringify(userInfo.users));
+    localStorage.setItem("token", userInfo.token);
   }
   function emptyStorage() {
     localStorage.removeItem("token");
-    localStorage.removeItem("users");
   }
 
-  // function to update firstname and lastname
   async function updateName(credentials) {
     try {
       const { data } = await axios.post(
@@ -116,7 +80,6 @@ export default function UserContextProvider({ children }) {
     }
   }
 
-  // send reset link
   async function sendResetLink(email) {
     try {
       const { data } = await axios.post(
@@ -131,8 +94,6 @@ export default function UserContextProvider({ children }) {
     }
   }
 
-  // function called when user login, it calls internally the checkCredential function, and set
-  // the token in the storage, and set it in the header of every http request
   async function login(credentials) {
     const { headers, userdb, message } = await checkCredentials(credentials);
     if (userdb) {
@@ -154,7 +115,7 @@ export default function UserContextProvider({ children }) {
       setMessageUser(message);
     }
   }
-  // function called when use is prepare to be created
+
   async function register(newUser) {
     try {
       const { message, insertId } = await axios.post(
@@ -174,13 +135,11 @@ export default function UserContextProvider({ children }) {
     }
   }
 
-  // function called to logout use, it empty the localstorage as well
   function logout() {
     setUser({ admin: false, isConnected: false });
     emptyStorage();
   }
 
-  // activate account
   async function activateAccount(email, code) {
     try {
       const { affectedRows } = await axios.patch(
@@ -198,32 +157,6 @@ export default function UserContextProvider({ children }) {
       return { message: "Erreur de validation!!! code éroné ?", result: false };
     }
   }
-
-  function onLoadPage() {
-    const userLs = JSON.parse(localStorage.getItem("users"));
-    const token = JSON.parse(localStorage.getItem("token"));
-
-    if (token && decodeToken(token)) {
-      setUser({
-        isAdmin: userLs.isAdmin,
-        isConnected: true,
-        firstname: userLs.firstname,
-        lastname: userLs.lastname,
-        isActive: userLs.isActive,
-        imgUrl: userLs.imgUrl,
-      });
-    } else {
-      setUser({
-        isAdmin: 0,
-        isConnected: false,
-        firstname: "",
-        lastname: "",
-      });
-    }
-  }
-  useEffect(() => {
-    onLoadPage();
-  }, []);
 
   const contextData = useMemo(
     () => ({

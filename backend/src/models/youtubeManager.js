@@ -86,20 +86,6 @@ class youtubeManager {
     }
   }
 
-  static async fetchAsyncVideosList(items, index, output) {
-    if (index >= 0) {
-      const result = await this.fetchSingleVideo(
-        items[index].snippet.resourceId.videoId
-      );
-      // console.log(result);
-      // console.log("Index after printing ", index);
-      output.push(result);
-      // const { message } = await VideoManager.create(result);
-      // console.warn(message);
-      youtubeManager.fetchAsyncVideosList(items, index - 1);
-    }
-  }
-
   static async fetchSinglePlaylist(items, obj, playlistId, playlistTitle) {
     try {
       /* eslint-disable no-await-in-loop */

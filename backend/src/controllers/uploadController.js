@@ -41,9 +41,7 @@ async function getYoutubeCodeBackUp(req, res) {
     // const halfPath = path.join(__dirname, "../../public");
     // res.sendFile(`${halfPath}/test.html`);
     // console.log("token", tokens);
-    res.sendStatus(200);
-    // console.log("after sendinf answer");
-    res.end();
+    res.redirect(`${process.env.FRONTEND_URL}/admin/upload`);
     // console.log("after end answer");
   } catch (error) {
     console.error(error.message);
