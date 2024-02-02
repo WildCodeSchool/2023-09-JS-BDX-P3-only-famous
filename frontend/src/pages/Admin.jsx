@@ -8,6 +8,7 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Link, Outlet, useNavigate } from "react-router-dom";
+import logo from "../assets/Logo.png";
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ export default function Admin() {
             }}
           >
             <img
-              src="./src/assets/logo.png"
+              src={logo}
               alt="logo"
               className="logo-admin"
               height="50"
