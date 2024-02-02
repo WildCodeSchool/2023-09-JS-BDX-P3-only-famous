@@ -8,6 +8,7 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Link, Outlet, useNavigate } from "react-router-dom";
+import logo from "../assets/Logo.png";
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ export default function Admin() {
             }}
           >
             <img
-              src="./src/assets/logo.png"
+              src={logo}
               alt="logo"
               className="logo-admin"
               height="50"
@@ -56,14 +57,14 @@ export default function Admin() {
       </AppShell.Header>
       <AppShell.Navbar p="lg" className="side-bar">
         <h2 className="dashboard">Dashboard</h2>
-        <Progress />
+        <Progress h={12} />
         <Button
           className="sidebar-titles gray-8"
           onClick={() => navigate("/admin/users")}
         >
           Utilisateur
         </Button>
-        <Progress h={4} className="gray-8" />
+        <Progress h={12} />
         <Button
           className="sidebar-titles gray-8"
           onClick={() => navigate("/admin/videos")}
@@ -71,18 +72,27 @@ export default function Admin() {
           Vidéo
         </Button>
         <Progress h={4} className="gray-8" />
-        <Button
-          className="sidebar-titles gray-8"
-          onClick={() => navigate("/admin/playlists")}
-        >
-          Playlistes
-        </Button>
-        <Progress h={4} className="gray-8" />
+
         <Button
           className="sidebar-titles gray-8"
           onClick={() => navigate("/admin/upload")}
         >
           Upload
+        </Button>
+        {/* <Progress h={4} className="gray-8" /> */}
+        <Progress h={12} />
+        <Button
+          className="sidebar-titles gray-8"
+          onClick={() => navigate("/admin/addplaylist")}
+        >
+          Ajouter PlayListe
+        </Button>
+        <Progress h={4} className="gray-8" />
+        <Button
+          className="sidebar-titles gray-8"
+          onClick={() => navigate("/admin/playlists")}
+        >
+          Playlistes
         </Button>
         <Progress h={4} className="gray-8" />
       </AppShell.Navbar>

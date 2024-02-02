@@ -10,6 +10,7 @@ export default function AdminContextProvider({ children }) {
   const { user, setMessageUser } = useUserContext();
   const active = useRef(false);
   const admin = useRef(false);
+  const [addPlaylistDone, setAddPlaylistDone] = useState(true);
 
   const [users, setUsers] = useState([]);
 
@@ -67,6 +68,22 @@ export default function AdminContextProvider({ children }) {
       throw new Error(error.message);
     }
   }
+
+  async function addPlaylist(playlist) {
+    try {
+      setAddPlaylistDone(() => false);
+      const { success } = await AdminService.addPlaylist(playlist);
+      if (success) {
+        setAddPlaylistDone(() => true);
+      } else {
+        setAddPlaylistDone(() => true);
+      }
+    } catch (error) {
+      setMessageUser(error.message);
+      throw new Error(error.message);
+    }
+  }
+
   const adminData = useMemo(
     () => ({
       admin,
@@ -77,6 +94,9 @@ export default function AdminContextProvider({ children }) {
       runSearch,
       active,
       getUsersFiltered,
+      addPlaylistDone,
+      setAddPlaylistDone,
+      addPlaylist,
     }),
     [
       admin,
@@ -87,6 +107,9 @@ export default function AdminContextProvider({ children }) {
       runSearch,
       active,
       getUsersFiltered,
+      addPlaylistDone,
+      setAddPlaylistDone,
+      addPlaylist,
     ]
   );
 

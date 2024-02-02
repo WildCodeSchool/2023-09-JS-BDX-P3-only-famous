@@ -4,8 +4,11 @@ const youtubeManager = require("../models/youtubeManager");
 class YoutubeController {
   static async addPlaylist(req, res) {
     try {
-      const { playlistId } = req.params;
-      const items = await youtubeManager.fetchPlaylistItems(playlistId);
+      const { playlistId, playlistTitle } = req.params;
+      const items = await youtubeManager.fetchPlaylistItems(
+        playlistId,
+        playlistTitle
+      );
       res.json(items);
     } catch (error) {
       console.warn(error.message);
@@ -25,13 +28,13 @@ class YoutubeController {
         playlistTitle,
         category,
       });
-      if (insertId === 1) {
-        res.status(200).json({ message: "done" });
+
+      if (insertId !== 0) {
+        res.status(200).json({ message: "done", succeed: true });
       } else {
-        res.status(200).json({ message: "nothing done" });
+        res.status(200).json({ message: "nothing done", succeed: false });
       }
     }
-    // res.json(result);
   }
 }
 

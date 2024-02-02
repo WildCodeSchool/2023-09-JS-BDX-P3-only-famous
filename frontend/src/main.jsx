@@ -5,6 +5,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import { MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
+import axios from "axios";
 
 import App from "./App";
 import Connexion from "./pages/Connexion";
@@ -24,9 +25,31 @@ import VideoContextProvider from "./context/videoContext";
 import AdminMain from "./admin/AdminMain";
 import Playlists from "./admin/Playlists";
 import VideoUpload from "./admin/VideoUpload";
+import AddPlaylist from "./admin/AddPlaylist";
 
 const router = createBrowserRouter([
   {
+    loader: async () => {
+      if (localStorage.getItem("token")) {
+        axios.defaults.headers.common = {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        };
+        try {
+          const { data } = await axios.get(
+            "http://localhost:3310/api/getprofile"
+          );
+          return data;
+        } catch (err) {
+          axios.defaults.headers.common = {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          };
+        }
+      }
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ""`,
+      };
+      return {};
+    },
     element: (
       <VideoContextProvider>
         <UserContextProvider>
@@ -93,6 +116,10 @@ const router = createBrowserRouter([
           {
             path: "/admin/playlists",
             element: <Playlists />,
+          },
+          {
+            path: "/admin/addplaylist",
+            element: <AddPlaylist />,
           },
           {
             path: "/admin/upload",

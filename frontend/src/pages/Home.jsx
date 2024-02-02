@@ -18,7 +18,6 @@ function Home() {
     <Container size="lg">
       <h1 className="main-title">Choisissez votre langage</h1>
       <Tag />
-      <PrimeCarousel playlistId="PLjwdMgw5TTLUEOKPg5Z5TgwAOeWkjGL69" />
       {playlistsHome.map((ele) => (
         <PrimeCarousel playlistId={ele.playlistId} key={ele.playlistId} />
       ))}
