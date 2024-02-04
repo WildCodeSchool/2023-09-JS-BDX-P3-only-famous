@@ -25,7 +25,7 @@ CREATE TABLE if not exists `user` (
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'mahdi','mcheik','mahdi.mcheik@hotmail.fr','1986-04-21','$2b$04$H5hYVhHAo7tB6j1hog0uuORJqzukXIWMPMZD/VrGuwZR9H6FbFV12',1,1,'http://localhost:3310/uploads/1706279367614_map-of-the-world-2401458_1920.jpg','92b98e1d-e424-4dd9-90c4-fa9fe66f6fd1') ON DUPLICATE KEY UPDATE 
+INSERT INTO `user` VALUES (1,'mahdi','mcheik','mahdi.mcheik@hotmail.fr','1986-04-21','$2b$04$H5hYVhHAo7tB6j1hog0uuORJqzukXIWMPMZD/VrGuwZR9H6FbFV12',1,1,'http://localhost:3310/uploads/1706279367614_map-of-the-world-2401458_1920.jpg','92b98e1d-e424-4dd9-90c4-fa9fe66f6fd1', 'lolus') ON DUPLICATE KEY UPDATE 
 `id` = VALUES(`id`),
 `firstname` = VALUES(`firstname`),
 `lastname` = VALUES(`lastname`),
@@ -35,7 +35,8 @@ INSERT INTO `user` VALUES (1,'mahdi','mcheik','mahdi.mcheik@hotmail.fr','1986-04
 `isAdmin` = VALUES(`isAdmin`),
 `isActive` = VALUES(`isActive`),
 `imgUrl` = VALUES(`imgUrl`),
-`activationCode` = VALUES(`activationCode`)
+`activationCode` = VALUES(`activationCode`),
+`description` = VALUES(`description`)
 ;
 
 CREATE TABLE if not exists `video` (
