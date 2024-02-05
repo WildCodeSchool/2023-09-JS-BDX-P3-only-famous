@@ -24,7 +24,7 @@ class VideoManager {
           video.thumbnails,
           video.duration,
           video.publishDate,
-          video.tags.join(","),
+          video.tags,
           video.isPublic ?? 1,
         ]
       );

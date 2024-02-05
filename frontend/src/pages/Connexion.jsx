@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button, Container, Fieldset, Input } from "@mantine/core";
 import { useUserContext } from "../context/UserContext";
 import Banner from "../components/Banner";
+import bannerImage from "../assets/banner.png";
 
 export default function Connexion() {
   const { login, setMessageUser } = useUserContext("");
@@ -26,7 +27,7 @@ export default function Connexion() {
   }
   return (
     <Container size="xs">
-      <Banner imgUrl="./src/assets/banner.png" />
+      <Banner imgUrl={bannerImage} />
       <h2>La banque de tutos</h2>
       <Fieldset legend="Coordonnées" radius="sm" className="transparent">
         <Input

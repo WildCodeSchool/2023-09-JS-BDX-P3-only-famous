@@ -4,10 +4,11 @@ const youtubeManager = require("../models/youtubeManager");
 class YoutubeController {
   static async addPlaylist(req, res) {
     try {
-      const { playlistId, playlistTitle } = req.params;
+      const { playlistId, playlistTitle, category } = req.params;
       const items = await youtubeManager.fetchPlaylistItems(
         playlistId,
-        playlistTitle
+        playlistTitle,
+        category
       );
       res.json(items);
     } catch (error) {
@@ -20,7 +21,8 @@ class YoutubeController {
     const { playlistId, playlistTitle, category } = req.body;
     const result = await youtubeManager.fetchPlaylistItems(
       playlistId,
-      playlistTitle
+      playlistTitle,
+      category
     );
     if (result.succed) {
       const { insertId } = await VideoManager.createPlaylist({
