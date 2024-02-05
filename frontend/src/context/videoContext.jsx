@@ -6,9 +6,14 @@ const videoContext = createContext();
 export default function VideoContextProvider({ children }) {
   const [videos, setVideos] = useState([]);
   const [playlists, setPlaylists] = useState([]);
-  const [playlistsHome, setPlaylistsHome] = useState([]);
+  const [playlistsHome, setPlaylistsHome] = useState([
+    { playlistId: "PLjwdMgw5TTLXgsTQE_1PpRkC_yX47ZcGV" },
+    { playlistId: "PLNgSFZ9yC06Ifg4MDVbu2gJLDI3cjhsJ5" },
+    { playlistId: "PLTjRvDozrdlxzQet01qZBt-sRG8bbDggv" },
+    { playlistId: "PLjwdMgw5TTLXP6JWACTxDqun0jJ5_sYvK" },
+  ]);
   const [count, setcount] = useState(1);
-  // const [recommendCarroussel, setRecommendedVideos] =
+  const [recommendedCarroussel, setRecommendedCaroussel] = useState([]);
 
   const video = useRef({});
 
@@ -129,6 +134,8 @@ export default function VideoContextProvider({ children }) {
       getAllPlaylistsPagination,
       count,
       setcount,
+      recommendedCarroussel,
+      setRecommendedCaroussel,
     }),
     [
       videos,
