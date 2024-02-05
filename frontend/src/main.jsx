@@ -30,25 +30,24 @@ import AddPlaylist from "./admin/AddPlaylist";
 const router = createBrowserRouter([
   {
     loader: async () => {
-      if (localStorage.getItem("token")) {
-        axios.defaults.headers.common = {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        };
-        try {
-          const { data } = await axios.get(
-            "http://localhost:3310/api/getprofile"
-          );
-          return data;
-        } catch (err) {
-          axios.defaults.headers.common = {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          };
-        }
-      }
       axios.defaults.headers.common = {
-        Authorization: `Bearer ""`,
+        Authorization: `Bearer ${localStorage.getItem("token") ?? ""}`,
       };
-      return {};
+
+      let loaderData = {};
+
+      try {
+        if (localStorage.getItem("token")) {
+          const { data } = await axios.get(
+            `${import.meta.env.VITE_BACKEND_URL}/api/getprofile`
+          );
+          loaderData = data;
+        }
+      } catch (err) {
+        console.error(err.message);
+      }
+
+      return loaderData;
     },
     element: (
       <VideoContextProvider>

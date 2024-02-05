@@ -11,13 +11,17 @@ import {
   Input,
   Progress,
   Spoiler,
+  Textarea,
 } from "@mantine/core";
 import { useUserContext } from "../context/UserContext";
 import MyAlert from "../components/MyAlert";
 
 export default function PageUser() {
-  const { user, setUser, sendResetLink, updateName } = useUserContext();
+  const { user, setUser, sendResetLink, updateName, updateDescription } =
+    useUserContext();
   const [firstname, setFirstname] = useState(user.firstname);
+  const [description, setDescription] = useState(user.description);
+
   const [lastname, setLastname] = useState(user.lastname);
   const [message, setMessage] = useState("");
   const [error, setError] = useState(false);
@@ -59,6 +63,17 @@ export default function PageUser() {
     }
   }
 
+  async function updateDesc() {
+    // console.log("descitp", description);
+    const res = await updateDescription({ email: user.email, description });
+    setMessageUpdateInfos(res.message);
+    if (res.result) {
+      setUser({ ...user, description });
+    } else {
+      setMessageUpdateInfos("Nom ou prénom pas conformes");
+    }
+  }
+
   return user.isConnected ? (
     <Container size="md">
       <Center
@@ -82,12 +97,16 @@ export default function PageUser() {
           <div>
             <Spoiler maxHeight={200} showLabel="Show more" hideLabel="Hide">
               <h3>Profil</h3>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga
-              quibusdam dolorum at explicabo nostrum? A quae sapiente, commodi
-              optio rem unde voluptas voluptatum harum minima repellendus
-              maxime, ullam, velit veritatis!
+              <Textarea
+                type="text"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
             </Spoiler>
           </div>
+          <Button type="button" onClick={() => updateDesc()}>
+            Mettre à jour
+          </Button>
           <input
             type="file"
             accept="image/png, image/jpeg"

@@ -7,7 +7,7 @@ const userContext = createContext();
 
 export default function UserContextProvider({ children }) {
   const userData = useLoaderData();
-
+  // console.log("userdata", userData);
   const [user, setUser] = useState({
     ...userData,
     isConnected: !!userData,
@@ -80,6 +80,21 @@ export default function UserContextProvider({ children }) {
     }
   }
 
+  async function updateDescription(credentials) {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/updatedescription`,
+        credentials
+      );
+      setMessageUser(data.message);
+      return { message: data.message, result: true };
+    } catch (err) {
+      console.error(err);
+      setMessageUser("Erreur : ", err.response.data.message);
+      return { message: err.response.data.message, result: false };
+    }
+  }
+
   async function sendResetLink(email) {
     try {
       const { data } = await axios.post(
@@ -99,13 +114,8 @@ export default function UserContextProvider({ children }) {
     if (userdb) {
       updateLocalStorage({ token: headers.token, users: userdb });
       setUser({
-        isAdmin: userdb.isAdmin,
+        ...userdb,
         isConnected: true,
-        firstname: userdb.firstname,
-        lastname: userdb.lastname,
-        email: userdb.email,
-        imgUrl: userdb.imgUrl,
-        isActive: userdb.isActive,
       });
       axios.defaults.headers.common.Authorization = `Bearer ${headers.token}`;
       navigate("/user");
@@ -161,6 +171,7 @@ export default function UserContextProvider({ children }) {
   const contextData = useMemo(
     () => ({
       user,
+      setUser,
       messageUser,
       setMessageUser,
       formValue,
@@ -176,9 +187,11 @@ export default function UserContextProvider({ children }) {
       resetPassword,
       sendResetLink,
       updateName,
+      updateDescription,
     }),
     [
       user,
+      setUser,
       messageUser,
       setMessageUser,
       formValue,

@@ -59,7 +59,7 @@ class youtubeManager {
     setTimeout(() => {}, time + Math.random() * 40);
   }
 
-  static async fetchPlaylistItems(playlistId, playlistTitle) {
+  static async fetchPlaylistItems(playlistId, playlistTitle, category) {
     try {
       const response = await axios.get(
         `https://www.googleapis.com/youtube/v3/playlistItems`,
@@ -77,7 +77,8 @@ class youtubeManager {
         response.data.items,
         obj,
         playlistId,
-        playlistTitle
+        playlistTitle,
+        category
       );
       return { obj, succed: true };
     } catch (error) {
@@ -86,7 +87,13 @@ class youtubeManager {
     }
   }
 
-  static async fetchSinglePlaylist(items, obj, playlistId, playlistTitle) {
+  static async fetchSinglePlaylist(
+    items,
+    obj,
+    playlistId,
+    playlistTitle,
+    category
+  ) {
     try {
       /* eslint-disable no-await-in-loop */
       for (let i = 0; i < items.length; i += 1) {
@@ -99,6 +106,7 @@ class youtubeManager {
           playlistTitle,
           ytId: result.id,
           publishDate: result.publishedAt,
+          tags: category,
         });
         obj.push({ ...result, playlistId, playlistTitle, ytId: result.id });
       }
