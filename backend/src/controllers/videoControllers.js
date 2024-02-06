@@ -241,6 +241,25 @@ async function getPlaylistsPagination(req, res) {
   }
 }
 
+async function getPlaylistsByCategoryPagination(req, res) {
+  try {
+    const { category } = req.params;
+    const { start, offset } = req.query;
+    const playlists = await videoManager.readAllPlaylistsByCategoryPagination(
+      category,
+      start,
+      offset
+    );
+    res.status(200).json({
+      playlists: playlists.rows,
+      count: playlists.length,
+      message: "all good",
+    });
+  } catch (err) {
+    res.sendStatus(404);
+  }
+}
+
 async function addPlaylistFromYoutube(req, res) {
   const { playlistId } = req.prams;
   res.send(playlistId);
@@ -262,4 +281,5 @@ module.exports = {
   editPlaylist,
   getPlaylistsPagination,
   addPlaylistFromYoutube,
+  getPlaylistsByCategoryPagination,
 };
