@@ -5,6 +5,8 @@ import PropTypes from "prop-types";
 const videoContext = createContext();
 export default function VideoContextProvider({ children }) {
   const [videos, setVideos] = useState([]);
+  const [videoId, setVideoId] = useState("");
+
   const [category, setCategory] = useState("");
 
   const [playlists, setPlaylists] = useState([]);
@@ -27,6 +29,12 @@ export default function VideoContextProvider({ children }) {
       }
     );
     setVideos(data.rows);
+  }
+  async function getAllVideos() {
+    const { data } = await axios.get(
+      `${import.meta.env.VITE_BACKEND_URL}/api/videos/20`
+    );
+    setVideos(data);
   }
 
   async function runSearchVideo(ytId) {
@@ -55,6 +63,7 @@ export default function VideoContextProvider({ children }) {
       const { data } = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/api/playlists`
       );
+
       setPlaylists([...data.playlists]);
     } catch (err) {
       setPlaylists([]);
@@ -155,6 +164,9 @@ export default function VideoContextProvider({ children }) {
       getAllPlaylistsByCategoryPagination,
       category,
       setCategory,
+      videoId,
+      setVideoId,
+      getAllVideos,
     }),
     [
       videos,
@@ -176,6 +188,9 @@ export default function VideoContextProvider({ children }) {
       count,
       setcount,
       getAllPlaylistsByCategoryPagination,
+      videoId,
+      setVideoId,
+      getAllVideos,
     ]
   );
 

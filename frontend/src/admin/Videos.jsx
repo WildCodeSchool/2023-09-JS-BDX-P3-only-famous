@@ -5,11 +5,15 @@ import SingleLineVideo from "../components/SingleLineVideo";
 import { useVideoContext } from "../context/videoContext";
 
 export default function Videos() {
-  const { videos, getVideoListFromPlaylist } = useVideoContext();
+  const { videos, getAllVideos } = useVideoContext();
 
+  // useEffect(() => {
+  //   runSearchVideo(videoId);
+  // }, [videoId]);
   useEffect(() => {
-    getVideoListFromPlaylist("PLjwdMgw5TTLUEOKPg5Z5TgwAOeWkjGL69");
+    getAllVideos();
   }, []);
+
   return (
     <Container size="fluid">
       <VideoBar p={0} />

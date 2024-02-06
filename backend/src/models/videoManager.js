@@ -45,8 +45,8 @@ class VideoManager {
     return null;
   }
 
-  static async readAll() {
-    const [rows] = await database.query(`select * from video`);
+  static async readAll(max) {
+    const [rows] = await database.query(`select * from video limit ${max}`);
     return rows;
   }
 
