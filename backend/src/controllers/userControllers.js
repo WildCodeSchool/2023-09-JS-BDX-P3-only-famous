@@ -160,11 +160,12 @@ async function generateNewActivation(req, res) {
 async function updatePassword(req, res) {
   try {
     const { password, code, email } = req.body;
+
     const userdb = await userManager.readUserViaEmail(email);
     if (userdb.activationCode === code) {
-      const { affectedRows } = await userManager.update({
-        password,
+      const { affectedRows } = await userManager.updatePassword({
         email,
+        password,
       });
       if (affectedRows !== 0) {
         res

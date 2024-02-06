@@ -21,11 +21,12 @@ export default function PageUser() {
     useUserContext();
   const [firstname, setFirstname] = useState(user.firstname);
   const [description, setDescription] = useState(user.description);
+  const [editMode, setEditMode] = useState(false);
 
   const [lastname, setLastname] = useState(user.lastname);
   const [message, setMessage] = useState("");
   const [error, setError] = useState(false);
-  const [messageUpdateInfos, setMessageUpdateInfos] = useState("test");
+  const [messageUpdateInfos, setMessageUpdateInfos] = useState("");
 
   const [urlImage, setUrlImage] = useState({ preview: user.imgUrl });
 
@@ -57,6 +58,7 @@ export default function PageUser() {
       setMessageUpdateInfos(res.message);
       if (res.result) {
         setUser({ ...user, firstname, lastname });
+        window.location.href = `${import.meta.env.VITE_FRONTEND_URL}/user`;
       }
     } else {
       setMessageUpdateInfos("Nom ou prénom pas conformes");
@@ -69,6 +71,7 @@ export default function PageUser() {
     setMessageUpdateInfos(res.message);
     if (res.result) {
       setUser({ ...user, description });
+      window.location.href = `${import.meta.env.VITE_FRONTEND_URL}/user`;
     } else {
       setMessageUpdateInfos("Nom ou prénom pas conformes");
     }
@@ -86,6 +89,13 @@ export default function PageUser() {
           Bienvenue {user.firstname} {user.lastname}
         </h2>
       </Center>
+      <Button
+        type="button"
+        onClick={() => setEditMode(!editMode)}
+        className="invisible-button-with-border"
+      >
+        {!editMode ? "Editer" : "Visualiser"}
+      </Button>
       <div className="user-card">
         <div
           className="user-image"
@@ -97,34 +107,44 @@ export default function PageUser() {
           <div>
             <Spoiler maxHeight={200} showLabel="Show more" hideLabel="Hide">
               <h3>Profil</h3>
-              <Textarea
-                type="text"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
+              {!editMode ? (
+                <p>{description}</p>
+              ) : (
+                <div>
+                  <Textarea
+                    type="text"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                  />
+                  <Button
+                    type="button"
+                    onClick={() => updateDesc()}
+                    className="invisible-button-with-border"
+                  >
+                    Mettre à jour
+                  </Button>
+                  <input
+                    type="file"
+                    accept="image/png, image/jpeg"
+                    name="profilImage"
+                    onChange={handleChange}
+                  />
+                </div>
+              )}
             </Spoiler>
           </div>
-          <Button type="button" onClick={() => updateDesc()}>
-            Mettre à jour
-          </Button>
-          <input
-            type="file"
-            accept="image/png, image/jpeg"
-            name="profilImage"
-            onChange={handleChange}
-          />
         </div>
       </div>
       <Progress color="gray" value={100} />
 
       <MyAlert
-        variant={user.isActive ? "light" : "dark"}
+        variant={!user.isActive ? "light" : "dark"}
         title="Status de l'activation"
         radius="md"
         color={
           !user.isActive
             ? "var(--mantine-color-red-8)"
-            : "var(--mantine-color-blue-1)"
+            : "var(--mantine-color-blue-8)"
         }
         message={
           !user.isActive
@@ -132,56 +152,84 @@ export default function PageUser() {
             : "Compte active"
         }
       />
-      <Center
-        maw={1200}
-        h={50}
-        bg="var(--mantine-color-gray-light)"
-        className="banner"
-      >
-        <h2>Éditer votre profil</h2>
-      </Center>
+      {!editMode ? (
+        <Grid gutter={{ base: 5, xs: "md", md: "xl", xl: 50 }}>
+          <Grid.Col span={6}>
+            <p> Nom et prénom :</p>
+          </Grid.Col>
+          <Grid.Col span={6}>
+            {firstname} {lastname}{" "}
+          </Grid.Col>
+          <Grid.Col span={6}>
+            <p> Date de naissance :</p>
+          </Grid.Col>
+          <Grid.Col span={6}>{user.birthday}</Grid.Col>
+        </Grid>
+      ) : (
+        <Center
+          maw={1200}
+          h={50}
+          bg="var(--mantine-color-gray-light)"
+          className="banner"
+        >
+          <h2>Éditer votre profil</h2>
+        </Center>
+      )}
 
-      <Grid gutter={{ base: 5, xs: "md", md: "xl", xl: 50 }}>
-        <Grid.Col span={6}>
-          {" "}
-          <Input.Wrapper label="Prénom" withAsterisk description="obligatoire">
-            <Input
-              placeholder="Votre prénom"
-              value={firstname}
-              onChange={(e) => setFirstname(e.currentTarget.value)}
-            />
-          </Input.Wrapper>
-        </Grid.Col>
-        <Grid.Col span={6}>
-          {" "}
-          <Input.Wrapper label="Nom" withAsterisk description="obligatoire">
-            <Input
-              placeholder="Votre nom"
-              value={lastname}
-              onChange={(e) => setLastname(e.currentTarget.value)}
-            />
-          </Input.Wrapper>
-        </Grid.Col>
-      </Grid>
-      <Button
-        type="button"
-        className="invisible-button-with-border"
-        onClick={() => updateInfos()}
-      >
-        Suivant
-      </Button>
+      {editMode ? (
+        <Grid gutter={{ base: 5, xs: "md", md: "xl", xl: 50 }}>
+          <Grid.Col span={6}>
+            {" "}
+            <Input.Wrapper
+              label="Prénom"
+              withAsterisk
+              description="obligatoire"
+            >
+              <Input
+                placeholder="Votre prénom"
+                value={firstname}
+                onChange={(e) => setFirstname(e.currentTarget.value)}
+              />
+            </Input.Wrapper>
+          </Grid.Col>
+          <Grid.Col span={6}>
+            {" "}
+            <Input.Wrapper label="Nom" withAsterisk description="obligatoire">
+              <Input
+                placeholder="Votre nom"
+                value={lastname}
+                onChange={(e) => setLastname(e.currentTarget.value)}
+              />
+            </Input.Wrapper>
+          </Grid.Col>
+          <Grid.Col span={6}>
+            {" "}
+            <Button
+              type="button"
+              className="invisible-button-with-border"
+              onClick={() => updateInfos()}
+            >
+              Suivant
+            </Button>
+          </Grid.Col>
+        </Grid>
+      ) : (
+        ""
+      )}
 
-      <Alert
-        variant="dark"
-        color="red"
-        radius="md"
-        title="Message "
-        style={{ margin: "15px 0" }}
-      >
-        <span style={{ color: `var(--mantine-color-red-8)` }}>
-          {messageUpdateInfos}
-        </span>
-      </Alert>
+      {message && (
+        <Alert
+          variant="dark"
+          color="red"
+          radius="md"
+          title="Message "
+          style={{ margin: "15px 0" }}
+        >
+          <span style={{ color: `var(--mantine-color-red-8)` }}>
+            {messageUpdateInfos}
+          </span>
+        </Alert>
+      )}
 
       <Container>
         <Fieldset legend="Coordonnées" radius="sm" className="transparent">

@@ -58,7 +58,7 @@ class ActivationManager {
         pass: process.env.NODE_MAILER_KEY,
       },
     });
-    const lien = `${process.env.BACKEND_URL}/resetpassword?code=${randomCode}&email=${email}`;
+    const lien = `${process.env.FRONTEND_URL}/resetpassword?code=${randomCode}&email=${email}`;
     const mailOptions = {
       from: process.env.NODE_USER,
       to: email,
