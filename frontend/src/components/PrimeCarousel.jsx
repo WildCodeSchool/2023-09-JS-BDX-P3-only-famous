@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
-import { Button, Progress } from "@mantine/core";
+import { Progress } from "@mantine/core";
 import { Carousel } from "@mantine/carousel";
 import VideoItem from "./VideoItem";
 
@@ -24,9 +24,7 @@ export default function PrimeCarousel({ playlistId }) {
   }, []);
   return (
     <>
-      <Button variant="filled" className="invisible-button" size="xl">
-        {playlistTitle}
-      </Button>
+      <h2 className="invisible-button h1-button">{playlistTitle}</h2>
       <Progress color="gray" value={100} />
       <Carousel
         withIndicators
