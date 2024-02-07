@@ -80,7 +80,14 @@ export default function DropDownMenu() {
                     <IconPhoto style={{ width: rem(14), height: rem(14) }} />
                   }
                 >
-                  Profil
+                  <Link
+                    to
+                    onClick={() => {
+                      navigate("/user");
+                    }}
+                  >
+                    Profil
+                  </Link>
                 </Menu.Item>
               </>
             )}
@@ -95,7 +102,14 @@ export default function DropDownMenu() {
                 />
               }
             >
-              Page admin
+              <Link
+                to
+                onClick={() => {
+                  navigate("/admin");
+                }}
+              >
+                Dashboard
+              </Link>
             </Menu.Item>
             <Menu.Item
               leftSection={
