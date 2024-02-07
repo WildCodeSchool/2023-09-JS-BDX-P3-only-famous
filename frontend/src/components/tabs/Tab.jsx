@@ -4,52 +4,58 @@ export default function Tab() {
   const { getAllPlaylistsByCategory } = useVideoContext();
 
   async function handleclick(e) {
-    console.warn("test");
     await getAllPlaylistsByCategory(e.target.name);
-    console.warn(e.target.name);
   }
+
+  const languages = [
+    {
+      id: 1,
+      name: "javascript",
+      description: "lorem ipsum",
+    },
+    {
+      id: 2,
+      name: "dotnet",
+      description: "lorem ipsum",
+    },
+    {
+      id: 3,
+      name: "php",
+      description: "lorem ipsum",
+    },
+    {
+      id: 4,
+      name: "angular",
+      description: "lorem ipsum",
+    },
+    {
+      id: 5,
+      name: "react",
+      description: "lorem ipsum",
+    },
+    {
+      id: 6,
+      name: "python",
+      description: "lorem ipsum",
+    },
+    {
+      id: 7,
+      name: "rust",
+      description: "lorem ipsum",
+    },
+  ];
   return (
     <div className="container-tab">
-      <button
-        className="item javascript"
-        name="javascript"
-        onClick={handleclick}
-        type="button"
-      >
-        {" "}
-      </button>
-      <button
-        className="item  dotnet"
-        name="dotnet"
-        onClick={handleclick}
-        type="button"
-      >
-        {" "}
-      </button>
-      <button
-        className="item php"
-        name="php"
-        onClick={handleclick}
-        type="button"
-      >
-        {" "}
-      </button>
-      <button
-        className="item angular"
-        name="angular"
-        onClick={handleclick}
-        type="button"
-      >
-        {" "}
-      </button>
-      <button
-        className="item react"
-        name="react"
-        onClick={handleclick}
-        type="button"
-      >
-        {" "}
-      </button>
+      {languages.map((ele) => (
+        <button
+          className={`item ${ele.name}`}
+          name={ele.name}
+          onClick={handleclick}
+          type="button"
+        >
+          {" "}
+        </button>
+      ))}
     </div>
   );
 }
