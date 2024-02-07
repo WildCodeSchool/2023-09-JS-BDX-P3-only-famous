@@ -18,19 +18,6 @@ export default function SlidingNavbar() {
   function closeNav() {
     myNav.current.style.width = "0%";
   }
-  // const preventDefault = (ev) => {
-  //   if (ev.preventDefault) {
-  //     ev.preventDefault();
-  //   }
-  // };
-  // const enableBodyScroll = () => {
-  //   document.removeEventListener("wheel", preventDefault, false);
-  // };
-  // const disableBodyScroll = () => {
-  //   document.addEventListener("wheel", preventDefault, {
-  //     passive: false,
-  //   });
-  // };
 
   useEffect(() => {}, []);
 
@@ -38,13 +25,7 @@ export default function SlidingNavbar() {
     <div className="navbar-full">
       {mobileMode && (
         <div className="navbar-burger">
-          <div
-            id="myNav"
-            className="overlay"
-            ref={myNav}
-            // onMouseEnter={disableBodyScroll}
-            // onMouseLeave={enableBodyScroll}
-          >
+          <div id="myNav" className="overlay" ref={myNav}>
             <button
               type="button"
               className="closebtn"
@@ -132,28 +113,6 @@ export default function SlidingNavbar() {
         )}
         <div className="user">
           <DropDownMenu />
-          {/* <button
-            type="button"
-            onClick={() => {
-              // console.log("mobile? ", mobileMode);
-              if (mobileMode) {
-                openNav();
-                // refLinks.current.style.transform = `translate(600px, 0)`;
-                // refLinks.current.classList.toggle("slide-left");
-              } else {
-                navigate("/");
-              }
-            }}
-          >
-            {" "}
-            <FaUsers
-              style={{
-                width: "40px",
-                height: "40px",
-                backgroundColor: "transparent",
-              }}
-            />
-          </button> */}
         </div>
       </div>
     </div>

@@ -13,7 +13,6 @@ export default function VideoUpload() {
   const [message, setMessage] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const formData = new FormData();
-  const [googleAuth, setGoogleAuth] = useState("");
   const [datas, setDatas] = useState({
     title: "",
     description: "",
@@ -31,10 +30,7 @@ export default function VideoUpload() {
     const { data } = await axios.get(
       `${import.meta.env.VITE_BACKEND_URL}/upload/initialize`
     );
-    setGoogleAuth(data);
     window.location.href = data;
-    // window.open(data, "_blank").focus();
-    // console.log(data);
   }
 
   async function upload() {
@@ -81,16 +77,7 @@ export default function VideoUpload() {
             set token
           </Button>
         </Grid.Col>
-        <Grid.Col span={3}>
-          {googleAuth && (
-            <Button>
-              <a href={googleAuth} target="_blank" rel="noreferrer">
-                {" "}
-                getToken
-              </a>
-            </Button>
-          )}
-        </Grid.Col>
+        <Grid.Col span={3} />
         <Grid.Col span={6}>
           {" "}
           <Input.Wrapper label="Titre" withAsterisk description="obligatoire">

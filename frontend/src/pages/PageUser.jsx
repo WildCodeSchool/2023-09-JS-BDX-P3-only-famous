@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
 import {
@@ -15,6 +15,7 @@ import {
 } from "@mantine/core";
 import { useUserContext } from "../context/UserContext";
 import MyAlert from "../components/MyAlert";
+import Default from "../assets/default.png";
 
 export default function PageUser() {
   const { user, setUser, sendResetLink, updateName, updateDescription } =
@@ -45,7 +46,6 @@ export default function PageUser() {
     );
     setUser({ ...user, imgUrl });
   }
-
   async function ResetEmail() {
     const res = await sendResetLink(user.email);
     setMessage(res.message);
@@ -58,7 +58,7 @@ export default function PageUser() {
       setMessageUpdateInfos(res.message);
       if (res.result) {
         setUser({ ...user, firstname, lastname });
-        window.location.href = `${import.meta.env.VITE_FRONTEND_URL}/user`;
+        // window.location.href = `${import.meta.env.VITE_FRONTEND_URL}/user`;
       }
     } else {
       setMessageUpdateInfos("Nom ou prénom pas conformes");
@@ -71,11 +71,30 @@ export default function PageUser() {
     setMessageUpdateInfos(res.message);
     if (res.result) {
       setUser({ ...user, description });
-      window.location.href = `${import.meta.env.VITE_FRONTEND_URL}/user`;
+      // window.location.href = `${import.meta.env.VITE_FRONTEND_URL}/user`;
     } else {
       setMessageUpdateInfos("Nom ou prénom pas conformes");
     }
   }
+
+  useEffect(() => {
+    async function fakeLoader() {
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ${localStorage.getItem("token") ?? ""}`,
+      };
+      try {
+        if (localStorage.getItem("token")) {
+          const { data } = await axios.get(
+            `${import.meta.env.VITE_BACKEND_URL}/api/getprofile`
+          );
+          setUser({ ...data, isConnected: true });
+        }
+      } catch (err) {
+        console.error(err.message);
+      }
+    }
+    fakeLoader();
+  }, [user]);
 
   return user.isConnected ? (
     <Container size="md">
@@ -100,7 +119,9 @@ export default function PageUser() {
         <div
           className="user-image"
           style={{
-            backgroundImage: `url(${urlImage.preview ?? user.imgUrl})`,
+            backgroundImage: `url(${
+              urlImage.preview ?? user.imgUrl ?? { Default }
+            })`,
           }}
         />
         <div className="user-details">
@@ -108,13 +129,17 @@ export default function PageUser() {
             <Spoiler maxHeight={200} showLabel="Show more" hideLabel="Hide">
               <h3>Profil</h3>
               {!editMode ? (
-                <p>{description}</p>
+                <p>
+                  {description ??
+                    "Editer votre profil, parlez-nous de vous ..."}
+                </p>
               ) : (
                 <div>
                   <Textarea
                     type="text"
-                    value={description}
+                    value={description ?? "Parlez-nous de vous ..."}
                     onChange={(e) => setDescription(e.target.value)}
+                    autosize
                   />
                   <Button
                     type="button"
