@@ -1,6 +1,7 @@
 import { Center, Container } from "@mantine/core";
 import PrimeCarousel from "../components/PrimeCarousel";
 import Tag from "../components/tabs/Tab";
+import Banner from "../../dist/assets/banner.jpg";
 import { useVideoContext } from "../context/videoContext";
 
 function Home() {
@@ -16,9 +17,14 @@ function Home() {
   enableBodyScroll();
   return (
     <div>
+      <div
+        style={{ backgroundImage: `url(${Banner})` }}
+        className="banner-main"
+      />
       <Center>
         <h1 className="main-title">Choisissez votre langage</h1>
       </Center>
+
       <Tag />
       <Container size="lg">
         {playlistsHome.map((ele) => (
