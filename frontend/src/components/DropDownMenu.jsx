@@ -102,7 +102,14 @@ export default function DropDownMenu() {
                 />
               }
             >
-              Page admin
+              <Link
+                to
+                onClick={() => {
+                  navigate("/admin");
+                }}
+              >
+                Dashboard
+              </Link>
             </Menu.Item>
             <Menu.Item
               leftSection={

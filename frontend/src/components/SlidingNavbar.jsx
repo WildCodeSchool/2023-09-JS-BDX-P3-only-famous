@@ -104,7 +104,7 @@ export default function SlidingNavbar() {
             </Link>
             {user.isAdmin ? (
               <Link to="/admin">
-                <span>Admin</span>
+                <span>Dashboard</span>
               </Link>
             ) : (
               ""
