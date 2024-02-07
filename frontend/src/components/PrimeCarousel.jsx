@@ -8,6 +8,7 @@ import VideoItem from "./VideoItem";
 export default function PrimeCarousel({ playlistId }) {
   const [videos, setVideos] = useState([]);
   const [playlistTitle, setPlaylistTitle] = useState("");
+
   useEffect(() => {
     async function getData() {
       const { data } = await axios.get(
@@ -47,6 +48,7 @@ export default function PrimeCarousel({ playlistId }) {
             description={item.description}
             tags={item.tags}
             key={item.title}
+            isPublic={item.isPublic}
           />
         ))}
       </Carousel>

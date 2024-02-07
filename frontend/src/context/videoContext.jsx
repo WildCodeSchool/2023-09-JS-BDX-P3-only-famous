@@ -5,6 +5,10 @@ import PropTypes from "prop-types";
 const videoContext = createContext();
 export default function VideoContextProvider({ children }) {
   const [videos, setVideos] = useState([]);
+  const [videoId, setVideoId] = useState("");
+
+  const [category, setCategory] = useState("");
+
   const [playlists, setPlaylists] = useState([]);
   const [playlistsHome, setPlaylistsHome] = useState([
     { playlistId: "PLjwdMgw5TTLXgsTQE_1PpRkC_yX47ZcGV" },
@@ -25,6 +29,12 @@ export default function VideoContextProvider({ children }) {
       }
     );
     setVideos(data.rows);
+  }
+  async function getAllVideos() {
+    const { data } = await axios.get(
+      `${import.meta.env.VITE_BACKEND_URL}/api/videos/20`
+    );
+    setVideos(data);
   }
 
   async function runSearchVideo(ytId) {
@@ -53,6 +63,7 @@ export default function VideoContextProvider({ children }) {
       const { data } = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/api/playlists`
       );
+
       setPlaylists([...data.playlists]);
     } catch (err) {
       setPlaylists([]);
@@ -68,16 +79,30 @@ export default function VideoContextProvider({ children }) {
       );
       setPlaylists([...data.playlists]);
       setcount(data.count);
-      // console.log(data);
     } catch (err) {
       setPlaylists([]);
     }
   }
 
-  async function getAllPlaylistsByCategory(category) {
+  async function getAllPlaylistsByCategory(category1) {
     try {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/api/playlists/${category}`
+        `${import.meta.env.VITE_BACKEND_URL}/api/playlists/${category1}`
+      );
+      setPlaylistsHome([...data.playlists]);
+      setPlaylists([...data.playlists]);
+    } catch (err) {
+      setPlaylistsHome([]);
+      setPlaylists([]);
+    }
+  }
+
+  async function getAllPlaylistsByCategoryPagination(category1, start, offset) {
+    try {
+      const { data } = await axios.get(
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/api/playlists/${category1}?start=${start}&offset=${offset}`
       );
       setPlaylistsHome([...data.playlists]);
       setPlaylists([...data.playlists]);
@@ -136,6 +161,12 @@ export default function VideoContextProvider({ children }) {
       setcount,
       recommendedCarroussel,
       setRecommendedCaroussel,
+      getAllPlaylistsByCategoryPagination,
+      category,
+      setCategory,
+      videoId,
+      setVideoId,
+      getAllVideos,
     }),
     [
       videos,
@@ -156,6 +187,10 @@ export default function VideoContextProvider({ children }) {
       getAllPlaylistsPagination,
       count,
       setcount,
+      getAllPlaylistsByCategoryPagination,
+      videoId,
+      setVideoId,
+      getAllVideos,
     ]
   );
 

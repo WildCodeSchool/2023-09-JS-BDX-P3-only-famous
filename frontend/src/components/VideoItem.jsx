@@ -11,29 +11,38 @@ export default function VideoItem({
   link,
   description,
   tags,
+  isPublic,
 }) {
   const { setLinkToVideo } = useUserContext();
   const navigate = useNavigate();
+
+  const { user } = useUserContext();
 
   return (
     <button
       type="button"
       className="carousel-item"
       onClick={() => {
-        setLinkToVideo({
-          title,
-          duration,
-          imgUrl,
-          publishDate,
-          link,
-          description,
-          tags,
-        });
-        navigate("/onevideo");
+        if (user.isActive || isPublic) {
+          setLinkToVideo({
+            title,
+            duration,
+            imgUrl,
+            publishDate,
+            link,
+            description,
+            tags,
+          });
+          navigate("/onevideo");
+        } else {
+          setLinkToVideo({});
+        }
       }}
     >
       <div
-        className="carousel-item-image"
+        className={`carousel-item-image ${
+          !user.isActive && !isPublic && "not-public"
+        }`}
         style={{
           backgroundImage: `url(${imgUrl})`,
           backgroundRepeat: "no-repeat",
@@ -62,4 +71,5 @@ VideoItem.propTypes = {
   publishDate: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   tags: PropTypes.string.isRequired,
+  isPublic: PropTypes.number.isRequired,
 };

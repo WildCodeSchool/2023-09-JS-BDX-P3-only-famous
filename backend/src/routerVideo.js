@@ -8,7 +8,7 @@ const videoControllers = require("./controllers/videoControllers");
 routerVideo.get("/playlist", videoControllers.readPlaylist);
 
 // Route to get a list of items
-routerVideo.get("/videos", videoControllers.browse);
+routerVideo.get("/videos/:max", videoControllers.browse);
 
 // Route to get a specific item by ID
 routerVideo.get("/video/:ytId", videoControllers.read);
@@ -32,6 +32,10 @@ routerVideo.get("/playlists", videoControllers.getPlaylists);
 routerVideo.get(
   "/playlists/:category",
   videoControllers.getPlaylistsByCategory
+);
+routerVideo.get(
+  "/playlists/:category",
+  videoControllers.getPlaylistsByCategoryPagination
 );
 
 // Route to add a new item
