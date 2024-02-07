@@ -5,7 +5,7 @@ function renameFile(req, res, next) {
   const host = proxyHost ?? req.headers.host;
   const { originalname, filename } = req.file;
   const relativePath = `uploads/${Date.now()}_${originalname.replace(
-    /[^a-zA-Z0-9]/g,
+    /[^a-zA-Z0-9.]/g,
     ""
   )}`;
   const newPath = `./public/${relativePath}`;

@@ -52,6 +52,7 @@ export default function Tab() {
           name={ele.name}
           onClick={handleclick}
           type="button"
+          key={ele.id}
         >
           {" "}
         </button>

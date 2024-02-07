@@ -52,12 +52,31 @@ export default function PageUser() {
     setError(res.success);
   }
 
+  async function fakeLoader() {
+    axios.defaults.headers.common = {
+      Authorization: `Bearer ${localStorage.getItem("token") ?? ""}`,
+    };
+    try {
+      if (localStorage.getItem("token")) {
+        const { data } = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/api/getprofile`
+        );
+        setUser({ ...data, isConnected: true });
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+
   async function updateInfos() {
     if (firstname && firstname.length >= 3 && lastname && lastname.length > 4) {
       const res = await updateName({ email: user.email, firstname, lastname });
       setMessageUpdateInfos(res.message);
+
       if (res.result) {
+        await fakeLoader();
         setUser({ ...user, firstname, lastname });
+
         // window.location.href = `${import.meta.env.VITE_FRONTEND_URL}/user`;
       }
     } else {
@@ -70,7 +89,9 @@ export default function PageUser() {
     const res = await updateDescription({ email: user.email, description });
     setMessageUpdateInfos(res.message);
     if (res.result) {
+      await fakeLoader();
       setUser({ ...user, description });
+
       // window.location.href = `${import.meta.env.VITE_FRONTEND_URL}/user`;
     } else {
       setMessageUpdateInfos("Nom ou prénom pas conformes");
@@ -78,23 +99,8 @@ export default function PageUser() {
   }
 
   useEffect(() => {
-    async function fakeLoader() {
-      axios.defaults.headers.common = {
-        Authorization: `Bearer ${localStorage.getItem("token") ?? ""}`,
-      };
-      try {
-        if (localStorage.getItem("token")) {
-          const { data } = await axios.get(
-            `${import.meta.env.VITE_BACKEND_URL}/api/getprofile`
-          );
-          setUser({ ...data, isConnected: true });
-        }
-      } catch (err) {
-        console.error(err.message);
-      }
-    }
     fakeLoader();
-  }, [user]);
+  }, []);
 
   return user.isConnected ? (
     <Container size="md">
@@ -120,7 +126,7 @@ export default function PageUser() {
           className="user-image"
           style={{
             backgroundImage: `url(${
-              urlImage.preview ?? user.imgUrl ?? { Default }
+              user.imgUrl ?? urlImage.preview ?? { Default }
             })`,
           }}
         />
