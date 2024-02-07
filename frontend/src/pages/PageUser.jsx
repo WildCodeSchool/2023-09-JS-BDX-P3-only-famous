@@ -15,7 +15,7 @@ import {
 } from "@mantine/core";
 import { useUserContext } from "../context/UserContext";
 import MyAlert from "../components/MyAlert";
-import Default from "../../dist/assets/default.png";
+import Default from "../assets/default.png";
 
 export default function PageUser() {
   const { user, setUser, sendResetLink, updateName, updateDescription } =

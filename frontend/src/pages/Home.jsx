@@ -1,7 +1,7 @@
 import { Center, Container } from "@mantine/core";
 import PrimeCarousel from "../components/PrimeCarousel";
 import Tag from "../components/tabs/Tab";
-import Banner from "../../dist/assets/banner.jpg";
+import Banner from "../assets/banner.jpg";
 import { useVideoContext } from "../context/videoContext";
 
 function Home() {
