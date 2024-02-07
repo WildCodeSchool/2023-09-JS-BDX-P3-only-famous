@@ -1,4 +1,4 @@
-import { Container } from "@mantine/core";
+import { Center, Container } from "@mantine/core";
 import PrimeCarousel from "../components/PrimeCarousel";
 import Tag from "../components/tabs/Tab";
 import { useVideoContext } from "../context/videoContext";
@@ -15,13 +15,17 @@ function Home() {
   };
   enableBodyScroll();
   return (
-    <Container size="lg">
-      <h1 className="main-title">Choisissez votre langage</h1>
+    <div>
+      <Center>
+        <h1 className="main-title">Choisissez votre langage</h1>
+      </Center>
       <Tag />
-      {playlistsHome.map((ele) => (
-        <PrimeCarousel playlistId={ele.playlistId} key={ele.playlistId} />
-      ))}
-    </Container>
+      <Container size="lg">
+        {playlistsHome.map((ele) => (
+          <PrimeCarousel playlistId={ele.playlistId} key={ele.playlistId} />
+        ))}
+      </Container>
+    </div>
   );
 }
 

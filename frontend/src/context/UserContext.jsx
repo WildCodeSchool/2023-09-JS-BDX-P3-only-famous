@@ -26,6 +26,12 @@ export default function UserContextProvider({ children }) {
   const [linkToVideo, setLinkToVideo] = useState({});
   const navigate = useNavigate();
 
+  function validatePassword(password) {
+    const regex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return regex.test(password);
+  }
+
   async function checkCredentials(credentials) {
     try {
       const { headers, data } = await axios.post(
@@ -189,6 +195,7 @@ export default function UserContextProvider({ children }) {
       sendResetLink,
       updateName,
       updateDescription,
+      validatePassword,
     }),
     [
       user,
@@ -208,6 +215,7 @@ export default function UserContextProvider({ children }) {
       resetPassword,
       sendResetLink,
       updateName,
+      validatePassword,
     ]
   );
   return (
