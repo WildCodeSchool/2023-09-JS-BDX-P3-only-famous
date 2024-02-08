@@ -10,6 +10,7 @@ import {
   Grid,
   Input,
   Progress,
+  Space,
   Spoiler,
   Textarea,
 } from "@mantine/core";
@@ -52,12 +53,31 @@ export default function PageUser() {
     setError(res.success);
   }
 
+  async function fakeLoader() {
+    axios.defaults.headers.common = {
+      Authorization: `Bearer ${localStorage.getItem("token") ?? ""}`,
+    };
+    try {
+      if (localStorage.getItem("token")) {
+        const { data } = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/api/getprofile`
+        );
+        setUser({ ...data, isConnected: true });
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+
   async function updateInfos() {
     if (firstname && firstname.length >= 3 && lastname && lastname.length > 4) {
       const res = await updateName({ email: user.email, firstname, lastname });
       setMessageUpdateInfos(res.message);
+
       if (res.result) {
+        await fakeLoader();
         setUser({ ...user, firstname, lastname });
+
         // window.location.href = `${import.meta.env.VITE_FRONTEND_URL}/user`;
       }
     } else {
@@ -70,7 +90,9 @@ export default function PageUser() {
     const res = await updateDescription({ email: user.email, description });
     setMessageUpdateInfos(res.message);
     if (res.result) {
+      await fakeLoader();
       setUser({ ...user, description });
+
       // window.location.href = `${import.meta.env.VITE_FRONTEND_URL}/user`;
     } else {
       setMessageUpdateInfos("Nom ou prénom pas conformes");
@@ -78,23 +100,8 @@ export default function PageUser() {
   }
 
   useEffect(() => {
-    async function fakeLoader() {
-      axios.defaults.headers.common = {
-        Authorization: `Bearer ${localStorage.getItem("token") ?? ""}`,
-      };
-      try {
-        if (localStorage.getItem("token")) {
-          const { data } = await axios.get(
-            `${import.meta.env.VITE_BACKEND_URL}/api/getprofile`
-          );
-          setUser({ ...data, isConnected: true });
-        }
-      } catch (err) {
-        console.error(err.message);
-      }
-    }
     fakeLoader();
-  }, [user]);
+  }, []);
 
   return user.isConnected ? (
     <Container size="md">
@@ -120,7 +127,7 @@ export default function PageUser() {
           className="user-image"
           style={{
             backgroundImage: `url(${
-              urlImage.preview ?? user.imgUrl ?? { Default }
+              user.imgUrl ?? urlImage.preview ?? { Default }
             })`,
           }}
         />
@@ -129,31 +136,88 @@ export default function PageUser() {
             <Spoiler maxHeight={200} showLabel="Show more" hideLabel="Hide">
               <h3>Profil</h3>
               {!editMode ? (
-                <p>
-                  {description ??
-                    "Editer votre profil, parlez-nous de vous ..."}
-                </p>
+                <div>
+                  <p>
+                    {description ??
+                      "Editer votre profil, parlez-nous de vous ..."}
+                  </p>
+                  <Space h="md" />
+                  <Grid gutter={{ base: 5, xs: "md", md: "xl", xl: 50 }}>
+                    <Grid.Col span={6}>
+                      <p> Nom et prénom :</p>
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                      {firstname} {lastname}{" "}
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                      <p> Date de naissance :</p>
+                    </Grid.Col>
+                    <Grid.Col span={6}>{user.birthday}</Grid.Col>
+                  </Grid>
+                </div>
               ) : (
                 <div>
-                  <Textarea
-                    type="text"
-                    value={description ?? "Parlez-nous de vous ..."}
-                    onChange={(e) => setDescription(e.target.value)}
-                    autosize
-                  />
-                  <Button
-                    type="button"
-                    onClick={() => updateDesc()}
-                    className="invisible-button-with-border"
-                  >
-                    Mettre à jour
-                  </Button>
-                  <input
-                    type="file"
-                    accept="image/png, image/jpeg"
-                    name="profilImage"
-                    onChange={handleChange}
-                  />
+                  <div>
+                    <Textarea
+                      type="text"
+                      value={description ?? "Parlez-nous de vous ..."}
+                      onChange={(e) => setDescription(e.target.value)}
+                      autosize
+                    />
+                    <Button
+                      type="button"
+                      onClick={() => updateDesc()}
+                      className="invisible-button-with-border"
+                    >
+                      Mettre à jour
+                    </Button>
+                    <input
+                      type="file"
+                      accept="image/png, image/jpeg"
+                      name="profilImage"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <Grid gutter={{ base: 5, xs: "md", md: "xl", xl: 50 }}>
+                    <Grid.Col span={6}>
+                      {" "}
+                      <Input.Wrapper
+                        label="Prénom"
+                        withAsterisk
+                        description="obligatoire"
+                      >
+                        <Input
+                          placeholder="Votre prénom"
+                          value={firstname}
+                          onChange={(e) => setFirstname(e.currentTarget.value)}
+                        />
+                      </Input.Wrapper>
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                      {" "}
+                      <Input.Wrapper
+                        label="Nom"
+                        withAsterisk
+                        description="obligatoire"
+                      >
+                        <Input
+                          placeholder="Votre nom"
+                          value={lastname}
+                          onChange={(e) => setLastname(e.currentTarget.value)}
+                        />
+                      </Input.Wrapper>
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                      {" "}
+                      <Button
+                        type="button"
+                        className="invisible-button-with-border"
+                        onClick={() => updateInfos()}
+                      >
+                        Suivant
+                      </Button>
+                    </Grid.Col>
+                  </Grid>
                 </div>
               )}
             </Spoiler>
@@ -177,70 +241,6 @@ export default function PageUser() {
             : "Compte active"
         }
       />
-      {!editMode ? (
-        <Grid gutter={{ base: 5, xs: "md", md: "xl", xl: 50 }}>
-          <Grid.Col span={6}>
-            <p> Nom et prénom :</p>
-          </Grid.Col>
-          <Grid.Col span={6}>
-            {firstname} {lastname}{" "}
-          </Grid.Col>
-          <Grid.Col span={6}>
-            <p> Date de naissance :</p>
-          </Grid.Col>
-          <Grid.Col span={6}>{user.birthday}</Grid.Col>
-        </Grid>
-      ) : (
-        <Center
-          maw={1200}
-          h={50}
-          bg="var(--mantine-color-gray-light)"
-          className="banner"
-        >
-          <h2>Éditer votre profil</h2>
-        </Center>
-      )}
-
-      {editMode ? (
-        <Grid gutter={{ base: 5, xs: "md", md: "xl", xl: 50 }}>
-          <Grid.Col span={6}>
-            {" "}
-            <Input.Wrapper
-              label="Prénom"
-              withAsterisk
-              description="obligatoire"
-            >
-              <Input
-                placeholder="Votre prénom"
-                value={firstname}
-                onChange={(e) => setFirstname(e.currentTarget.value)}
-              />
-            </Input.Wrapper>
-          </Grid.Col>
-          <Grid.Col span={6}>
-            {" "}
-            <Input.Wrapper label="Nom" withAsterisk description="obligatoire">
-              <Input
-                placeholder="Votre nom"
-                value={lastname}
-                onChange={(e) => setLastname(e.currentTarget.value)}
-              />
-            </Input.Wrapper>
-          </Grid.Col>
-          <Grid.Col span={6}>
-            {" "}
-            <Button
-              type="button"
-              className="invisible-button-with-border"
-              onClick={() => updateInfos()}
-            >
-              Suivant
-            </Button>
-          </Grid.Col>
-        </Grid>
-      ) : (
-        ""
-      )}
 
       {message && (
         <Alert
