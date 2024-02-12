@@ -77,7 +77,6 @@ class youtubeManager {
         response.data.items,
         obj,
         playlistId,
-        playlistTitle,
         category
       );
       return { obj, succed: true };
@@ -87,13 +86,7 @@ class youtubeManager {
     }
   }
 
-  static async fetchSinglePlaylist(
-    items,
-    obj,
-    playlistId,
-    playlistTitle,
-    category
-  ) {
+  static async fetchSinglePlaylist(items, obj, playlistId, category) {
     try {
       /* eslint-disable no-await-in-loop */
       for (let i = 0; i < items.length; i += 1) {
@@ -103,12 +96,11 @@ class youtubeManager {
         await VideoManager.create({
           ...result,
           playlistId,
-          playlistTitle,
           ytId: result.id,
           publishDate: result.publishedAt,
           tags: category,
         });
-        obj.push({ ...result, playlistId, playlistTitle, ytId: result.id });
+        obj.push({ ...result, playlistId, ytId: result.id });
       }
       return { message: "all videos added", succeed: true };
     } catch (error) {

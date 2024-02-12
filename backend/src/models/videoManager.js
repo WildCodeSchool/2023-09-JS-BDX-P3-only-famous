@@ -6,7 +6,6 @@ class VideoManager {
       const [result] = await database.query(
         `insert into video (ytId,
         title,
-        playlistTitle,
         playlistId,
         description,
         thumbnails,
@@ -14,11 +13,10 @@ class VideoManager {
         publishDate,
         tags,
         isPublic)
-         values (?,?,?,?,?,?,?,?,?,?)`,
+         values (?,?,?,?,?,?,?,?,?)`,
         [
           video.ytId,
           video.title,
-          video.playlistTitle,
           video.playlistId,
           video.description,
           video.thumbnails,
