@@ -6,7 +6,6 @@ class VideoManager {
       const [result] = await database.query(
         `insert into video (ytId,
         title,
-        playlistTitle,
         playlistId,
         description,
         thumbnails,
@@ -14,11 +13,10 @@ class VideoManager {
         publishDate,
         tags,
         isPublic)
-         values (?,?,?,?,?,?,?,?,?,?)`,
+         values (?,?,?,?,?,?,?,?,?)`,
         [
           video.ytId,
           video.title,
-          video.playlistTitle,
           video.playlistId,
           video.description,
           video.thumbnails,
@@ -32,6 +30,18 @@ class VideoManager {
     } catch (err) {
       console.error("error while inserting new video in user manager: ", err);
       return { message: "Video non ajoutée!!!", insertId: 0 };
+    }
+  }
+
+  static async deleteAllVideosFromPlayList(playlistId) {
+    try {
+      const [res] = await database.query(
+        "delete from video WHERE playlistId = ?",
+        [playlistId]
+      );
+      return res.affectedRows;
+    } catch (error) {
+      throw new Error(error.message);
     }
   }
 
@@ -118,6 +128,7 @@ class VideoManager {
         "delete from playlist WHERE playlistId = ?",
         [playlistId]
       );
+
       return res.affectedRows;
     } catch (error) {
       throw new Error(error.message);

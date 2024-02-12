@@ -1,10 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import "@fortawesome/fontawesome-free/css/all.min.css";
 import { MantineProvider } from "@mantine/core";
-import "@mantine/core/styles.css";
-import "@mantine/carousel/styles.css";
+import "./styles/_index.scss";
 import axios from "axios";
 
 import App from "./App";
@@ -34,7 +32,7 @@ const router = createBrowserRouter([
         Authorization: `Bearer ${localStorage.getItem("token") ?? ""}`,
       };
 
-      let loaderData = {};
+      let loaderData = null;
 
       try {
         if (localStorage.getItem("token")) {
@@ -46,8 +44,7 @@ const router = createBrowserRouter([
       } catch (err) {
         console.error(err.message);
       }
-
-      return loaderData;
+      return { loaderData };
     },
     element: (
       <VideoContextProvider>

@@ -19,23 +19,22 @@ class YoutubeController {
 
   static async fetchPlaylistById(req, res) {
     const { playlistId, playlistTitle, category } = req.body;
-    const result = await youtubeManager.fetchPlaylistItems(
+
+    const { insertId } = await VideoManager.createPlaylist({
       playlistId,
       playlistTitle,
+      category,
+    });
+
+    const result = await youtubeManager.fetchPlaylistItems(
+      playlistId,
       category
     );
-    if (result.succed) {
-      const { insertId } = await VideoManager.createPlaylist({
-        playlistId,
-        playlistTitle,
-        category,
-      });
 
-      if (insertId !== 0) {
-        res.status(200).json({ message: "done", succeed: true });
-      } else {
-        res.status(200).json({ message: "nothing done", succeed: false });
-      }
+    if (insertId !== 0 && result.succed) {
+      res.status(200).json({ message: "done", succeed: true });
+    } else {
+      res.status(200).json({ message: "nothing done", succeed: false });
     }
   }
 }

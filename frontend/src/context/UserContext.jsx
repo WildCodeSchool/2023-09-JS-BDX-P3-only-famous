@@ -6,11 +6,10 @@ import axios from "axios";
 const userContext = createContext();
 
 export default function UserContextProvider({ children }) {
-  const userData = useLoaderData();
-  // console.log("userdata", userData);
+  const { loaderData } = useLoaderData();
   const [user, setUser] = useState({
-    ...userData,
-    isConnected: !!userData,
+    ...loaderData,
+    isConnected: !!loaderData,
   });
   const [mobileMode, setMobileMode] = useState(true);
   const [formValue, setFormValue] = useState({

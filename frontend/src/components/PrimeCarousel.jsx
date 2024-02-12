@@ -16,8 +16,13 @@ export default function PrimeCarousel({ playlistId }) {
           params: { playlistId },
         }
       );
-      setVideos(data.rows);
-      setPlaylistTitle(data.title);
+      if (data?.rows) {
+        setVideos(data.rows);
+        setPlaylistTitle(data.title);
+      } else {
+        setVideos([]);
+        setPlaylistTitle("La playlist est vide ");
+      }
     }
     getData();
   }, []);

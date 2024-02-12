@@ -1,79 +1,39 @@
-## Concept
+# La banque de tutos
 
-This template is meant to serve as a foundation for every P2/P3 following the React-Express-MySQL stack, as learned in Wild Code School.
-It's pre-configured with a set of tools which'll help students produce industry-quality and easier-to-maintain code, while staying a pedagogical tool.
+La banque de tutos est une application web destinée aux élèves, aux étudiants, aux programmeurs et aux amateurs de programmation. En tant que développeurs, nous passons beaucoup de temps à lire de la documentation et à regarder des tutoriels. Cette application a pour but de rassembler les tutoriels au même endroit, de les cataloguer et d'en ajouter de nouveaux.
 
-## Setup & Use
+## Modèle freemium
 
-### Windows users
+Cette application est gratuite, et le restera. Cependant, l'administrateur a la possibilité de rendre des vidéos privées mais qui sont accessibles aux utilisateurs enregistrés. L'inscription est gratuite, en revanche il faut utiliser une adresse email valide afin d'activer le compte.
 
-Be sure to run these commands in a git terminal to avoid [issues with newline formats](https://en.wikipedia.org/wiki/Newline#Issues_with_different_newline_formats):
+### Pourquoi activer son compte
 
-```
-git config --global core.eol lf
-git config --global core.autocrlf false
-```
+La procédure de l'inscription est très simple : un nom, un prénom, une date de naissance, une adresse email et un mot de passe. Nous ne cherchons pas à rendre votre inscription difficile, mais pour éviter les abus, nous avons décidé de rendre l'activation obligatoire. Un compte non actif est équivalent à aucun compte, mais vous pouvez activer votre compte en un clic. Au moment de l'inscription, vous recevez un email de validation. Un clic et voilà.
 
-### Project Initialization
+### Espace utilisateur
 
-- In VSCode, install plugins **Prettier - Code formatter** and **ESLint** and configure them
-- Clone this repo, enter it
-- Run command `npm install`
-- Create environment files (`.env`) in both `backend` and `frontend`: you can copy `.env.sample` files as starters (**don't** delete them)
+L'inscription est simple, mais si vous voulez personnaliser votre page personnelle, nous vous avons donné cette possibilité. Votre page personnelle vous permet de modifier vos coordonnées (nom, prénom et image de profil) et de changer votre mot de passe en toute sécurité. Un simple compte ouvert n'est pas suffisant pour changer votre mot de passe ; le changement doit passer par un email de validation.
 
-### Available Commands
+### Mot de passe oublié
 
-- `db:migrate` : Run the database migration script
-- `db:seed` : Run the database seed script
-- `dev` : Starts both servers (frontend + backend) in one terminal
-- `dev-front` : Starts the React frontend server
-- `dev-back` : Starts the Express backend server
-- `lint` : Runs validation tools (will be executed on every _commit_, and refuse unclean code)
+En deux clics, vous pouvez réinitialiser votre mot de passe par email.
 
-## FAQ
+## Espace administrateur
 
-### Tools
+En construction et ça va loin. L'espace administrateur n'est pas responsive, nous estimons que l'administrateur travaille sur un grand écran voire plusieurs.
 
-- _Concurrently_ : Allows for several commands to run concurrently in the same CLI
-- _Husky_ : Allows to execute specific commands that trigger on _git_ events
-- _Vite_ : Alternative to _Create-React-App_, packaging less tools for a more fluid experience
-- _ESLint_ : "Quality of code" tool, ensures chosen rules will be enforced
-- _Prettier_ : "Quality of code" tool as well, focuses on the styleguide
-- _ Airbnb Standard_ : One of the most known "standards", even though it's not officially linked to ES/JS
+### Ajouter une playlist
 
-## Deployment with Traefik
+Pour ajouter une playlist, il suffit d'avoir son identifiant YouTube, son titre (pas nécessairement le titre original) et un ou plusieurs tags. Les tags sont indispensables dans le filtrage. Ce sont les seuls critères utilisés pour catégoriser les playlists. (On ne peut pas compter sur les descriptions YouTube, ni sur les tags des vidéos)
 
-> ⚠️ Prerequisites : You must have installed and configured Traefik on your VPS beforehand.
-> https://github.com/WildCodeSchool/vps-traefik-starter-kit/
+### Supprimer ou éditer une playlist
 
-For deployment, you have to go to `secrets` → app `actions` on the github repo to insert via `New repository secret` :
+Dans l'onglet playlist, on peut choisir de supprimer une playlist et ses vidéos associées de la base de données. L'administrateur peut également changer les tags de la playlist. (En construction)
 
-- SSH_HOST : IP address of your VPS
-- SSH_USER : SSH login to your VPS
-- SSH_PASSWORD : SSH connection password to your VPS
+### Ajouter une vidéo
 
-And a public variable from the tab `/settings/variables/actions` :
+L'ajout d'une vidéo est un processus un peu complexe, car la vidéo en question sera uploadée sur l'hébergeur YouTube, et ensuite ses données seront ajoutées à la base de données. Dans un premier temps et dans l'onglet upload, il faut chercher l'autorisation de YouTube, puis remplir le formulaire et uploader. Ce processus peut prendre du temps en fonction de la taille de la vidéo et de la vitesse d'upload. (Remarque : une vidéo peut appartenir à une et une seule playlist)
 
-- PROJECT_NAME : the name of the project used to create the subdomain.
+## Gestion d'utilisateurs
 
-> ⚠️ Warning : underscores are not allowed. They can cause trouble with the let's encrypt certificate
-
-Use this same tab to add the other environment variables required for the project if any.
-
-Only the backend will be accessible. The root path `"/"` will redirect to the dist folder on your frontend. In order to allow that, please uncomment the line as explain on `backend/src/app.js` (Line 102).
-Because the backend will serve the front, the global variable VITE_BACKEND_URL will be set with an empty string.
-
-Your url will be ` https://${PROJECT-NAME}.${subdomain}.wilders.dev/`.
-
-### About the database
-
-The database is automaticaly deployed with the name of your repo. During the build of the projet (`docker-entry.sh`), the `node migrate.js` command is executed in the backend. If you want to seed automaticaly your database using the `seed.js` script, replace the command _build_ on you `backend/package.json` by `node migrate.js && node seed.js`.
-
-### About public assets (pictures, fonts...)
-
-Don't use any public folder on your frontend. This folder won't be accessible online. You may move your public assets in the `backend/public` folder. Prefer [static assets](https://vitejs.dev/guide/assets) when possible.
-
-### About Logs
-
-If you want to access the logs of your online projet (to follow the deployement or to watch any bug error), connect to your VPS (`ssh user@host`).
-Then, go on your specific project and run  `docker compose logs -t -f`.
+En construction
