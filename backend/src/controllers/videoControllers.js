@@ -162,10 +162,15 @@ async function addPlaylist(req, res) {
 async function destroyPlaylist(req, res) {
   try {
     const { playlistId } = req.params;
-
+    const resVideos = await videoManager.deleteAllVideosFromPlayList(
+      playlistId
+    );
     const result = await videoManager.deletePlaylist(playlistId);
     if (+result !== 0) {
-      res.status(200).json({ message: "Playliste supprimée ", success: true });
+      res.status(200).json({
+        message: `Playliste supprimée (${resVideos} videos supprimées)`,
+        success: true,
+      });
     } else {
       res
         .status(404)

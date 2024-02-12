@@ -33,6 +33,18 @@ class VideoManager {
     }
   }
 
+  static async deleteAllVideosFromPlayList(playlistId) {
+    try {
+      const [res] = await database.query(
+        "delete from video WHERE playlistId = ?",
+        [playlistId]
+      );
+      return res.affectedRows;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
   static async read(ytId) {
     const [rows] = await database.query(`select * from video where ytId = ?`, [
       ytId,
@@ -116,6 +128,7 @@ class VideoManager {
         "delete from playlist WHERE playlistId = ?",
         [playlistId]
       );
+
       return res.affectedRows;
     } catch (error) {
       throw new Error(error.message);
