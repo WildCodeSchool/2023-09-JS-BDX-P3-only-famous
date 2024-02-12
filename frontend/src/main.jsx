@@ -32,7 +32,7 @@ const router = createBrowserRouter([
         Authorization: `Bearer ${localStorage.getItem("token") ?? ""}`,
       };
 
-      let loaderData = {};
+      let loaderData = null;
 
       try {
         if (localStorage.getItem("token")) {
@@ -44,8 +44,7 @@ const router = createBrowserRouter([
       } catch (err) {
         console.error(err.message);
       }
-
-      return loaderData;
+      return { loaderData };
     },
     element: (
       <VideoContextProvider>
