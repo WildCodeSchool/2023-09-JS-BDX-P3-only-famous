@@ -1,3 +1,8 @@
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+
+@import "@mantine/core/styles.css";
+@import "@mantine/carousel/styles.css";
+
 @import "./_carroussel.scss";
 @import "./_oneVideo.scss";
 @import "./_slidingNavbar.scss";
@@ -23,12 +28,32 @@
   box-sizing: border-box;
   text-decoration: none;
 }
-// body {
-//   background-image: url("../assets/fond.jpg");
-//   background-size: cover;
-//   background-repeat: no-repeat;
-//   z-index: -1;
-// }
 .main-title {
   margin: 20px 0;
+
+  @media screen and (max-width: 600px) {
+    font-size: 1.5rem;
+  }
+}
+.App {
+  position: relative;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding-bottom: 100px;
+}
+body {
+  background-color: #333333;
+  color: var(--font-light);
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+}
+:root {
+  --primary-me: #333333;
+  --primary-me-dark: #222222;
+  --secondary-me: #ffe500;
+  --border: #c5c1c0;
+  --font-light-grey: #c5c1c0;
+  --font-light: #ffffff;
+}
+.hover {
+  filter: drop-shadow(2px 2px 4px orange);
 }

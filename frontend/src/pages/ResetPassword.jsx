@@ -3,6 +3,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Button, Container, Fieldset, Input } from "@mantine/core";
 import { useUserContext } from "../context/UserContext";
 import Banner from "../components/Banner";
+import bannerImage from "../assets/banner.png";
 import MyAlert from "../components/MyAlert";
 
 export default function ResetPassword() {
@@ -14,11 +15,15 @@ export default function ResetPassword() {
   const [errorBack, setErrorBack] = useState(false);
 
   const navigate = useNavigate();
-  const { resetPassword } = useUserContext();
+  const { resetPassword, validatePassword } = useUserContext();
 
   async function handleErrorAndSend() {
     try {
-      if (password === confirmPassword && password.length >= 4) {
+      if (
+        password === confirmPassword &&
+        password.length >= 8 &&
+        validatePassword(password)
+      ) {
         const res = await resetPassword({
           email: searchParams.get("email") ?? "",
           code: searchParams.get("code") ?? "",
@@ -30,10 +35,15 @@ export default function ResetPassword() {
         }
       } else {
         setErrorBack(true);
-        setMessage("Erreur, essaie plus tard");
+        setMessage(
+          "Erreur, mot de passe doit contenir une majuscule, une minuscule, un chiffre et un character special"
+        );
       }
     } catch (err) {
       setError(true);
+      setMessage(
+        "Erreur, mot de passe doit contenir une majuscule, une minuscule, un chiffre et un character special"
+      );
       setMessage(err.response.data.message);
     }
   }
@@ -41,7 +51,7 @@ export default function ResetPassword() {
   return (
     <div className="inscription_container">
       <Container size="xs">
-        <Banner imgUrl="./src/assets/banner.png" />
+        <Banner imgUrl={bannerImage} />
         <h2>Mot de passe</h2>
         <Fieldset legend="Coordonnées" radius="sm" className="transparent">
           <Input

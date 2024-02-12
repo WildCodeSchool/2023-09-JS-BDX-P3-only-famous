@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Container, Fieldset, Input, Button } from "@mantine/core";
 import { useUserContext } from "../context/UserContext";
 import Banner from "../components/Banner";
+import bannerImage from "../assets/banner.png";
 import MyAlert from "../components/MyAlert";
 
 export default function RegisterPassword() {
@@ -14,14 +15,20 @@ export default function RegisterPassword() {
   const [errorBack, setErrorBack] = useState(false);
 
   const { formValue, setFormValue } = useUserContext();
-  const { register, messageUser, setMessageUser } = useUserContext();
+  const { register, messageUser, setMessageUser, validatePassword } =
+    useUserContext();
   const refUser = useRef({});
 
   async function checkError() {
-    if (password.length < 4 || password !== confirmPassword) {
+    if (
+      password.length < 4 ||
+      password !== confirmPassword ||
+      !validatePassword(password)
+    ) {
       setError(true);
       setMessage(
-        () => "Le mot de passe n'est pas conforme ou n'est pas confirmé!!!"
+        () =>
+          "Le mot de passe n'est pas conforme (une lettre majuscule, une miniscule, un chiffre, et un character spécial)!!!"
       );
     } else {
       setError(false);
@@ -52,7 +59,7 @@ export default function RegisterPassword() {
   return (
     <div className="inscription_container">
       <Container size="xs">
-        <Banner imgUrl="./src/assets/banner.png" />
+        <Banner imgUrl={bannerImage} />
         <h2>Mot de passe</h2>
         <Fieldset legend="Coordonnées" radius="sm" className="transparent">
           <Input
@@ -73,7 +80,7 @@ export default function RegisterPassword() {
           )}
           {errorBack && (
             <>
-              <MyAlert color="var(--font-light-grey)" message={messageUser} />
+              <MyAlert color="var(--font-light-grey)" message={message} />
               <Link to="/connexion" className="invisible-button">
                 Connexion !!!
               </Link>

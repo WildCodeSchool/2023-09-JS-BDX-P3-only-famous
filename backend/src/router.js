@@ -88,6 +88,13 @@ router.post("/sendreset", userControllers.sendResetPassword);
 router.post("/reset", userControllers.updatePassword);
 // update first and lastname
 router.post("/updatename", userMiddle.verifyToken, userControllers.updateName);
+
+router.post(
+  "/updatedescription",
+  userMiddle.verifyToken,
+  userControllers.updateDescription
+);
+
 /* ************************************************************************* */
 
 module.exports = router;

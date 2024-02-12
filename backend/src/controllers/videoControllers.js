@@ -3,9 +3,10 @@ const videoManager = require("../models/videoManager");
 
 // The B of BREAD - Browse (Read All) operation
 const browse = async (req, res, next) => {
+  const { max } = req.params;
   try {
     // Fetch all items from the database
-    const items = await videoManager.readAll();
+    const items = await videoManager.readAll(max);
 
     // Respond with the items in JSON format
     res.json(items);
@@ -122,8 +123,6 @@ async function check(req, res) {
   }
 }
 
-// The D of BREAD - Destroy (Delete) operation
-// This operation is not yet implemented
 async function destroy(req, res) {
   try {
     const { ytId } = req.params;
@@ -163,10 +162,15 @@ async function addPlaylist(req, res) {
 async function destroyPlaylist(req, res) {
   try {
     const { playlistId } = req.params;
-
+    const resVideos = await videoManager.deleteAllVideosFromPlayList(
+      playlistId
+    );
     const result = await videoManager.deletePlaylist(playlistId);
     if (+result !== 0) {
-      res.status(200).json({ message: "Playliste supprimée ", success: true });
+      res.status(200).json({
+        message: `Playliste supprimée (${resVideos} videos supprimées)`,
+        success: true,
+      });
     } else {
       res
         .status(404)
@@ -241,6 +245,25 @@ async function getPlaylistsPagination(req, res) {
   }
 }
 
+async function getPlaylistsByCategoryPagination(req, res) {
+  try {
+    const { category } = req.params;
+    const { start, offset } = req.query;
+    const playlists = await videoManager.readAllPlaylistsByCategoryPagination(
+      category,
+      start,
+      offset
+    );
+    res.status(200).json({
+      playlists: playlists.rows,
+      count: playlists.length,
+      message: "all good",
+    });
+  } catch (err) {
+    res.sendStatus(404);
+  }
+}
+
 async function addPlaylistFromYoutube(req, res) {
   const { playlistId } = req.prams;
   res.send(playlistId);
@@ -262,4 +285,5 @@ module.exports = {
   editPlaylist,
   getPlaylistsPagination,
   addPlaylistFromYoutube,
+  getPlaylistsByCategoryPagination,
 };

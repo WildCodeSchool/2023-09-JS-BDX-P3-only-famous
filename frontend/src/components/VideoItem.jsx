@@ -11,44 +11,38 @@ export default function VideoItem({
   link,
   description,
   tags,
+  isPublic,
 }) {
   const { setLinkToVideo } = useUserContext();
   const navigate = useNavigate();
-  function formatDuration(durations) {
-    const ADuration = durations.split(":");
-    let hours = "00";
-    if (ADuration[2]) {
-      hours = +ADuration[2] < 10 ? `0${ADuration[2]}` : `${ADuration[2]}`;
-    }
-    let minutes = "00";
-    if (ADuration[1]) {
-      minutes = +ADuration[1] < 10 ? `0${ADuration[1]}` : `${ADuration[1]}`;
-    }
-    let seconds = "00";
-    if (ADuration[0]) {
-      seconds = +ADuration[0] < 10 ? `0${ADuration[0]}` : `${ADuration[0]}`;
-    }
-    return `${hours}:${seconds}:${minutes}`;
-  }
+
+  const { user } = useUserContext();
+
   return (
     <button
       type="button"
       className="carousel-item"
       onClick={() => {
-        setLinkToVideo({
-          title,
-          duration,
-          imgUrl,
-          publishDate,
-          link,
-          description,
-          tags,
-        });
-        navigate("/onevideo");
+        if (user.isActive || isPublic) {
+          setLinkToVideo({
+            title,
+            duration,
+            imgUrl,
+            publishDate,
+            link,
+            description,
+            tags,
+          });
+          navigate("/onevideo");
+        } else {
+          setLinkToVideo({});
+        }
       }}
     >
       <div
-        className="carousel-item-image"
+        className={`carousel-item-image ${
+          !user.isActive && !isPublic && "not-public"
+        }`}
         style={{
           backgroundImage: `url(${imgUrl})`,
           backgroundRepeat: "no-repeat",
@@ -58,7 +52,7 @@ export default function VideoItem({
           borderRadius: "10px",
         }}
       >
-        <p className="carousel-item-duration">{formatDuration(duration)}</p>
+        <p className="carousel-item-duration">{duration}</p>
       </div>
       <div className="carousel-item-details">
         <h3 className="carousel-item-title">{title}</h3>
@@ -77,4 +71,5 @@ VideoItem.propTypes = {
   publishDate: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   tags: PropTypes.string.isRequired,
+  isPublic: PropTypes.number.isRequired,
 };

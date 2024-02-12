@@ -5,6 +5,7 @@ import { useUserContext } from "../context/UserContext";
 import RegisterPassword from "./RegisterPassword";
 import Banner from "../components/Banner";
 import MyAlert from "../components/MyAlert";
+import bannerImage from "../assets/banner.png";
 
 export default function RegisterCoord() {
   const [email, setEmail] = useState("");
@@ -32,7 +33,7 @@ export default function RegisterCoord() {
     <div className="inscription_container">
       <div className="inscription_container">
         <Container size="xs">
-          <Banner imgUrl="./src/assets/banner.png" />
+          <Banner imgUrl={bannerImage} />
           <h2>Nom et prénom</h2>
           <Fieldset legend="Coordonnées" radius="sm" className="transparent">
             <Input

@@ -1,26 +1,26 @@
-import { useEffect, useState } from "react";
-import { Pagination } from "@mantine/core";
+import { useEffect, useRef, useState } from "react";
 import { useVideoContext } from "../context/videoContext";
 import SingleLinePlaylist from "../components/playlist/SingleLinePlaylist";
 import PlaylistTopLine from "../components/playlist/PlaylistTop";
 import TaskBarPlaylist from "../components/playlist/TaskBarPlaylist";
 
 export default function Playlists() {
-  const [activePage, setPage] = useState(1);
-  const { playlists, getAllPlaylistsPagination, count } = useVideoContext();
-  // getAllPlaylists,
-
-  function handlechangePage(e) {
-    setPage(e);
-  }
-  useEffect(() => {
-    // console.log("lol", activePage);
-    getAllPlaylistsPagination((activePage - 1) * 5, 5);
-  }, [activePage]);
+  const playListPerPage = useRef(5);
+  const [activePage] = useState(1);
+  const { playlists, getAllPlaylistsByCategoryPagination, category } =
+    useVideoContext();
 
   useEffect(() => {
-    getAllPlaylistsPagination(0, 5);
-  }, []);
+    async function getData() {
+      await getAllPlaylistsByCategoryPagination(
+        category,
+        (activePage - 1) * playListPerPage.current,
+        playListPerPage.current
+      );
+    }
+    getData();
+  }, [activePage, category]);
+
   return (
     <>
       <TaskBarPlaylist />
@@ -35,11 +35,6 @@ export default function Playlists() {
           />
         </h2>
       ))}
-      <Pagination
-        value={activePage}
-        onChange={(e) => handlechangePage(e)}
-        total={Math.floor(count / 5)}
-      />
     </>
   );
 }

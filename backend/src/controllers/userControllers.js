@@ -160,11 +160,12 @@ async function generateNewActivation(req, res) {
 async function updatePassword(req, res) {
   try {
     const { password, code, email } = req.body;
+
     const userdb = await userManager.readUserViaEmail(email);
     if (userdb.activationCode === code) {
-      const { affectedRows } = await userManager.update({
-        password,
+      const { affectedRows } = await userManager.updatePassword({
         email,
+        password,
       });
       if (affectedRows !== 0) {
         res
@@ -192,6 +193,28 @@ async function updateName(req, res) {
       res
         .status(200)
         .json({ message: "Nom et prénom actualisés!!!", result: true });
+    } else {
+      res
+        .status(404)
+        .json({ message: "Utilisateur non existant", result: false });
+    }
+  } catch (err) {
+    res.status(404).json({ message: err.message, result: false });
+  }
+}
+
+async function updateDescription(req, res) {
+  try {
+    // console.log("update Description");
+    const { description, email } = req.body;
+    const { affectedRows } = await userManager.update({
+      description,
+      email,
+    });
+    if (affectedRows !== 0) {
+      res
+        .status(200)
+        .json({ message: "description actualisée!!!", result: true });
     } else {
       res
         .status(404)
@@ -251,4 +274,5 @@ module.exports = {
   updateName,
   browseByEmail,
   getProfile,
+  updateDescription,
 };

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
 import {
@@ -10,18 +10,25 @@ import {
   Grid,
   Input,
   Progress,
+  Space,
   Spoiler,
+  Textarea,
 } from "@mantine/core";
 import { useUserContext } from "../context/UserContext";
 import MyAlert from "../components/MyAlert";
+import Default from "../assets/default.png";
 
 export default function PageUser() {
-  const { user, setUser, sendResetLink, updateName } = useUserContext();
+  const { user, setUser, sendResetLink, updateName, updateDescription } =
+    useUserContext();
   const [firstname, setFirstname] = useState(user.firstname);
+  const [description, setDescription] = useState(user.description);
+  const [editMode, setEditMode] = useState(false);
+
   const [lastname, setLastname] = useState(user.lastname);
   const [message, setMessage] = useState("");
   const [error, setError] = useState(false);
-  const [messageUpdateInfos, setMessageUpdateInfos] = useState("test");
+  const [messageUpdateInfos, setMessageUpdateInfos] = useState("");
 
   const [urlImage, setUrlImage] = useState({ preview: user.imgUrl });
 
@@ -40,24 +47,61 @@ export default function PageUser() {
     );
     setUser({ ...user, imgUrl });
   }
-
   async function ResetEmail() {
     const res = await sendResetLink(user.email);
     setMessage(res.message);
     setError(res.success);
   }
 
+  async function fakeLoader() {
+    axios.defaults.headers.common = {
+      Authorization: `Bearer ${localStorage.getItem("token") ?? ""}`,
+    };
+    try {
+      if (localStorage.getItem("token")) {
+        const { data } = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/api/getprofile`
+        );
+        setUser({ ...data, isConnected: true });
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+
   async function updateInfos() {
     if (firstname && firstname.length >= 3 && lastname && lastname.length > 4) {
       const res = await updateName({ email: user.email, firstname, lastname });
       setMessageUpdateInfos(res.message);
+
       if (res.result) {
+        await fakeLoader();
         setUser({ ...user, firstname, lastname });
+
+        // window.location.href = `${import.meta.env.VITE_FRONTEND_URL}/user`;
       }
     } else {
       setMessageUpdateInfos("Nom ou prénom pas conformes");
     }
   }
+
+  async function updateDesc() {
+    // console.log("descitp", description);
+    const res = await updateDescription({ email: user.email, description });
+    setMessageUpdateInfos(res.message);
+    if (res.result) {
+      await fakeLoader();
+      setUser({ ...user, description });
+
+      // window.location.href = `${import.meta.env.VITE_FRONTEND_URL}/user`;
+    } else {
+      setMessageUpdateInfos("Nom ou prénom pas conformes");
+    }
+  }
+
+  useEffect(() => {
+    fakeLoader();
+  }, []);
 
   return user.isConnected ? (
     <Container size="md">
@@ -71,41 +115,125 @@ export default function PageUser() {
           Bienvenue {user.firstname} {user.lastname}
         </h2>
       </Center>
+      <Button
+        type="button"
+        onClick={() => setEditMode(!editMode)}
+        className="invisible-button-with-border"
+      >
+        {!editMode ? "Editer" : "Visualiser"}
+      </Button>
       <div className="user-card">
         <div
           className="user-image"
           style={{
-            backgroundImage: `url(${urlImage.preview ?? user.imgUrl})`,
+            backgroundImage: `url(${
+              user.imgUrl ?? urlImage.preview ?? { Default }
+            })`,
           }}
         />
         <div className="user-details">
           <div>
             <Spoiler maxHeight={200} showLabel="Show more" hideLabel="Hide">
               <h3>Profil</h3>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga
-              quibusdam dolorum at explicabo nostrum? A quae sapiente, commodi
-              optio rem unde voluptas voluptatum harum minima repellendus
-              maxime, ullam, velit veritatis!
+              {!editMode ? (
+                <div>
+                  <p>
+                    {description ??
+                      "Editer votre profil, parlez-nous de vous ..."}
+                  </p>
+                  <Space h="md" />
+                  <Grid gutter={{ base: 5, xs: "md", md: "xl", xl: 50 }}>
+                    <Grid.Col span={6}>
+                      <p> Nom et prénom :</p>
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                      {firstname} {lastname}{" "}
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                      <p> Date de naissance :</p>
+                    </Grid.Col>
+                    <Grid.Col span={6}>{user.birthday}</Grid.Col>
+                  </Grid>
+                </div>
+              ) : (
+                <div>
+                  <div>
+                    <Textarea
+                      type="text"
+                      value={description ?? "Parlez-nous de vous ..."}
+                      onChange={(e) => setDescription(e.target.value)}
+                      autosize
+                    />
+                    <Button
+                      type="button"
+                      onClick={() => updateDesc()}
+                      className="invisible-button-with-border"
+                    >
+                      Mettre à jour
+                    </Button>
+                    <input
+                      type="file"
+                      accept="image/png, image/jpeg"
+                      name="profilImage"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <Grid gutter={{ base: 5, xs: "md", md: "xl", xl: 50 }}>
+                    <Grid.Col span={6}>
+                      {" "}
+                      <Input.Wrapper
+                        label="Prénom"
+                        withAsterisk
+                        description="obligatoire"
+                      >
+                        <Input
+                          placeholder="Votre prénom"
+                          value={firstname}
+                          onChange={(e) => setFirstname(e.currentTarget.value)}
+                        />
+                      </Input.Wrapper>
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                      {" "}
+                      <Input.Wrapper
+                        label="Nom"
+                        withAsterisk
+                        description="obligatoire"
+                      >
+                        <Input
+                          placeholder="Votre nom"
+                          value={lastname}
+                          onChange={(e) => setLastname(e.currentTarget.value)}
+                        />
+                      </Input.Wrapper>
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                      {" "}
+                      <Button
+                        type="button"
+                        className="invisible-button-with-border"
+                        onClick={() => updateInfos()}
+                      >
+                        Suivant
+                      </Button>
+                    </Grid.Col>
+                  </Grid>
+                </div>
+              )}
             </Spoiler>
           </div>
-          <input
-            type="file"
-            accept="image/png, image/jpeg"
-            name="profilImage"
-            onChange={handleChange}
-          />
         </div>
       </div>
       <Progress color="gray" value={100} />
 
       <MyAlert
-        variant={user.isActive ? "light" : "dark"}
+        variant={!user.isActive ? "light" : "dark"}
         title="Status de l'activation"
         radius="md"
         color={
           !user.isActive
             ? "var(--mantine-color-red-8)"
-            : "var(--mantine-color-blue-1)"
+            : "var(--mantine-color-blue-8)"
         }
         message={
           !user.isActive
@@ -113,56 +241,20 @@ export default function PageUser() {
             : "Compte active"
         }
       />
-      <Center
-        maw={1200}
-        h={50}
-        bg="var(--mantine-color-gray-light)"
-        className="banner"
-      >
-        <h2>Éditer votre profil</h2>
-      </Center>
 
-      <Grid gutter={{ base: 5, xs: "md", md: "xl", xl: 50 }}>
-        <Grid.Col span={6}>
-          {" "}
-          <Input.Wrapper label="Prénom" withAsterisk description="obligatoire">
-            <Input
-              placeholder="Votre prénom"
-              value={firstname}
-              onChange={(e) => setFirstname(e.currentTarget.value)}
-            />
-          </Input.Wrapper>
-        </Grid.Col>
-        <Grid.Col span={6}>
-          {" "}
-          <Input.Wrapper label="Nom" withAsterisk description="obligatoire">
-            <Input
-              placeholder="Votre nom"
-              value={lastname}
-              onChange={(e) => setLastname(e.currentTarget.value)}
-            />
-          </Input.Wrapper>
-        </Grid.Col>
-      </Grid>
-      <Button
-        type="button"
-        className="invisible-button-with-border"
-        onClick={() => updateInfos()}
-      >
-        Suivant
-      </Button>
-
-      <Alert
-        variant="dark"
-        color="red"
-        radius="md"
-        title="Message "
-        style={{ margin: "15px 0" }}
-      >
-        <span style={{ color: `var(--mantine-color-red-8)` }}>
-          {messageUpdateInfos}
-        </span>
-      </Alert>
+      {message && (
+        <Alert
+          variant="dark"
+          color="red"
+          radius="md"
+          title="Message "
+          style={{ margin: "15px 0" }}
+        >
+          <span style={{ color: `var(--mantine-color-red-8)` }}>
+            {messageUpdateInfos}
+          </span>
+        </Alert>
+      )}
 
       <Container>
         <Fieldset legend="Coordonnées" radius="sm" className="transparent">

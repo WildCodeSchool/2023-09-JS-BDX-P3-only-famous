@@ -6,11 +6,10 @@ import axios from "axios";
 const userContext = createContext();
 
 export default function UserContextProvider({ children }) {
-  const userData = useLoaderData();
-
+  const { loaderData } = useLoaderData();
   const [user, setUser] = useState({
-    ...userData,
-    isConnected: !!userData,
+    ...loaderData,
+    isConnected: !!loaderData,
   });
   const [mobileMode, setMobileMode] = useState(true);
   const [formValue, setFormValue] = useState({
@@ -25,6 +24,12 @@ export default function UserContextProvider({ children }) {
   const [messageUser, setMessageUser] = useState("");
   const [linkToVideo, setLinkToVideo] = useState({});
   const navigate = useNavigate();
+
+  function validatePassword(password) {
+    const regex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return regex.test(password);
+  }
 
   async function checkCredentials(credentials) {
     try {
@@ -49,6 +54,7 @@ export default function UserContextProvider({ children }) {
         `${import.meta.env.VITE_BACKEND_URL}/api/reset`,
         credentials
       );
+
       setMessageUser(data.message);
       return true;
     } catch (err) {
@@ -80,6 +86,21 @@ export default function UserContextProvider({ children }) {
     }
   }
 
+  async function updateDescription(credentials) {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/updatedescription`,
+        credentials
+      );
+      setMessageUser(data.message);
+      return { message: data.message, result: true };
+    } catch (err) {
+      console.error(err);
+      setMessageUser("Erreur : ", err.response.data.message);
+      return { message: err.response.data.message, result: false };
+    }
+  }
+
   async function sendResetLink(email) {
     try {
       const { data } = await axios.post(
@@ -99,13 +120,8 @@ export default function UserContextProvider({ children }) {
     if (userdb) {
       updateLocalStorage({ token: headers.token, users: userdb });
       setUser({
-        isAdmin: userdb.isAdmin,
+        ...userdb,
         isConnected: true,
-        firstname: userdb.firstname,
-        lastname: userdb.lastname,
-        email: userdb.email,
-        imgUrl: userdb.imgUrl,
-        isActive: userdb.isActive,
       });
       axios.defaults.headers.common.Authorization = `Bearer ${headers.token}`;
       navigate("/user");
@@ -161,6 +177,7 @@ export default function UserContextProvider({ children }) {
   const contextData = useMemo(
     () => ({
       user,
+      setUser,
       messageUser,
       setMessageUser,
       formValue,
@@ -176,9 +193,12 @@ export default function UserContextProvider({ children }) {
       resetPassword,
       sendResetLink,
       updateName,
+      updateDescription,
+      validatePassword,
     }),
     [
       user,
+      setUser,
       messageUser,
       setMessageUser,
       formValue,
@@ -194,6 +214,7 @@ export default function UserContextProvider({ children }) {
       resetPassword,
       sendResetLink,
       updateName,
+      validatePassword,
     ]
   );
   return (

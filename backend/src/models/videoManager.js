@@ -6,7 +6,6 @@ class VideoManager {
       const [result] = await database.query(
         `insert into video (ytId,
         title,
-        playlistTitle,
         playlistId,
         description,
         thumbnails,
@@ -14,17 +13,16 @@ class VideoManager {
         publishDate,
         tags,
         isPublic)
-         values (?,?,?,?,?,?,?,?,?,?)`,
+         values (?,?,?,?,?,?,?,?,?)`,
         [
           video.ytId,
           video.title,
-          video.playlistTitle,
           video.playlistId,
           video.description,
           video.thumbnails,
           video.duration,
           video.publishDate,
-          video.tags.join(","),
+          video.tags,
           video.isPublic ?? 1,
         ]
       );
@@ -32,6 +30,18 @@ class VideoManager {
     } catch (err) {
       console.error("error while inserting new video in user manager: ", err);
       return { message: "Video non ajoutée!!!", insertId: 0 };
+    }
+  }
+
+  static async deleteAllVideosFromPlayList(playlistId) {
+    try {
+      const [res] = await database.query(
+        "delete from video WHERE playlistId = ?",
+        [playlistId]
+      );
+      return res.affectedRows;
+    } catch (error) {
+      throw new Error(error.message);
     }
   }
 
@@ -45,8 +55,8 @@ class VideoManager {
     return null;
   }
 
-  static async readAll() {
-    const [rows] = await database.query(`select * from video`);
+  static async readAll(max) {
+    const [rows] = await database.query(`select * from video limit ${max}`);
     return rows;
   }
 
@@ -118,6 +128,7 @@ class VideoManager {
         "delete from playlist WHERE playlistId = ?",
         [playlistId]
       );
+
       return res.affectedRows;
     } catch (error) {
       throw new Error(error.message);
@@ -148,6 +159,23 @@ class VideoManager {
         `select * from playlist where category like '%${category}%'`
       );
       return rows;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  static async readAllPlaylistsByCategoryPagination(category, start, offset) {
+    try {
+      // console.log("test");
+      const [count] = await database.query(
+        `select count(*) as length  from playlist where category like '%${category}%'`
+      );
+      // console.log(count[0]);
+      const [rows] = await database.query(
+        `select * from playlist where category like '%${category}%' limit ${start}, ${offset}`
+      );
+      // console.log(rows);
+      return { rows, ...count[0] };
     } catch (error) {
       throw new Error(error.message);
     }
