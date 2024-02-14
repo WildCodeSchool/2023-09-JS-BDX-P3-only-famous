@@ -51,6 +51,7 @@ export default function PrimeCarousel({ playlistId }) {
             tags={item.tags}
             key={item.title}
             isPublic={item.isPublic}
+            playlistId={item.playlistId}
           />
         ))}
       </Carousel>

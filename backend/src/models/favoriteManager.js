@@ -1,11 +1,11 @@
 const database = require("../../database/client");
 
 class FavoriteManager {
-  static async getFavoriById(id) {
+  static async getFavoriById(email) {
     try {
       const [rows] = await database.query(
-        `select * from favorite where userId = ?`,
-        [id]
+        `select * from favorite where email = ?`,
+        [email]
       );
       return rows;
     } catch (error) {
@@ -13,49 +13,14 @@ class FavoriteManager {
     }
   }
 
-  // static async addPlayListToUserFavorite(playlistId, userId) {
-  //   try {
-  //     await database.query("START TRANSACTION");
-
-  //     const [countResult] = await database.query(
-  //       `
-  //         SELECT COUNT(*) AS count
-  //         FROM favorite
-  //         WHERE playlistId = ? AND userId = ?
-  //     `,
-  //       [playlistId, userId]
-  //     );
-
-  //     const existCount = countResult[0].count;
-  //     console.log(existCount);
-  //     let res = null;
-  //     if (existCount === 0) {
-  //       res = await database.query(
-  //         `
-  //             INSERT INTO favorite (playlistId, userId)
-  //             VALUES (?, ?)
-  //         `,
-  //         [playlistId, userId]
-  //       );
-  //       console.log("result", res);
-  //     }
-
-  //     await database.query("COMMIT");
-  //     return res;
-  //   } catch (error) {
-  //     await database.query("ROLLBACK");
-  //     console.error("Erreur lors de l'exécution de la transaction :", error);
-  //   }
-  // }
-
-  static async addPlayListToUserFavorite(playlistId, userId) {
+  static async addPlayListToUserFavorite(playlistId, email) {
     try {
       const res = await database.query(
         `
-              INSERT INTO favorite (playlistId, userId)
+              INSERT INTO favorite (playlistId, email)
               VALUES (?, ?)
           `,
-        [playlistId, userId]
+        [playlistId, email]
       );
       return res;
     } catch (error) {
@@ -64,11 +29,11 @@ class FavoriteManager {
     }
   }
 
-  static async delete(playlistId, userId) {
+  static async delete(playlistId, email) {
     try {
       const [res] = await database.query(
-        "delete from favorite WHERE playlistId = ? and userId = ?",
-        [playlistId, userId]
+        "delete from favorite WHERE playlistId = ? and email = ?",
+        [playlistId, email]
       );
 
       return res;
@@ -77,11 +42,11 @@ class FavoriteManager {
     }
   }
 
-  static async getFavorites(userId) {
+  static async getFavorites(email) {
     try {
       const [res] = await database.query(
-        "select playlistId from favorite WHERE userId = ?",
-        [userId]
+        "select playlistId from favorite WHERE email = ?",
+        [email]
       );
 
       return res;
