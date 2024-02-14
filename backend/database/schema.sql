@@ -54,3 +54,13 @@ INSERT INTO `user` VALUES (1,'mahdi','mcheik','mahdi.mcheik@hotmail.fr','1986-04
 `description` = VALUES(`description`)
 ;
 
+# jointure Favoris
+
+CREATE TABLE if not exists `favorite` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `userId` int unsigned,
+  `playlistId` VARCHAR(255),
+  FOREIGN KEY (userId) REFERENCES user(id),
+  FOREIGN KEY (playlistId) REFERENCES playlist(playlistId),
+  CONSTRAINT unique_playlist_user UNIQUE (playlistId, userId)
+) ENGINE=InnoDB AUTO_INCREMENT=407 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
