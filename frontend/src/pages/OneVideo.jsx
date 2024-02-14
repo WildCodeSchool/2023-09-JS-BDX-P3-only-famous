@@ -6,7 +6,7 @@ export default function OneVideo() {
   const { linkToVideo } = useUserContext();
   const fullLink = `https://www.youtube.com/embed/${linkToVideo.link}`;
   return (
-    <Container size="lg">
+    <Container size="lf">
       <AspectRatio ratio={16 / 9} maw={1200} mx="auto">
         <iframe
           src={fullLink}

@@ -16,15 +16,16 @@ export default function SingleVideoPage() {
   }, []);
   return (
     <div className="singleVideoPage">
-      <Container size="lg">
+      <div>
         <OneVideo />
-
-        {playlists
-          .filter((_, index) => index < 5)
-          .map((ele) => {
-            return <PrimeCarousel playlistId={ele.playlistId} />;
-          })}
-      </Container>
+        <Container size="fluid">
+          {playlists
+            .filter((_, index) => index < 5)
+            .map((ele) => {
+              return <PrimeCarousel playlistId={ele.playlistId} />;
+            })}
+        </Container>
+      </div>
     </div>
   );
 }
