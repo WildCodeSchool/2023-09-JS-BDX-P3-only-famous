@@ -16,7 +16,7 @@ class FavoriteController {
 
   static async deletePlaylistToUserFavorite(req, res) {
     try {
-      const { playlistId, email } = req.body;
+      const { email, playlistId } = req.params;
       const result = await FavoriteManager.delete(playlistId, email);
       res
         .status(200)

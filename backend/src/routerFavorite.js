@@ -5,7 +5,7 @@ const routerFavorite = express.Router();
 
 routerFavorite.post("/favori", FavoriteController.addPlaylistToUserFavorite);
 routerFavorite.delete(
-  "/favori",
+  "/favori/:email/:playlistId",
   FavoriteController.deletePlaylistToUserFavorite
 );
 routerFavorite.get("/favori/:email", FavoriteController.getFavorite);

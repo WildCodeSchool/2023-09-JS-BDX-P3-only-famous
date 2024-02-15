@@ -188,6 +188,27 @@ export default function UserContextProvider({ children }) {
     }
   }
 
+  async function toggleFavorite(playlistId) {
+    try {
+      if (favoritePlaylist.includes(playlistId)) {
+        await axios.delete(
+          `${import.meta.env.VITE_BACKEND_URL}/favorite/favori/${
+            user.email
+          }/${playlistId}`,
+          { email: user.email, playlistId }
+        );
+      } else {
+        await axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/favorite/favori`,
+          { email: user.email, playlistId }
+        );
+      }
+      await getFavorite();
+    } catch (err) {
+      console.error("err", err);
+    }
+  }
+
   const contextData = useMemo(
     () => ({
       user,
@@ -212,6 +233,7 @@ export default function UserContextProvider({ children }) {
       favoritePlaylist,
       setFavoritePlaylist,
       getFavorite,
+      toggleFavorite,
     }),
     [
       user,
@@ -234,6 +256,7 @@ export default function UserContextProvider({ children }) {
       validatePassword,
       favoritePlaylist,
       setFavoritePlaylist,
+      toggleFavorite,
     ]
   );
   return (

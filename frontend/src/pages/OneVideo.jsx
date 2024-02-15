@@ -4,8 +4,13 @@ import Accordion from "../components/Accordion";
 import { useUserContext } from "../context/UserContext";
 
 export default function OneVideo() {
-  const { linkToVideo, user, favoritePlaylist } = useUserContext();
+  const { linkToVideo, user, favoritePlaylist, toggleFavorite } =
+    useUserContext();
   const fullLink = `https://www.youtube.com/embed/${linkToVideo.link}`;
+  const toggleFavori = async () => {
+    await toggleFavorite(linkToVideo.playlistId);
+  };
+
   return (
     <Container size="fluid">
       <AspectRatio ratio={16 / 9} maw={2000} mx="auto" className="yt-video">
@@ -23,7 +28,7 @@ export default function OneVideo() {
             <h5>Publié le 23-12-2023</h5>
           </div>
           {user.isConnected && (
-            <Button className="invisible-button">
+            <Button className="invisible-button" onClick={toggleFavori}>
               {" "}
               <MdFavorite
                 className={`like-icon ${
