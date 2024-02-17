@@ -58,8 +58,8 @@ INSERT INTO `user` VALUES (1,'mahdi','mcheik','mahdi.mcheik@hotmail.fr','1986-04
 
 CREATE TABLE if not exists `favorite` (
   `id` int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `email` VARCHAR(255),
-  `playlistId` VARCHAR(255),
+  `email` VARCHAR(255) NOT NULL,
+  `playlistId` VARCHAR(255) not NULL,
   FOREIGN KEY (email) REFERENCES user(email),
   FOREIGN KEY (playlistId) REFERENCES playlist(playlistId),
   CONSTRAINT unique_playlist_user UNIQUE (playlistId, email)
