@@ -11,7 +11,7 @@ export default function AccordionComponent({ description }) {
           style={{ border: "2px solid var(--secondary-me)" }}
           className="accordion-bar"
         >
-          {!show ? "Plus" : "Moins"}
+          {show ? "Plus" : "Moins"}
         </Accordion.Control>
         <Accordion.Panel>{description}</Accordion.Panel>
       </Accordion.Item>

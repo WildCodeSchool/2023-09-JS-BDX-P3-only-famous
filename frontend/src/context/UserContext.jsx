@@ -23,6 +23,7 @@ export default function UserContextProvider({ children }) {
   });
   const [messageUser, setMessageUser] = useState("");
   const [linkToVideo, setLinkToVideo] = useState({});
+  const [favoritePlaylist, setFavoritePlaylist] = useState([]);
   const navigate = useNavigate();
 
   function validatePassword(password) {
@@ -174,6 +175,40 @@ export default function UserContextProvider({ children }) {
     }
   }
 
+  async function getFavorite() {
+    try {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/favorite/favori/${user.email}`
+      );
+
+      const res = data.map((ele) => ele.playlistId);
+      setFavoritePlaylist([...res]);
+    } catch (err) {
+      console.error("err", err);
+    }
+  }
+
+  async function toggleFavorite(playlistId) {
+    try {
+      if (favoritePlaylist.includes(playlistId)) {
+        await axios.delete(
+          `${import.meta.env.VITE_BACKEND_URL}/favorite/favori/${
+            user.email
+          }/${playlistId}`,
+          { email: user.email, playlistId }
+        );
+      } else {
+        await axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/favorite/favori`,
+          { email: user.email, playlistId }
+        );
+      }
+      await getFavorite();
+    } catch (err) {
+      console.error("err", err);
+    }
+  }
+
   const contextData = useMemo(
     () => ({
       user,
@@ -195,6 +230,10 @@ export default function UserContextProvider({ children }) {
       updateName,
       updateDescription,
       validatePassword,
+      favoritePlaylist,
+      setFavoritePlaylist,
+      getFavorite,
+      toggleFavorite,
     }),
     [
       user,
@@ -215,6 +254,9 @@ export default function UserContextProvider({ children }) {
       sendResetLink,
       updateName,
       validatePassword,
+      favoritePlaylist,
+      setFavoritePlaylist,
+      toggleFavorite,
     ]
   );
   return (

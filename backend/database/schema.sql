@@ -9,7 +9,6 @@ CREATE TABLE if not exists `playlist` (
 CREATE TABLE if not exists `video` (
   `ytId` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
-  `playlistTitle` varchar(255),
   `playlistId` varchar(255),
   `description` text,
   `thumbnails` varchar(255) NOT NULL,
@@ -54,3 +53,15 @@ INSERT INTO `user` VALUES (1,'mahdi','mcheik','mahdi.mcheik@hotmail.fr','1986-04
 `description` = VALUES(`description`)
 ;
 
+# jointure Favoris
+
+CREATE TABLE if not exists `favorite` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `email` VARCHAR(255) NOT NULL,
+  `playlistId` VARCHAR(255) not NULL,
+  FOREIGN KEY (email) REFERENCES user(email),
+  FOREIGN KEY (playlistId) REFERENCES playlist(playlistId)
+) ENGINE=InnoDB AUTO_INCREMENT=407 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+ # CONSTRAINT unique_playlist_user UNIQUE (playlistId, email)
