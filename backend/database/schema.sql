@@ -9,7 +9,6 @@ CREATE TABLE if not exists `playlist` (
 CREATE TABLE if not exists `video` (
   `ytId` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
-  `playlistTitle` varchar(255),
   `playlistId` varchar(255),
   `description` text,
   `thumbnails` varchar(255) NOT NULL,
