@@ -60,6 +60,8 @@ CREATE TABLE if not exists `favorite` (
   `email` VARCHAR(255) NOT NULL,
   `playlistId` VARCHAR(255) not NULL,
   FOREIGN KEY (email) REFERENCES user(email),
-  FOREIGN KEY (playlistId) REFERENCES playlist(playlistId),
-  CONSTRAINT unique_playlist_user UNIQUE (playlistId, email)
+  FOREIGN KEY (playlistId) REFERENCES playlist(playlistId)
 ) ENGINE=InnoDB AUTO_INCREMENT=407 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+ # CONSTRAINT unique_playlist_user UNIQUE (playlistId, email)

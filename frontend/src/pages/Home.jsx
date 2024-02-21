@@ -21,7 +21,7 @@ function Home() {
 
   useEffect(() => {
     if (user.isConnected) {
-      getFavorite();
+      getFavorite(0, 5);
     }
   }, []);
   return (

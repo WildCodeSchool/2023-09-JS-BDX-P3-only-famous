@@ -45,7 +45,7 @@ class FavoriteManager {
   static async getFavorites(email) {
     try {
       const [res] = await database.query(
-        "select playlistId from favorite WHERE email = ?",
+        `select playlistId from favorite WHERE email = ?`,
         [email]
       );
 
