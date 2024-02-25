@@ -137,10 +137,7 @@ export default function UserContextProvider({ children }) {
     try {
       const { message, insertId } = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/users`,
-        {
-          ...newUser,
-          imgUrl: `${import.meta.env.VITE_BACKEND_URL}/uploads/charlize.jpg`,
-        }
+        newUser
       );
       if (+insertId === 0) {
         setMessageUser(message);
