@@ -96,40 +96,6 @@ class UserManager {
     }
   }
 
-  // static async update(user) {
-  //   try {
-  //     const [userdb] = await database.query(
-  //       `select * from user where email = ?`,
-  //       [user.email]
-  //     );
-  //     if (userdb[0]) {
-  //       const keys = Object.keys(user);
-  //       // console.log("keys ", keys);
-  //       keys.forEach((ele) => {
-  //         userdb[0][ele] = user[ele];
-  //       });
-  //       if (user.password) {
-  //         userdb[0].password = await this.Hashing(user.password);
-  //       }
-  //       const [res] = await database.query(
-  //         "update user set firstname = ?, lastname = ?, birthday = ?, imgUrl = ?, password = ?,   WHERE email = ?",
-  //         [
-  //           userdb[0].firstname,
-  //           userdb[0].lastname,
-  //           userdb[0].birthday,
-  //           userdb[0].imgUrl,
-  //           userdb[0].password,
-  //           userdb[0].email,
-  //         ]
-  //       );
-  //       return res.affectedRows;
-  //     }
-  //     return 0;
-  //   } catch (err) {
-  //     throw new Error("Aucune modification réalisé!!!");
-  //   }
-  // }
-
   static async update(user) {
     let sql = "UPDATE user set";
     const sqlValues = [];
