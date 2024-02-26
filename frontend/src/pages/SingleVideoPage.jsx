@@ -6,13 +6,8 @@ import { useVideoContext } from "../context/videoContext";
 import { useUserContext } from "../context/UserContext";
 
 export default function SingleVideoPage() {
-  const {
-    getAllPlaylistsByCategory,
-    playlists,
-    user,
-    getFavorite,
-    // favoritePlaylist,
-  } = useVideoContext();
+  const { getAllPlaylistsByCategory, playlists, user, getFavorite } =
+    useVideoContext();
   const { linkToVideo } = useUserContext();
   useEffect(() => {
     async function getData() {
@@ -38,10 +33,6 @@ export default function SingleVideoPage() {
               );
             })}
           <PrimeCarousel playlistId={linkToVideo.playlistId} />
-          <h2>Favoris</h2>
-          {/* {favoritePlaylist.map((ele) => (
-            <PrimeCarousel playlistId={ele.playlistId} />
-          ))} */}
         </Container>
       </div>
     </div>

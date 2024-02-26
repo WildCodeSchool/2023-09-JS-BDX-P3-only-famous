@@ -62,14 +62,14 @@ export default function Admin() {
           className="sidebar-titles gray-8"
           onClick={() => navigate("/admin/users")}
         >
-          Utilisateur
+          Utilisateurs
         </Button>
         <Progress h={12} />
         <Button
           className="sidebar-titles gray-8"
           onClick={() => navigate("/admin/videos")}
         >
-          Vidéo
+          Vidéos
         </Button>
         <Progress h={4} className="gray-8" />
 
@@ -77,7 +77,7 @@ export default function Admin() {
           className="sidebar-titles gray-8"
           onClick={() => navigate("/admin/upload")}
         >
-          Upload
+          Upload vidéo
         </Button>
         {/* <Progress h={4} className="gray-8" /> */}
         <Progress h={12} />
@@ -85,14 +85,14 @@ export default function Admin() {
           className="sidebar-titles gray-8"
           onClick={() => navigate("/admin/addplaylist")}
         >
-          Ajouter PlayListe
+          Ajouter playList
         </Button>
         <Progress h={4} className="gray-8" />
         <Button
           className="sidebar-titles gray-8"
           onClick={() => navigate("/admin/playlists")}
         >
-          Playlistes
+          Playlists
         </Button>
         <Progress h={4} className="gray-8" />
       </AppShell.Navbar>
