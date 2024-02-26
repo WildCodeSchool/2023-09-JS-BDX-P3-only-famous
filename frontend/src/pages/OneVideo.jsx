@@ -6,7 +6,7 @@ import { useUserContext } from "../context/UserContext";
 export default function OneVideo() {
   const { linkToVideo, user, favoritePlaylist, toggleFavorite } =
     useUserContext();
-  const fullLink = `https://www.youtube.com/embed/${linkToVideo.link}`;
+  const fullLink = `https://www.youtube.com/embed/${linkToVideo.link}?rel=0`;
   const toggleFavori = async () => {
     await toggleFavorite(linkToVideo.playlistId);
   };

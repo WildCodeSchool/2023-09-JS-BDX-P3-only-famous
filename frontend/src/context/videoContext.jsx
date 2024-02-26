@@ -91,6 +91,8 @@ export default function VideoContextProvider({ children }) {
         `${import.meta.env.VITE_BACKEND_URL}/api/searchedplaylists/${category1}`
       );
       setSearchedPlaylist([...data.playlists]);
+      setPlaylists([...data.playlists]);
+      setPlaylistsHome([...data.playlists]);
     } catch (err) {
       setSearchedPlaylist([]);
     }

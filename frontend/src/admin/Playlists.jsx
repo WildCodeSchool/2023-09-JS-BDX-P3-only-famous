@@ -51,7 +51,11 @@ export default function Playlists() {
         <div>
           <h2 style={{ marginBottom: "20px" }}>Playlists recherchées</h2>
           {searchedPlaylist.map((ele) => (
-            <SingleLinePlaylist playlistId={ele.playlistId} />
+            <SingleLinePlaylist
+              playlistId={ele.playlistId}
+              playlistTitle={ele.playlistTitle}
+              category={ele.category}
+            />
           ))}
         </div>
       )}
