@@ -26,13 +26,13 @@ routerVideo.patch("/video/:ytId", videoControllers.edit);
 routerVideo.delete("/video/:ytId", videoControllers.destroy);
 
 // route to get specific all playlists
-routerVideo.get("/playlists", videoControllers.getPlaylists);
+routerVideo.get("/playlists", videoControllers.getPlaylistsPagination);
 
 // route to get all playlists by category
-routerVideo.get(
-  "/playlists/:category",
-  videoControllers.getPlaylistsByCategory
-);
+// routerVideo.get(
+//   "/playlists/:category",
+//   videoControllers.getPlaylistsByCategory
+// );
 routerVideo.get(
   "/playlists/:category",
   videoControllers.getPlaylistsByCategoryPagination
