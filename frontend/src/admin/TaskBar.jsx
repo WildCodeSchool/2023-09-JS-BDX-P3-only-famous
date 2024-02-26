@@ -54,6 +54,3 @@ export default function TaskBar() {
     </Container>
   );
 }
-// TaskBar.propTypes = {
-//   listEmail: PropTypes.arrayOf(string).isRequired,
-// };

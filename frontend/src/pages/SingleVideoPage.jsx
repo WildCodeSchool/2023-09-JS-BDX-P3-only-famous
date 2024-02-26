@@ -1,14 +1,14 @@
 import { useEffect } from "react";
-import { Container } from "@mantine/core";
+import { Center, Container } from "@mantine/core";
 import OneVideo from "./OneVideo";
 import PrimeCarousel from "../components/PrimeCarousel";
 import { useVideoContext } from "../context/videoContext";
 import { useUserContext } from "../context/UserContext";
 
 export default function SingleVideoPage() {
-  const { getAllPlaylistsByCategory, playlists, user, getFavorite } =
+  const { getAllPlaylistsByCategory, playlists, getFavorite } =
     useVideoContext();
-  const { linkToVideo } = useUserContext();
+  const { linkToVideo, favoritePlaylist, user } = useUserContext();
   useEffect(() => {
     async function getData() {
       await getAllPlaylistsByCategory(linkToVideo.tags);
@@ -33,6 +33,14 @@ export default function SingleVideoPage() {
               );
             })}
           <PrimeCarousel playlistId={linkToVideo.playlistId} />
+          {user.isConnected && favoritePlaylist.length > 0 && (
+            <Center>
+              <h2 className="invisible-button">Favoris</h2>
+            </Center>
+          )}
+          {favoritePlaylist.map((ele) => (
+            <PrimeCarousel playlistId={ele} />
+          ))}
         </Container>
       </div>
     </div>

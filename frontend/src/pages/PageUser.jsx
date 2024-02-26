@@ -16,7 +16,7 @@ import {
 } from "@mantine/core";
 import { useUserContext } from "../context/UserContext";
 import MyAlert from "../components/MyAlert";
-import Default from "../assets/default.png";
+// import Default from "../assets/default.png";
 
 export default function PageUser() {
   const { user, setUser, sendResetLink, updateName, updateDescription } =
@@ -121,7 +121,9 @@ export default function PageUser() {
           className="user-image"
           style={{
             backgroundImage: `url(${
-              user.imgUrl !== "" ? user.imgUrl : Default
+              user.imgUrl !== ""
+                ? user.imgUrl
+                : "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png"
             })`,
           }}
         />
