@@ -8,7 +8,7 @@ import TaskBarPlaylist from "../components/playlist/TaskBarPlaylist";
 export default function Playlists() {
   const playListPerPage = useRef(5);
   const [activePage, setPage] = useState(1);
-  const { playlists, category, getAllPlaylistsPagination, count } =
+  const { playlists, getAllPlaylistsPagination, count, searchedPlaylist } =
     useVideoContext();
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export default function Playlists() {
       );
     }
     getData();
-  }, [activePage, category]);
+  }, [activePage]);
 
   return (
     <div className="playlists">
@@ -47,6 +47,14 @@ export default function Playlists() {
           />
         )}
       </div>
+      {searchedPlaylist && searchedPlaylist.length > 0 && (
+        <div>
+          <h2 style={{ marginBottom: "20px" }}>Playlists recherchées</h2>
+          {searchedPlaylist.map((ele) => (
+            <SingleLinePlaylist playlistId={ele.playlistId} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

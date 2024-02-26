@@ -29,10 +29,10 @@ routerVideo.delete("/video/:ytId", videoControllers.destroy);
 routerVideo.get("/playlists", videoControllers.getPlaylistsPagination);
 
 // route to get all playlists by category
-// routerVideo.get(
-//   "/playlists/:category",
-//   videoControllers.getPlaylistsByCategory
-// );
+routerVideo.get(
+  "/searchedplaylists/:category",
+  videoControllers.getPlaylistsByCategory
+);
 routerVideo.get(
   "/playlists/:category",
   videoControllers.getPlaylistsByCategoryPagination

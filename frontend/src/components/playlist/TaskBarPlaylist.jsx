@@ -3,13 +3,15 @@ import { FaSearch } from "react-icons/fa";
 import { useVideoContext } from "../../context/videoContext";
 
 export default function TaskBarPlaylist() {
-  const { category, setCategory } = useVideoContext();
+  const { category, setCategory, getAllPlaylistsByCategory } =
+    useVideoContext();
 
   const icon = (
     <FaSearch style={{ width: "25px", height: "25px" }} stroke={1.5} />
   );
   async function handleSearch(e) {
     setCategory(e.target.value);
+    await getAllPlaylistsByCategory(e.target.value);
   }
 
   return (
