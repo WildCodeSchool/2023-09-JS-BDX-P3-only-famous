@@ -137,7 +137,11 @@ export default function UserContextProvider({ children }) {
     try {
       const { message, insertId } = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/users`,
-        newUser
+        {
+          ...newUser,
+          imgUrl:
+            "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png",
+        }
       );
       if (+insertId === 0) {
         setMessageUser(message);
