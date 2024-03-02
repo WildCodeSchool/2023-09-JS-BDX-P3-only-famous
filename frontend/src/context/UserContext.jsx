@@ -38,6 +38,11 @@ export default function UserContextProvider({ children }) {
         `${import.meta.env.VITE_BACKEND_URL}/api/user`,
         credentials
       );
+      // const { headers, data } = await axios.get(
+      //   `${import.meta.env.VITE_BACKEND_URL}/api/user?email=${
+      //     credentials.email
+      //   }&password=${credentials.password}`
+      // );
       return {
         headers,
         userdb: data.user,

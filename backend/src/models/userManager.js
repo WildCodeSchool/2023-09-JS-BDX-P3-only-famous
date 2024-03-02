@@ -4,7 +4,7 @@ const database = require("../../database/client");
 const activationManager = require("./activationManager");
 
 class UserManager {
-  static async Hashing(password) {
+  static async hashing(password) {
     const res = await bcrypt.hash(password, 3);
     return res;
   }
@@ -15,7 +15,7 @@ class UserManager {
   }
 
   static async create(user) {
-    const hashedPassword = await this.Hashing(user.password);
+    const hashedPassword = await this.hashing(user.password);
     try {
       const randomCode = uuid();
       const [result] = await database.query(
