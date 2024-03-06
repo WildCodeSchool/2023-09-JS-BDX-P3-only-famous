@@ -129,7 +129,7 @@ export default function PageUser() {
         />
         <div className="user-details">
           <div>
-            <Spoiler maxHeight={200} showLabel="Show more" hideLabel="Hide">
+            <Spoiler maxHeight={200} showLabel="Plus" hideLabel="Moins">
               <h3>Profil</h3>
               {!editMode ? (
                 <div>
@@ -173,7 +173,10 @@ export default function PageUser() {
                       name="profilImage"
                       onChange={handleChange}
                     />
+                    <br />
+                    <br />
                   </div>
+                  <br />
                   <Grid gutter={{ base: 5, xs: "md", md: "xl", xl: 50 }}>
                     <Grid.Col span={6}>
                       {" "}
@@ -190,7 +193,6 @@ export default function PageUser() {
                       </Input.Wrapper>
                     </Grid.Col>
                     <Grid.Col span={6}>
-                      {" "}
                       <Input.Wrapper
                         label="Nom"
                         withAsterisk
