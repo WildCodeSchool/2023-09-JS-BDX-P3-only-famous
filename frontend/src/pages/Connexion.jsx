@@ -4,9 +4,11 @@ import { Button, Container, Fieldset, Input } from "@mantine/core";
 import { useUserContext } from "../context/UserContext";
 import Banner from "../components/Banner";
 import bannerImage from "../assets/banner.png";
+import MyAlert from "../components/MyAlert";
 
 export default function Connexion() {
-  const { login, setMessageUser } = useUserContext("");
+  const { login, messageUser, setMessageUser, validatePassword } =
+    useUserContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -17,12 +19,17 @@ export default function Connexion() {
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       );
   };
-
-  function checkError() {
-    if (email !== "" && validateEmail(email) && password !== "") {
-      login({ email, password });
+  async function checkError() {
+    if (
+      email !== "" &&
+      validateEmail(email) &&
+      password !== "" &&
+      validatePassword(password)
+    ) {
+      await login({ email, password });
+      // setMessageUser();
     } else {
-      setMessageUser("Email ou mot de passe non conformes");
+      setMessageUser("Identifiants non conformes");
     }
   }
   return (
@@ -43,6 +50,9 @@ export default function Connexion() {
           mt="md"
           type="password"
         />
+        {messageUser && (
+          <MyAlert color="var(--font-light-grey)" message={messageUser} />
+        )}
       </Fieldset>
       <Button
         type="button"

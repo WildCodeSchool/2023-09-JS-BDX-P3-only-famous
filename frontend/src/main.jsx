@@ -34,18 +34,17 @@ const router = createBrowserRouter([
 
       let loaderData = null;
 
-      // try {
-      //   if (localStorage.getItem("token")) {
-      //     const { data } = await axios.get(
-      //       `${import.meta.env.VITE_BACKEND_URL}/api/getprofile`
-      //     );
-      //     loaderData = data;
+      try {
+        if (localStorage.getItem("token")) {
+          const { data } = await axios.get(
+            `${import.meta.env.VITE_BACKEND_URL}/api/getprofile`
+          );
+          loaderData = data;
+        }
+      } catch (err) {
+        console.error(err.message);
+      }
 
-      //   }
-      // } catch (err) {
-      //   console.error(err.message);
-      // }
-      loaderData = { isAdmin: 1 };
       return { loaderData };
     },
     element: (

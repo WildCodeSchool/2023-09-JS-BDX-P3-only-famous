@@ -116,8 +116,7 @@ export default function AdminContextProvider({ children }) {
   return user.isAdmin ? (
     <adminContext.Provider value={adminData}>{children}</adminContext.Provider>
   ) : (
-    // <adminContext.Provider value={adminData}>{children}</adminContext.Provider>
-    <Navigate to="/admin" />
+    <Navigate to="/" />
   );
 }
 AdminContextProvider.propTypes = {
