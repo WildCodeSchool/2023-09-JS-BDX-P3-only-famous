@@ -1,6 +1,6 @@
 import { createContext, useContext, useMemo, useRef, useState } from "react";
 import PropTypes from "prop-types";
-import { Navigate } from "react-router-dom";
+// import { Navigate } from "react-router-dom";
 import axios from "axios";
 import { useUserContext } from "./UserContext";
 import AdminService from "../services/AdminService";
@@ -116,7 +116,8 @@ export default function AdminContextProvider({ children }) {
   return user.isAdmin ? (
     <adminContext.Provider value={adminData}>{children}</adminContext.Provider>
   ) : (
-    <Navigate to="/" />
+    <adminContext.Provider value={adminData}>{children}</adminContext.Provider>
+    // <Navigate to="/" />
   );
 }
 AdminContextProvider.propTypes = {
