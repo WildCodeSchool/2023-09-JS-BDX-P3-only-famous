@@ -26,6 +26,7 @@ export default function UpdatePlaylist({
       console.error(error.message);
     }
   }
+
   return (
     <Grid>
       <Grid.Col span={4}>
@@ -36,18 +37,11 @@ export default function UpdatePlaylist({
         />
       </Grid.Col>
       <Grid.Col span={4}>
-        <select
-          className="invisible-button-with-border"
-          name="category"
+        <Input
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-        >
-          <option value="javascript">JavaScript</option>
-          <option value="php">PHP</option>
-          <option value="react">React</option>
-          <option value="angular">Angular</option>
-          <option value="dotnet">DotNet</option>
-        </select>
+          className="invisible-button-with-border"
+        />
       </Grid.Col>
       <Grid.Col span={4}>
         <Button
