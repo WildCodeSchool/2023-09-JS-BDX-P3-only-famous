@@ -45,14 +45,17 @@ export default function SingleUserLine({
       </Grid.Col>
       <Grid.Col span={4}>
         <Center>
-          <Button mr={20}>
+          <Button mr={20} className="invisible-button-with-border">
             <MdModeEdit
               style={{ width: "20px", height: "20px" }}
               stroke={1.5}
             />
             <span style={{ marginLeft: "5px" }}>Modifier</span>
           </Button>
-          <Button onClick={() => deleteUser(email)}>
+          <Button
+            onClick={() => deleteUser(email)}
+            className="invisible-button-with-border"
+          >
             <MdDelete style={{ width: "20px", height: "20px" }} stroke={1.5} />
             <span style={{ marginLeft: "5px" }}>Supprimer</span>
           </Button>

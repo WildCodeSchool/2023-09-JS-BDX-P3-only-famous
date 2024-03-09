@@ -43,7 +43,6 @@ export default function RegisterPassword() {
         password,
         isAdmin: 0,
         imgUrl: "",
-        // imgUrl: `${import.meta.env.VITE_BACKEND_URL}/uploads/charlize.jpg`,
       };
       const isDone = await register(refUser.current);
       setMessage(() => messageUser);
@@ -81,7 +80,10 @@ export default function RegisterPassword() {
           )}
           {errorBack && (
             <>
-              <MyAlert color="var(--font-light-grey)" message={message} />
+              <MyAlert
+                color="var(--font-light-grey)"
+                message="Email déjà utilisé, connectez-vous"
+              />
               <Link to="/connexion" className="invisible-button">
                 Connexion !!!
               </Link>

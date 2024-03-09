@@ -1,4 +1,6 @@
-import { MdModeEdit, MdDelete } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
+import { RiGitRepositoryPrivateFill } from "react-icons/ri";
+import { BiSolidHide } from "react-icons/bi";
 import { Button, Center, Checkbox, Grid } from "@mantine/core";
 import PropTypes from "prop-types";
 import { useVideoContext } from "../context/videoContext";
@@ -64,8 +66,6 @@ export default function SingleLineVideo({
           className="checkbox-navbar"
           readOnly
         />
-
-        {/* <input type="checkbox" checked={isAdmin} onChange={() => {}} /> */}
       </Grid.Col>
       <Grid.Col span={1}>
         <span>{duration}</span>
@@ -75,31 +75,43 @@ export default function SingleLineVideo({
       </Grid.Col>
       <Grid.Col span={4}>
         <Center>
-          <Button mr={20} onClick={() => handleEdit()} name="hidden">
-            <MdModeEdit
-              style={{ width: "20px", height: "20px" }}
+          <Button
+            mr={20}
+            onClick={() => handleEdit()}
+            name="hidden"
+            className="invisible-button"
+          >
+            <BiSolidHide
+              style={{
+                width: "20px",
+                height: "20px",
+                color: `${isHidden ? "var(--secondary-me)" : "gray"}`,
+              }}
               stroke={1.5}
             />
-            <span style={{ marginLeft: "5px" }}>
-              {isHidden ? "Publier" : "Retirer"}
-            </span>
           </Button>
-          <Button mr={20} onClick={() => handlePublish()} name="public">
-            <MdModeEdit
-              style={{ width: "20px", height: "20px" }}
+          <Button
+            mr={20}
+            onClick={() => handlePublish()}
+            name="public"
+            className="invisible-button"
+          >
+            <RiGitRepositoryPrivateFill
+              style={{
+                width: "20px",
+                height: "20px",
+                color: `${isPublic ? "var(--secondary-me)" : "gray"}`,
+              }}
               stroke={1.5}
             />
-            <span style={{ marginLeft: "5px" }}>
-              {!isPublic ? "Liberer" : "Restreindre"}
-            </span>
           </Button>
           <Button
             onClick={() => {
               deleteVideoBId(ytId);
             }}
+            className="invisible-button"
           >
             <MdDelete style={{ width: "20px", height: "20px" }} stroke={1.5} />
-            <span style={{ marginLeft: "5px" }}>Supprimer</span>
           </Button>
         </Center>
       </Grid.Col>
