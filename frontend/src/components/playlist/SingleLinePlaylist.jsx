@@ -2,6 +2,7 @@ import { Grid, Button } from "@mantine/core";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { MdDelete } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 import { FaRegEdit } from "react-icons/fa";
 import { useVideoContext } from "../../context/videoContext";
 import UpdatePlaylist from "./UpdatePlaylist";
@@ -20,11 +21,18 @@ export default function SingleLinePlaylist({
     playlists[index] = { ...playlists[index], ...newValue };
     setPlaylists([...playlists]);
   };
+  const navigate = useNavigate();
   return (
     <>
       <Grid>
         <Grid.Col span={3}>
-          <span className="playlist-items">{playlistId}</span>
+          <Button
+            className="invisible-button-with-border"
+            style={{ width: "100%" }}
+            onClick={() => navigate(`/admin/videos/${playlistId}`)}
+          >
+            <span className="playlist-items">{playlistId}</span>
+          </Button>
         </Grid.Col>
         <Grid.Col span={3}>
           <span className="playlist-items">{playlistTitle}</span>

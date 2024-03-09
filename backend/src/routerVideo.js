@@ -8,7 +8,11 @@ const videoControllers = require("./controllers/videoControllers");
 routerVideo.get("/playlist", videoControllers.readPlaylist);
 
 // Route to get a list of items
-routerVideo.get("/videos/:max", videoControllers.browse);
+// routerVideo.get("/videos/:max", videoControllers.browse);
+routerVideo.get(
+  "/videos/:playlistId",
+  videoControllers.browseVideosFromPlaylist
+);
 
 // Route to get a list of items
 routerVideo.get("/videos", videoControllers.browsePagination);

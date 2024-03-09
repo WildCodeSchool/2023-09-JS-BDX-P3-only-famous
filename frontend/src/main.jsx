@@ -23,6 +23,7 @@ import AdminMain from "./admin/AdminMain";
 import Playlists from "./admin/Playlists";
 import VideoUpload from "./admin/VideoUpload";
 import AddPlaylist from "./admin/AddPlaylist";
+import PlaylistVideos from "./admin/PlaylistVideos";
 
 const router = createBrowserRouter([
   {
@@ -100,6 +101,10 @@ const router = createBrowserRouter([
           {
             path: "/admin/videos",
             element: <Videos />,
+          },
+          {
+            path: "/admin/videos/:playlistId",
+            element: <PlaylistVideos />,
           },
           {
             path: "/admin/",

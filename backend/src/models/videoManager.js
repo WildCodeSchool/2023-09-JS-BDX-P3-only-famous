@@ -96,6 +96,27 @@ class VideoManager {
     return { rows, title: playlist[0].playlistTitle };
   }
 
+  static async readPlayListPagination(playListId, start, offset) {
+    const [count] = await database.query(
+      `select count(*) as length  from video where playlistId = ?`,
+      [playListId]
+    );
+    const [rows] = await database.query(
+      `select * from video where playlistId = ? limit ${start}, ${offset}`,
+      [playListId]
+    );
+    const [playlist] = await database.query(
+      `select playlistTitle from playlist where playlistId = ?  `,
+      [playListId]
+    );
+
+    return {
+      videos: rows,
+      title: playlist[0].playlistTitle,
+      count: count[0].length,
+    };
+  }
+
   static async update(ytId, video) {
     let sql = "UPDATE video set";
     const sqlValues = [];

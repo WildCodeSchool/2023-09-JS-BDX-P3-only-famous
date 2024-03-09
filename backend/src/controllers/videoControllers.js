@@ -75,6 +75,35 @@ const readPlaylist = async (req, res) => {
     res.status(404).json({ message: err.message, success: false });
   }
 };
+
+const browseVideosFromPlaylist = async (req, res) => {
+  try {
+    const { playlistId } = req.params;
+    const { start, offset } = req.query;
+    // Fetch a specific item from the database based on the provided ID
+    const { videos, title, count } = await videoManager.readPlayListPagination(
+      playlistId,
+      start,
+      offset
+    );
+    if (videos == null) {
+      res
+        .status(200)
+        .json({ message: "Playliste non existante", success: false });
+    } else {
+      res.status(200).json({
+        videos,
+        title,
+        message: "play list récu",
+        success: true,
+        count,
+      });
+    }
+  } catch (err) {
+    // Pass any errors to the error-handling middleware
+    res.status(404).json({ message: err.message, success: false });
+  }
+};
 // The E of BREAD - Edit (Update) operation
 // This operation is not yet implemented
 async function edit(req, res) {
@@ -302,4 +331,5 @@ module.exports = {
   getPlaylistsPagination,
   addPlaylistFromYoutube,
   getPlaylistsByCategoryPagination,
+  browseVideosFromPlaylist,
 };

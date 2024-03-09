@@ -23,12 +23,11 @@ export default function VideoContextProvider({ children }) {
 
   const video = useRef({});
 
-  async function getVideoListFromPlaylist(playlistId) {
+  async function getVideoListFromPlaylist(playlistId, start, offset) {
     const { data } = await axios.get(
-      `${import.meta.env.VITE_BACKEND_URL}/api/playlist`,
-      {
-        params: { playlistId },
-      }
+      `${
+        import.meta.env.VITE_BACKEND_URL
+      }/api/videos/${playlistId}?start=${start}&offset=${offset}`
     );
     setVideos(data.rows);
   }
