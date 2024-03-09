@@ -235,7 +235,7 @@ export default function PageUser() {
         }
         message={
           !user.isActive
-            ? "Verifier vos email pour activer votre compte"
+            ? "Verifier vos emails pour activer votre compte"
             : "Compte active"
         }
       />

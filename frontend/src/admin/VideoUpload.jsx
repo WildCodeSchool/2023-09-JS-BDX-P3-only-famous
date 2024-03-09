@@ -49,7 +49,7 @@ export default function VideoUpload() {
       formData.append("description", datas.description);
       formData.append("tags", datas.tags);
       formData.append("playlistId", datas.playlistId);
-      formData.append("playlistTitle", datas.playlistTitle);
+      formData.append("playlistTitle", "");
 
       setIsUploading(true);
       const { data } = await axios.post(
@@ -131,7 +131,7 @@ export default function VideoUpload() {
             />
           </Input.Wrapper>
         </Grid.Col>{" "}
-        <Grid.Col span={6}>
+        <Grid.Col span={12}>
           <Input.Wrapper
             label="Playlist Id"
             withAsterisk
@@ -141,20 +141,6 @@ export default function VideoUpload() {
               name="playlistId"
               placeholder="playliste Id"
               value={datas.playlistId}
-              onChange={(e) => handleInput(e)}
-            />
-          </Input.Wrapper>
-        </Grid.Col>
-        <Grid.Col span={6}>
-          <Input.Wrapper
-            label="Titre playlist"
-            withAsterisk
-            description="Titre playliste"
-          >
-            <Input
-              name="playlistTitle"
-              placeholder="Titre playliste"
-              value={datas.playlistTitle}
               onChange={(e) => handleInput(e)}
             />
           </Input.Wrapper>
