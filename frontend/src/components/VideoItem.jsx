@@ -12,6 +12,7 @@ export default function VideoItem({
   description,
   tags,
   isPublic,
+  playlistId,
 }) {
   const { setLinkToVideo } = useUserContext();
   const navigate = useNavigate();
@@ -32,6 +33,7 @@ export default function VideoItem({
             link,
             description,
             tags,
+            playlistId,
           });
           navigate("/onevideo");
         } else {
@@ -72,4 +74,5 @@ VideoItem.propTypes = {
   description: PropTypes.string.isRequired,
   tags: PropTypes.string.isRequired,
   isPublic: PropTypes.number.isRequired,
+  playlistId: PropTypes.string.isRequired,
 };

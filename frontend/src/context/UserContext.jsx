@@ -23,6 +23,7 @@ export default function UserContextProvider({ children }) {
   });
   const [messageUser, setMessageUser] = useState("");
   const [linkToVideo, setLinkToVideo] = useState({});
+  const [favoritePlaylist, setFavoritePlaylist] = useState([]);
   const navigate = useNavigate();
 
   function validatePassword(password) {
@@ -37,6 +38,7 @@ export default function UserContextProvider({ children }) {
         `${import.meta.env.VITE_BACKEND_URL}/api/user`,
         credentials
       );
+
       return {
         headers,
         userdb: data.user,
@@ -123,9 +125,9 @@ export default function UserContextProvider({ children }) {
         ...userdb,
         isConnected: true,
       });
+      setMessageUser("");
       axios.defaults.headers.common.Authorization = `Bearer ${headers.token}`;
       navigate("/user");
-      setMessageUser(message);
     } else {
       axios.defaults.headers.common.Authorization = `Bearer ""`;
       setMessageUser(message);
@@ -136,7 +138,11 @@ export default function UserContextProvider({ children }) {
     try {
       const { message, insertId } = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/users`,
-        newUser
+        {
+          ...newUser,
+          imgUrl:
+            "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png",
+        }
       );
       if (+insertId === 0) {
         setMessageUser(message);
@@ -174,6 +180,40 @@ export default function UserContextProvider({ children }) {
     }
   }
 
+  async function getFavorite() {
+    try {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/favorite/favori/${user.email}`
+      );
+
+      const res = data.map((ele) => ele.playlistId);
+      setFavoritePlaylist([...res]);
+    } catch (err) {
+      console.error("err", err);
+    }
+  }
+
+  async function toggleFavorite(playlistId) {
+    try {
+      if (favoritePlaylist.includes(playlistId)) {
+        await axios.delete(
+          `${import.meta.env.VITE_BACKEND_URL}/favorite/favori/${
+            user.email
+          }/${playlistId}`,
+          { email: user.email, playlistId }
+        );
+      } else {
+        await axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/favorite/favori`,
+          { email: user.email, playlistId }
+        );
+      }
+      await getFavorite();
+    } catch (err) {
+      console.error("err", err);
+    }
+  }
+
   const contextData = useMemo(
     () => ({
       user,
@@ -195,6 +235,10 @@ export default function UserContextProvider({ children }) {
       updateName,
       updateDescription,
       validatePassword,
+      favoritePlaylist,
+      setFavoritePlaylist,
+      getFavorite,
+      toggleFavorite,
     }),
     [
       user,
@@ -215,6 +259,9 @@ export default function UserContextProvider({ children }) {
       sendResetLink,
       updateName,
       validatePassword,
+      favoritePlaylist,
+      setFavoritePlaylist,
+      toggleFavorite,
     ]
   );
   return (

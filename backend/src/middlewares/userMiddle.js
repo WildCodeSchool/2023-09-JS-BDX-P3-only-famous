@@ -21,9 +21,10 @@ async function verifyAdminToken(req, res, next) {
     if (userInfo.isAdmin) {
       return next();
     }
-    return res
-      .status(401)
-      .json({ message: "Tu n'es pas Admin mon pote", success: false });
+    return res.status(401).json({
+      message: "vous n'avez pas les droits nécessaires",
+      success: false,
+    });
   } catch (err) {
     return res.status(401).json({ message: err.message, success: false });
   }

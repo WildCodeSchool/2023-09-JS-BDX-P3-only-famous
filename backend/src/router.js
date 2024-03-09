@@ -45,9 +45,13 @@ const router = express.Router();
 const userControllers = require("./controllers/userControllers");
 
 // Route to get a list of items
-router.get("/users", userControllers.browse);
+router.get("/users", userMiddle.verifyAdminToken, userControllers.browse);
 
-router.get("/users/:email", userControllers.browseByEmail);
+router.get(
+  "/users/:email",
+  userMiddle.verifyAdminToken,
+  userControllers.browseByEmail
+);
 
 // Route to get a specific item by ID
 // router.get("/users", userControllers.read);
@@ -62,7 +66,7 @@ router.post("/user", userControllers.check);
 // router.put("/user", userControllers.edit);
 
 // Route to delete existed users
-router.delete("/user", userControllers.destroy);
+router.delete("/user", userMiddle.verifyAdminToken, userControllers.destroy);
 
 router.get("/getprofile", verifyToken, userControllers.getProfile);
 

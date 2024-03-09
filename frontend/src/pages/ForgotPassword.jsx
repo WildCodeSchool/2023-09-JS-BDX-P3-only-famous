@@ -41,8 +41,8 @@ export default function ForgotPassword() {
     <div className="inscription_container">
       <Container size="xs">
         <Banner imgUrl={bannerImage} />
-        <h2>Nom et prénom</h2>
-        <Fieldset legend="Coordonnées" radius="sm" className="transparent">
+        <h2>Mot de passe oublié</h2>
+        <Fieldset legend="Email" radius="sm" className="transparent">
           <Input
             placeholder="Votre email"
             value={email}

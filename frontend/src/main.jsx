@@ -7,7 +7,6 @@ import axios from "axios";
 
 import App from "./App";
 import Connexion from "./pages/Connexion";
-import Upload from "./pages/Upload";
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
 import SingleVideoPage from "./pages/SingleVideoPage";
@@ -44,6 +43,7 @@ const router = createBrowserRouter([
       } catch (err) {
         console.error(err.message);
       }
+
       return { loaderData };
     },
     element: (
@@ -72,10 +72,6 @@ const router = createBrowserRouter([
       {
         path: "/resetpassword",
         element: <ResetPassword />,
-      },
-      {
-        element: <Upload />,
-        path: "/upload",
       },
       {
         element: <PageUser />,

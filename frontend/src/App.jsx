@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Outlet, useLocation } from "react-router-dom";
-import { Container } from "@mantine/core";
 import SlidingNavbar from "./components/SlidingNavbar";
 import { useUserContext } from "./context/UserContext";
 import Footer from "./components/Footer";
@@ -22,9 +21,9 @@ function App() {
     <>
       <SlidingNavbar />
       <div className="App">
-        <Container size="fluid">
+        <div>
           <Outlet />
-        </Container>
+        </div>
         <Footer />
       </div>
     </>

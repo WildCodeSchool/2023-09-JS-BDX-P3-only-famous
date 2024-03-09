@@ -56,7 +56,9 @@ async function add(req, res) {
 async function check(req, res) {
   try {
     const user = req.body;
+    // const { email, password } = req.query;
     const userdb = await userManager.read(user.email, user.password);
+    // const userdb = await userManager.read(email, password);
     if (!userdb) {
       res.status(404).json({
         user: null,

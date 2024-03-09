@@ -2,6 +2,7 @@ const { google } = require("googleapis");
 const { OAuth2Client } = require("google-auth-library");
 const fs = require("fs");
 const VideoManager = require("../models/videoManager");
+const youtubeManager = require("../models/youtubeManager");
 // const path = require("path");
 require("dotenv").config();
 
@@ -72,7 +73,7 @@ async function uploadVideo(req, res) {
       media: {
         body: fs.createReadStream(
           `public/${req.relativePath ?? "uploads/video.mp4"}`
-        ), // Adjust the video file path
+        ),
       },
     });
     const video = {
@@ -80,7 +81,9 @@ async function uploadVideo(req, res) {
       ytId: resUpload.data.id,
       playlistId: details.playlistId,
       playlistTitle: details.playlistTitle ?? "playlist",
-      duration: "10:00",
+      duration: youtubeManager.convertToTimeFormat(
+        resUpload.data.contentDetails.duration
+      ), // "10:00"
       publishDate:
         resUpload.data.snippet.publishedAt.split("T")[0] ?? "1986-04-21",
       description:

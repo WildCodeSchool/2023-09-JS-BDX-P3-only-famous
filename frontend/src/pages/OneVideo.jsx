@@ -1,13 +1,19 @@
-import { AspectRatio, Container } from "@mantine/core";
+import { AspectRatio, Button, Container } from "@mantine/core";
+import { MdFavorite } from "react-icons/md";
 import Accordion from "../components/Accordion";
 import { useUserContext } from "../context/UserContext";
 
 export default function OneVideo() {
-  const { linkToVideo } = useUserContext();
-  const fullLink = `https://www.youtube.com/embed/${linkToVideo.link}`;
+  const { linkToVideo, user, favoritePlaylist, toggleFavorite } =
+    useUserContext();
+  const fullLink = `https://www.youtube.com/embed/${linkToVideo.link}?rel=0`;
+  const toggleFavori = async () => {
+    await toggleFavorite(linkToVideo.playlistId);
+  };
+
   return (
-    <Container size="lg">
-      <AspectRatio ratio={16 / 9} maw={1200} mx="auto">
+    <Container size="fluid">
+      <AspectRatio ratio={16 / 9} maw={2000} mx="auto" className="yt-video">
         <iframe
           src={fullLink}
           title="YouTube video player"
@@ -17,8 +23,22 @@ export default function OneVideo() {
       </AspectRatio>
       <div className="SingleVideo-details">
         <div className="SingleVideo-title-date">
-          <h3>{linkToVideo.title}</h3>
-          <h5>Publié le 23-12-2023</h5>
+          <div>
+            <h3>{linkToVideo.title}</h3>
+            <h5>Publié le 23-12-2023</h5>
+          </div>
+          {user.isConnected && (
+            <Button className="invisible-button" onClick={toggleFavori}>
+              {" "}
+              <MdFavorite
+                className={`like-icon ${
+                  !favoritePlaylist.includes(linkToVideo.playlistId)
+                    ? "not-liked"
+                    : "liked"
+                } `}
+              />
+            </Button>
+          )}
         </div>
         <Accordion description={linkToVideo.description} />
       </div>

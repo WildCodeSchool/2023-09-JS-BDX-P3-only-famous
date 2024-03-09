@@ -4,7 +4,7 @@ const database = require("../../database/client");
 const activationManager = require("./activationManager");
 
 class UserManager {
-  static async Hashing(password) {
+  static async hashing(password) {
     const res = await bcrypt.hash(password, 3);
     return res;
   }
@@ -15,7 +15,7 @@ class UserManager {
   }
 
   static async create(user) {
-    const hashedPassword = await this.Hashing(user.password);
+    const hashedPassword = await this.hashing(user.password);
     try {
       const randomCode = uuid();
       const [result] = await database.query(
@@ -95,40 +95,6 @@ class UserManager {
       throw new Error(err.message);
     }
   }
-
-  // static async update(user) {
-  //   try {
-  //     const [userdb] = await database.query(
-  //       `select * from user where email = ?`,
-  //       [user.email]
-  //     );
-  //     if (userdb[0]) {
-  //       const keys = Object.keys(user);
-  //       // console.log("keys ", keys);
-  //       keys.forEach((ele) => {
-  //         userdb[0][ele] = user[ele];
-  //       });
-  //       if (user.password) {
-  //         userdb[0].password = await this.Hashing(user.password);
-  //       }
-  //       const [res] = await database.query(
-  //         "update user set firstname = ?, lastname = ?, birthday = ?, imgUrl = ?, password = ?,   WHERE email = ?",
-  //         [
-  //           userdb[0].firstname,
-  //           userdb[0].lastname,
-  //           userdb[0].birthday,
-  //           userdb[0].imgUrl,
-  //           userdb[0].password,
-  //           userdb[0].email,
-  //         ]
-  //       );
-  //       return res.affectedRows;
-  //     }
-  //     return 0;
-  //   } catch (err) {
-  //     throw new Error("Aucune modification réalisé!!!");
-  //   }
-  // }
 
   static async update(user) {
     let sql = "UPDATE user set";

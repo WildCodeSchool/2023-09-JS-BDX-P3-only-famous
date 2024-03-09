@@ -16,7 +16,7 @@ import {
 } from "@mantine/core";
 import { useUserContext } from "../context/UserContext";
 import MyAlert from "../components/MyAlert";
-import Default from "../assets/default.png";
+// import Default from "../assets/default.png";
 
 export default function PageUser() {
   const { user, setUser, sendResetLink, updateName, updateDescription } =
@@ -30,22 +30,16 @@ export default function PageUser() {
   const [error, setError] = useState(false);
   const [messageUpdateInfos, setMessageUpdateInfos] = useState("");
 
-  const [urlImage, setUrlImage] = useState({ preview: user.imgUrl });
-
   async function handleChange(e) {
-    setUrlImage({
-      data: e.target.files[0],
-      preview: URL.createObjectURL(e.target.files[0]),
-    });
     const formData = new FormData();
     formData.append("file", e.target.files[0]);
     formData.append("message", "testing");
 
-    const { imgUrl } = await axios.post(
+    const { data } = await axios.post(
       `${import.meta.env.VITE_BACKEND_URL}/api/userimage`,
       formData
     );
-    setUser({ ...user, imgUrl });
+    setUser({ ...user, imgUrl: data.imgUrl });
   }
   async function ResetEmail() {
     const res = await sendResetLink(user.email);
@@ -127,13 +121,15 @@ export default function PageUser() {
           className="user-image"
           style={{
             backgroundImage: `url(${
-              user.imgUrl ?? urlImage.preview ?? { Default }
+              user.imgUrl !== ""
+                ? user.imgUrl
+                : "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png"
             })`,
           }}
         />
         <div className="user-details">
           <div>
-            <Spoiler maxHeight={200} showLabel="Show more" hideLabel="Hide">
+            <Spoiler maxHeight={200} showLabel="Plus" hideLabel="Moins">
               <h3>Profil</h3>
               {!editMode ? (
                 <div>
@@ -177,7 +173,10 @@ export default function PageUser() {
                       name="profilImage"
                       onChange={handleChange}
                     />
+                    <br />
+                    <br />
                   </div>
+                  <br />
                   <Grid gutter={{ base: 5, xs: "md", md: "xl", xl: 50 }}>
                     <Grid.Col span={6}>
                       {" "}
@@ -194,7 +193,6 @@ export default function PageUser() {
                       </Input.Wrapper>
                     </Grid.Col>
                     <Grid.Col span={6}>
-                      {" "}
                       <Input.Wrapper
                         label="Nom"
                         withAsterisk
@@ -237,7 +235,7 @@ export default function PageUser() {
         }
         message={
           !user.isActive
-            ? "Verifier vos email pour activer votre compte"
+            ? "Verifier vos emails pour activer votre compte"
             : "Compte active"
         }
       />
