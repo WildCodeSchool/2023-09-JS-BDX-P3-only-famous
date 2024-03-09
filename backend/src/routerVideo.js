@@ -10,6 +10,9 @@ routerVideo.get("/playlist", videoControllers.readPlaylist);
 // Route to get a list of items
 routerVideo.get("/videos/:max", videoControllers.browse);
 
+// Route to get a list of items
+routerVideo.get("/videos", videoControllers.browsePagination);
+
 // Route to get a specific item by ID
 routerVideo.get("/video/:ytId", videoControllers.read);
 

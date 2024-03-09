@@ -18,6 +18,7 @@ export default function VideoContextProvider({ children }) {
     { playlistId: "PLjwdMgw5TTLXP6JWACTxDqun0jJ5_sYvK" },
   ]);
   const [count, setcount] = useState(1);
+  const [countVideos, setCountVideos] = useState(1);
   const [recommendedCarroussel, setRecommendedCaroussel] = useState([]);
 
   const video = useRef({});
@@ -36,6 +37,20 @@ export default function VideoContextProvider({ children }) {
       `${import.meta.env.VITE_BACKEND_URL}/api/videos/20`
     );
     setVideos(data);
+  }
+
+  async function getAllVideosPagination(start, offset) {
+    try {
+      const { data } = await axios.get(
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/api/videos?start=${start}&offset=${offset}`
+      );
+      setVideos([...data.videos]);
+      setCountVideos(data.count);
+    } catch (err) {
+      setVideos([]);
+    }
   }
 
   async function runSearchVideo(ytId) {
@@ -144,7 +159,10 @@ export default function VideoContextProvider({ children }) {
     () => ({
       videos,
       setVideos,
+      countVideos,
+      setCountVideos,
       getVideoListFromPlaylist,
+      getAllVideosPagination,
       deleteVideoBId,
       updateVideoById,
       video,
@@ -174,6 +192,7 @@ export default function VideoContextProvider({ children }) {
       videos,
       setVideos,
       getVideoListFromPlaylist,
+      getAllVideosPagination,
       deleteVideoBId,
       updateVideoById,
       video,
@@ -194,6 +213,8 @@ export default function VideoContextProvider({ children }) {
       setVideoId,
       getAllVideos,
       searchedPlaylist,
+      countVideos,
+      setCountVideos,
     ]
   );
 

@@ -16,6 +16,21 @@ const browse = async (req, res, next) => {
   }
 };
 
+// The B of BREAD - Browse (Read All) operation
+async function browsePagination(req, res) {
+  try {
+    const { start, offset } = req.query;
+    const videos = await videoManager.browsePagination(start, offset);
+    res.status(200).json({
+      videos: videos.rows,
+      count: videos.length,
+      message: "all good",
+    });
+  } catch (err) {
+    res.sendStatus(404);
+  }
+}
+
 const browsePlaylists = async (req, res, next) => {
   try {
     // Fetch all items from the database
@@ -278,6 +293,7 @@ module.exports = {
   check,
   readPlaylist,
   browsePlaylists,
+  browsePagination,
   getPlaylists,
   getPlaylistsByCategory,
   addPlaylist,

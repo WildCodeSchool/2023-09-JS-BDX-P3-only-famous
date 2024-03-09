@@ -1,18 +1,23 @@
-import { Center, Container, Grid, Progress } from "@mantine/core";
-import { useEffect } from "react";
+import { Center, Container, Grid, Pagination, Progress } from "@mantine/core";
+import { useEffect, useRef, useState } from "react";
 import VideoBar from "./VideoBar";
 import SingleLineVideo from "../components/SingleLineVideo";
 import { useVideoContext } from "../context/videoContext";
 
 export default function Videos() {
-  const { videos, getAllVideos } = useVideoContext();
+  const { videos, getAllVideosPagination, countVideos } = useVideoContext();
+  const videoPerPage = useRef(10);
+  const [activePage, setPage] = useState(1);
 
-  // useEffect(() => {
-  //   runSearchVideo(videoId);
-  // }, [videoId]);
   useEffect(() => {
-    getAllVideos();
-  }, []);
+    async function getData() {
+      await getAllVideosPagination(
+        (activePage - 1) * videoPerPage.current,
+        videoPerPage.current
+      );
+    }
+    getData();
+  }, [activePage]);
 
   return (
     <Container size="fluid">
@@ -28,18 +33,31 @@ export default function Videos() {
           <Center>Action</Center>
         </Grid.Col>
       </Grid>
-      {videos.map((ele) => (
-        <SingleLineVideo
-          key={ele.ytId}
-          ytId={ele.ytId}
-          titre={ele.title}
-          isHidden={ele.isHidden}
-          isPublic={ele.isPublic}
-          duration={ele.duration}
-          playList={ele.playlistTitle}
-          playListId={ele.playlistId}
+      <div
+        className="list-playlist"
+        style={{ height: "400px", overflowY: "auto", overflowX: "hidden" }}
+      >
+        {videos.map((ele) => (
+          <SingleLineVideo
+            key={ele.ytId}
+            ytId={ele.ytId}
+            titre={ele.title}
+            isHidden={ele.isHidden}
+            isPublic={ele.isPublic}
+            duration={ele.duration}
+            playList={ele.playlistTitle}
+            playListId={ele.playlistId}
+          />
+        ))}
+      </div>
+      {videoPerPage.current < countVideos && (
+        <Pagination
+          total={countVideos / videoPerPage.current + 1}
+          value={activePage}
+          onChange={setPage}
+          className="pages"
         />
-      ))}
+      )}
     </Container>
   );
 }

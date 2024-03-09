@@ -26,7 +26,9 @@ export default function Playlists() {
       <TaskBarPlaylist />
       <PlaylistTopLine />
       <div className="list-playlist">
-        <div>
+        <div
+          style={{ height: "300px", overflowY: "auto", overflowX: "hidden" }}
+        >
           {playlists.map((ele, index) => (
             <h2 key={ele.playlistId}>
               <SingleLinePlaylist
