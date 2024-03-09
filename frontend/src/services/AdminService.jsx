@@ -31,6 +31,21 @@ export default class AdminService {
     }
   }
 
+  static async changeRole(email, role = 0) {
+    try {
+      const { data } = await axios.patch(
+        `${import.meta.env.VITE_BACKEND_URL}/admin/users/${email}/${role}`
+      );
+      return {
+        success: data.result,
+        message: data.message,
+      };
+    } catch (err) {
+      console.error(err);
+      return { success: false, message: err.response.data.message };
+    }
+  }
+
   static async addPlaylist(playlist) {
     try {
       const { data } = await axios.post(
