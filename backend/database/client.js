@@ -7,9 +7,9 @@ const mysql = require("mysql2/promise");
 const client = mysql.createPool({
   host: DB_HOST,
   port: DB_PORT,
-  user: DB_USER,
-  password: DB_PASSWORD,
-  database: DB_NAME,
+  user: DB_USER ?? "mahdi",
+  password: DB_PASSWORD ?? "ThisIsNotMe1",
+  database: DB_NAME ?? "projet",
 });
 
 // Try to get a connection to the database

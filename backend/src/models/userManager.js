@@ -19,16 +19,15 @@ class UserManager {
     try {
       const randomCode = uuid();
       const [result] = await database.query(
-        `insert into user (firstname, lastname, email, password, birthday, isAdmin, imgUrl, activationCode) values (?,?,?,?,?,?,?,?)`,
+        `insert into user (firstname, lastname, email, password, birthday,activationCode, imgUrl ) values (?,?,?,?,?,?,?)`,
         [
           user.firstname,
           user.lastname,
           user.email,
           hashedPassword,
           user.birthday,
-          user.isAdmin,
-          user.imgUrl,
           randomCode,
+          user.imgUrl,
         ]
       );
 
