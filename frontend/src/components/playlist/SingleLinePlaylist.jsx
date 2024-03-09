@@ -1,6 +1,8 @@
 import { Grid, Button } from "@mantine/core";
 import PropTypes from "prop-types";
 import { useState } from "react";
+import { MdDelete } from "react-icons/md";
+import { FaRegEdit } from "react-icons/fa";
 import { useVideoContext } from "../../context/videoContext";
 import UpdatePlaylist from "./UpdatePlaylist";
 
@@ -35,16 +37,16 @@ export default function SingleLinePlaylist({
             type="button"
             style={{ marginRight: "15px" }}
             onClick={() => deletePlaylistById(playlistId)}
-            className="invisible-button-with-border"
+            className="invisible-button"
           >
-            Supprimer
+            <MdDelete style={{ width: "20px", height: "20px" }} stroke={1.5} />
           </Button>
           <Button
             type="button"
             onClick={() => setShowUpdate(!showUpdate)}
-            className="invisible-button-with-border"
+            className="invisible-button"
           >
-            Editer
+            <FaRegEdit style={{ width: "20px", height: "20px" }} stroke={1.5} />
           </Button>
         </Grid.Col>
       </Grid>
