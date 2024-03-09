@@ -16,6 +16,21 @@ const browse = async (req, res, next) => {
   }
 };
 
+// The B of BREAD - Browse (Read All) operation
+async function browsePagination(req, res) {
+  try {
+    const { start, offset } = req.query;
+    const videos = await videoManager.browsePagination(start, offset);
+    res.status(200).json({
+      videos: videos.rows,
+      count: videos.length,
+      message: "all good",
+    });
+  } catch (err) {
+    res.sendStatus(404);
+  }
+}
+
 const browsePlaylists = async (req, res, next) => {
   try {
     // Fetch all items from the database
@@ -54,6 +69,35 @@ const readPlaylist = async (req, res) => {
       res
         .status(200)
         .json({ rows, title, message: "play list récu", success: true });
+    }
+  } catch (err) {
+    // Pass any errors to the error-handling middleware
+    res.status(404).json({ message: err.message, success: false });
+  }
+};
+
+const browseVideosFromPlaylist = async (req, res) => {
+  try {
+    const { playlistId } = req.params;
+    const { start, offset } = req.query;
+    // Fetch a specific item from the database based on the provided ID
+    const { videos, title, count } = await videoManager.readPlayListPagination(
+      playlistId,
+      start,
+      offset
+    );
+    if (videos == null) {
+      res
+        .status(200)
+        .json({ message: "Playliste non existante", success: false });
+    } else {
+      res.status(200).json({
+        videos,
+        title,
+        message: "play list récu",
+        success: true,
+        count,
+      });
     }
   } catch (err) {
     // Pass any errors to the error-handling middleware
@@ -278,6 +322,7 @@ module.exports = {
   check,
   readPlaylist,
   browsePlaylists,
+  browsePagination,
   getPlaylists,
   getPlaylistsByCategory,
   addPlaylist,
@@ -286,4 +331,5 @@ module.exports = {
   getPlaylistsPagination,
   addPlaylistFromYoutube,
   getPlaylistsByCategoryPagination,
+  browseVideosFromPlaylist,
 };

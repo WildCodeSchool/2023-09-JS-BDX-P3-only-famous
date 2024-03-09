@@ -10,7 +10,11 @@ export default function SingleUserLine({
   isAdmin,
   isActive,
 }) {
-  const { deleteUser } = useAdmin();
+  const { deleteUser, changeRole } = useAdmin();
+
+  const handleRole = () => {
+    changeRole(email, isAdmin ? 0 : 1);
+  };
   return (
     <Grid justify="center" align="center">
       <Grid.Col span={3}>
@@ -45,16 +49,17 @@ export default function SingleUserLine({
       </Grid.Col>
       <Grid.Col span={4}>
         <Center>
-          <Button mr={20}>
+          <Button mr={20} className="invisible-button" onClick={handleRole}>
             <MdModeEdit
               style={{ width: "20px", height: "20px" }}
               stroke={1.5}
             />
-            <span style={{ marginLeft: "5px" }}>Modifier</span>
           </Button>
-          <Button onClick={() => deleteUser(email)}>
+          <Button
+            onClick={() => deleteUser(email)}
+            className="invisible-button"
+          >
             <MdDelete style={{ width: "20px", height: "20px" }} stroke={1.5} />
-            <span style={{ marginLeft: "5px" }}>Supprimer</span>
           </Button>
         </Center>
       </Grid.Col>

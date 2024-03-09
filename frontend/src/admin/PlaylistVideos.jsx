@@ -1,17 +1,38 @@
 import { Center, Container, Grid, Pagination, Progress } from "@mantine/core";
 import { useEffect, useRef, useState } from "react";
-import VideoBar from "./VideoBar";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 import SingleLineVideo from "../components/SingleLineVideo";
-import { useVideoContext } from "../context/videoContext";
+import VideoBarPlaylist from "./VideoBarPlaylist";
 
-export default function Videos() {
-  const { videos, getAllVideosPagination, countVideos } = useVideoContext();
+export default function PlaylistVideos() {
   const videoPerPage = useRef(10);
   const [activePage, setPage] = useState(1);
+  const [videos, setVideos] = useState([]);
+  const [playlistTitle, setPlaylistTitle] = useState("");
+  const [countVideos, setCountVideos] = useState(1);
+
+  const { playlistId } = useParams();
+
+  async function getVideoListFromPlaylist(playlistid, start, offset) {
+    try {
+      const { data } = await axios.get(
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/api/videos/${playlistid}?start=${start}&offset=${offset}`
+      );
+      setVideos([...data.videos]);
+      setCountVideos(data.count);
+      setPlaylistTitle(data.title);
+    } catch (err) {
+      setVideos([]);
+    }
+  }
 
   useEffect(() => {
     async function getData() {
-      await getAllVideosPagination(
+      await getVideoListFromPlaylist(
+        playlistId,
         (activePage - 1) * videoPerPage.current,
         videoPerPage.current
       );
@@ -21,7 +42,7 @@ export default function Videos() {
 
   return (
     <Container size="fluid">
-      <VideoBar p={0} />
+      <VideoBarPlaylist p={0} playlistTitle={playlistTitle} />
       <Progress h={4} className="yellow-3" mt={10} mb={5} />
       <Grid>
         <Grid.Col span={3}>Titre</Grid.Col>

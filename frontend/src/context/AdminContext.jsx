@@ -84,6 +84,24 @@ export default function AdminContextProvider({ children }) {
     }
   }
 
+  async function changeRole(email, isAdmin = false) {
+    try {
+      const { success, message } = await AdminService.changeRole(
+        email,
+        isAdmin
+      );
+      if (success) {
+        await getUsers();
+        setMessageUser(message);
+      } else {
+        setMessageUser(" Problème amigo!!!");
+      }
+    } catch (error) {
+      setMessageUser(error.message);
+      throw new Error(error.message);
+    }
+  }
+
   const adminData = useMemo(
     () => ({
       admin,
@@ -97,6 +115,7 @@ export default function AdminContextProvider({ children }) {
       addPlaylistDone,
       setAddPlaylistDone,
       addPlaylist,
+      changeRole,
     }),
     [
       admin,
@@ -110,6 +129,7 @@ export default function AdminContextProvider({ children }) {
       addPlaylistDone,
       setAddPlaylistDone,
       addPlaylist,
+      changeRole,
     ]
   );
 

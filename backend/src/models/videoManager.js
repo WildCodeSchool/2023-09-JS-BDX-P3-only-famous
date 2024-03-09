@@ -60,6 +60,22 @@ class VideoManager {
     return rows;
   }
 
+  static async browsePagination(start, offset) {
+    try {
+      const [count] = await database.query(
+        `select count(*) as length  from video`
+      );
+      // console.log(count[0]);
+      const [rows] = await database.query(
+        `select * from video limit ${start}, ${offset}`
+      );
+      // console.log(rows);
+      return { rows, ...count[0] };
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
   static async readAllById(ytId) {
     const [rows] = await database.query(
       `select * from video where ytId like '${ytId}%'`
@@ -78,6 +94,27 @@ class VideoManager {
     );
 
     return { rows, title: playlist[0].playlistTitle };
+  }
+
+  static async readPlayListPagination(playListId, start, offset) {
+    const [count] = await database.query(
+      `select count(*) as length  from video where playlistId = ?`,
+      [playListId]
+    );
+    const [rows] = await database.query(
+      `select * from video where playlistId = ? limit ${start}, ${offset}`,
+      [playListId]
+    );
+    const [playlist] = await database.query(
+      `select playlistTitle from playlist where playlistId = ?  `,
+      [playListId]
+    );
+
+    return {
+      videos: rows,
+      title: playlist[0].playlistTitle,
+      count: count[0].length,
+    };
   }
 
   static async update(ytId, video) {

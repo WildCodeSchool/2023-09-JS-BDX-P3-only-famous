@@ -227,6 +227,29 @@ async function updateDescription(req, res) {
   }
 }
 
+async function updateRole(req, res) {
+  try {
+    const { email, role } = req.params;
+    const isAdmin = +role;
+    const { affectedRows } = await userManager.update({
+      isAdmin,
+      email,
+    });
+    if (affectedRows !== 0) {
+      res.status(200).json({
+        message: "Nom et prénom actualisés!!!",
+        result: true,
+      });
+    } else {
+      res
+        .status(404)
+        .json({ message: "Utilisateur non existant", result: false });
+    }
+  } catch (err) {
+    res.status(404).json({ message: err.message, result: false });
+  }
+}
+
 async function sendResetPassword(req, res) {
   try {
     const { email } = req.body;
@@ -277,4 +300,5 @@ module.exports = {
   browseByEmail,
   getProfile,
   updateDescription,
+  updateRole,
 };
