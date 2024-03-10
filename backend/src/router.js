@@ -97,6 +97,11 @@ router.post(
   userMiddle.verifyToken,
   userControllers.updateDescription
 );
+router.post(
+  "/recievemail",
+  userMiddle.verifyToken,
+  userControllers.recieveMail
+);
 
 /* ************************************************************************* */
 

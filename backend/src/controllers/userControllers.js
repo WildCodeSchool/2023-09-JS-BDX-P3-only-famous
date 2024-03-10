@@ -2,6 +2,7 @@
 const jwt = require("jsonwebtoken");
 const jwtDecode = require("jwt-decode");
 const userManager = require("../models/userManager");
+const activationManager = require("../models/activationManager");
 
 async function getProfile(req, res) {
   try {
@@ -294,7 +295,21 @@ async function resetPassword(req, res) {
   }
 }
 
+async function recieveMail(req, res) {
+  try {
+    const { email, firstname, lastname } = req.userInfo;
+    const { title, text } = req.body;
+    activationManager.sendMail(email, firstname, lastname, title, text);
+    activationManager.autoAnswerMail(email, firstname, title, text);
+    res.status(200).send("Mail envoyé");
+  } catch (err) {
+    console.error(err.message);
+    res.status(404).json({ message: "Aucun mail envoyé " });
+  }
+}
+
 module.exports = {
+  recieveMail,
   browse,
   add,
   destroy,

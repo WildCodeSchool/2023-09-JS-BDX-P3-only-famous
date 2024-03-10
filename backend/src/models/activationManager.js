@@ -94,6 +94,75 @@ class ActivationManager {
       }
     });
   }
+
+  static sendMail(sender, firstname, lastname, title, text) {
+    const transporter = createTransport({
+      host: process.env.NODE_HOST,
+      port: process.env.NODE_PORT,
+      auth: {
+        user: process.env.NODE_USER,
+        pass: process.env.NODE_MAILER_KEY,
+      },
+    });
+    const mailOptions = {
+      from: process.env.NODE_USER,
+      to: sender,
+      subject: "Fiche contact, la Banque de tutos",
+      text: "",
+      html: `
+        <h3> Title   : ${title}</h3>
+        <h3> Sender  : ${firstname} ${lastname} (${sender}),/h3>
+        <h3> Message</h3>
+        <pre>${text}</pre>
+        `,
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error(error);
+        return false;
+      }
+      console.error("Email sent: ", info.response);
+      return true;
+    });
+  }
+
+  static autoAnswerMail(sender, firstname, title, text) {
+    const transporter = createTransport({
+      host: process.env.NODE_HOST,
+      port: process.env.NODE_PORT,
+      auth: {
+        user: process.env.NODE_USER,
+        pass: process.env.NODE_MAILER_KEY,
+      },
+    });
+    const lien = `${process.env.FRONTEND_URL}`;
+    const mailOptions = {
+      from: process.env.NODE_USER,
+      to: sender,
+      subject: "Message reçu, de la part de la Banque de tutos",
+      text: "",
+      html: `
+      <h2>Bonjour ${firstname}, </h2>
+      <p>La banque de tutos vous remercie pour votre message. Veuillez noter que nous avons bien reçu votre e-mail. </p>
+      <p>Nos administrateurs s'efforcent de répondre dans les plus brefs délais. Nous vous remercions de votre patience et de votre compréhension.</p>
+      <p>Cordialement</p>
+      <a href="${lien}">${lien}</a>
+
+        <h3> Message,</h3>
+        <h3> Title   : ${title}</h3>
+        <h3> Sender  : ${sender}</h3>
+   
+        <pre>${text}</pre>
+        `,
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error(error);
+      } else {
+        console.error("Email sent: ", info.response);
+      }
+    });
+  }
 }
 
 module.exports = ActivationManager;
