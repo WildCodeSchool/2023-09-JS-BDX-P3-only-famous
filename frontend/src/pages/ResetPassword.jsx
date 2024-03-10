@@ -3,7 +3,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Button, Container, Fieldset, Input } from "@mantine/core";
 import { useUserContext } from "../context/UserContext";
 import Banner from "../components/Banner";
-import bannerImage from "../assets/banner.png";
+import bannerImage from "../assets/connection.jpg";
 import MyAlert from "../components/MyAlert";
 
 export default function ResetPassword() {

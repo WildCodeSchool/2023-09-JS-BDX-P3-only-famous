@@ -5,7 +5,7 @@ import { useUserContext } from "../context/UserContext";
 import RegisterPassword from "./RegisterPassword";
 import Banner from "../components/Banner";
 import MyAlert from "../components/MyAlert";
-import bannerImage from "../assets/banner.png";
+import bannerImage from "../assets/connection.jpg";
 
 export default function RegisterCoord() {
   const [email, setEmail] = useState("");
