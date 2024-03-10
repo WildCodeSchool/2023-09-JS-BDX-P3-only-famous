@@ -2,7 +2,6 @@ const express = require("express");
 const multer = require("multer");
 const multerMiddle = require("./middlewares/multerMiddle");
 const userMiddle = require("./middlewares/userMiddle");
-const { verifyToken } = require("./middlewares/userMiddle");
 
 const router = express.Router();
 
@@ -66,9 +65,9 @@ router.post("/user", userControllers.check);
 // router.put("/user", userControllers.edit);
 
 // Route to delete existed users
-router.delete("/user", userMiddle.verifyAdminToken, userControllers.destroy);
+router.delete("/user", userMiddle.verifyToken, userControllers.destroy);
 
-router.get("/getprofile", verifyToken, userControllers.getProfile);
+router.get("/getprofile", userMiddle.verifyToken, userControllers.getProfile);
 
 // to be deleted
 const upload = multer({ dest: "./public/uploads/" });

@@ -123,20 +123,17 @@ class UserManager {
     return res.affectedRows;
   }
 
-  static async delete(email, password) {
+  static async delete(email) {
     try {
       const [user] = await database.query(
         "select * from user WHERE email = ?",
         [email]
       );
       if (user[0]) {
-        const comparison = await this.compare(password, user[0].password);
-        if (comparison) {
-          const res = await database.query("delete from user WHERE email = ?", [
-            email,
-          ]);
-          return res.affectedRows;
-        }
+        const res = await database.query("delete from user WHERE email = ?", [
+          email,
+        ]);
+        return res.affectedRows;
       }
       return 0;
     } catch (err) {
