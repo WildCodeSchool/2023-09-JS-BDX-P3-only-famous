@@ -32,6 +32,11 @@ export default function UserContextProvider({ children }) {
     return regex.test(password);
   }
 
+  function validateEmail(email) {
+    const regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+    return regex.test(email);
+  }
+
   async function checkCredentials(credentials) {
     try {
       const { headers, data } = await axios.post(
@@ -239,6 +244,7 @@ export default function UserContextProvider({ children }) {
       setFavoritePlaylist,
       getFavorite,
       toggleFavorite,
+      validateEmail,
     }),
     [
       user,

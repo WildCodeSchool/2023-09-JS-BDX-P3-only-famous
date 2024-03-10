@@ -66,7 +66,7 @@ describe("POST /api/users", () => {
   });
 });
 // inscription non-valide, email deja utilisé
-describe("GET /api/users", () => {
+describe("POST /api/users", () => {
   it("should not register succefully", async () => {
     // Send a GET request to the /api/user
     const response = await request(app).post("/api/users").send(randomUser);
@@ -81,7 +81,7 @@ delete randomUser.imgUrl;
 randomUser.email = "mahdi.mcheik@hotmail.com";
 
 // inscription non-valide sans imgurl et isadmin
-describe("GET /api/users", () => {
+describe("POST /api/users", () => {
   it("should not register without admin and imgUrl", async () => {
     // Send a GET request to the /api/user
     const response = await request(app).post("/api/users").send(randomUser);
@@ -94,7 +94,7 @@ const token =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc0FkbWluIjowLCJmaXJzdG5hbWUiOiJtYWhkaSIsImxhc3RuYW1lIjoibWNoZWlrIiwiZW1haWwiOiJtYWhkaS5tY2hlaWtAaG90bWFpbC5jb20iLCJpYXQiOjE3MTAwNzYzMjMsImV4cCI6MTcxMDExMjMyM30.7GCg7hZdItAelqkJtEQ5CGfhKz56F6NNzOUGMtn2rDc";
 
 // update description
-describe("GET /api/updatedescription", () => {
+describe("POST /api/updatedescription", () => {
   it("should update user", async () => {
     const response = await request(app)
       .post("/api/updatedescription")
@@ -110,7 +110,7 @@ describe("GET /api/updatedescription", () => {
 });
 
 // Delete without token
-describe("GET /api/user", () => {
+describe("DELETE /api/user", () => {
   it("should not delete user", async () => {
     // Send a GET request to the /api/user
     const response = await request(app).delete("/api/user").send({
@@ -122,7 +122,7 @@ describe("GET /api/user", () => {
 });
 
 // Delete with token
-describe("GET /api/user", () => {
+describe("DELETE /api/user", () => {
   it("should delete user", async () => {
     // Send a GET request to the /api/user
     const response = await request(app)
@@ -133,5 +133,6 @@ describe("GET /api/user", () => {
       });
     // Assertions
     expect(response.status).toBe(202);
+    expect(response.body.message).toEqual("Utilisateur supprimé");
   });
 });
