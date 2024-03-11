@@ -108,6 +108,19 @@ export default function UserContextProvider({ children }) {
     }
   }
 
+  async function sendMail(message) {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/recievemail`,
+        message
+      );
+      setMessageUser(data);
+    } catch (err) {
+      console.error(err);
+      setMessageUser("Erreur : ", err.response.data.message);
+    }
+  }
+
   async function sendResetLink(email) {
     try {
       const { data } = await axios.post(
@@ -245,6 +258,7 @@ export default function UserContextProvider({ children }) {
       getFavorite,
       toggleFavorite,
       validateEmail,
+      sendMail,
     }),
     [
       user,

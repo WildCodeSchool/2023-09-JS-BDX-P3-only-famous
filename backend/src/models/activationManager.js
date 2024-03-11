@@ -106,7 +106,7 @@ class ActivationManager {
     });
     const mailOptions = {
       from: process.env.NODE_USER,
-      to: sender,
+      to: "mahdi.mcheik@hotmail.fr",
       subject: "Fiche contact, la Banque de tutos",
       text: "",
       html: `

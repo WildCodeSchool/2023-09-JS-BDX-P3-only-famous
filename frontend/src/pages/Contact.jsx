@@ -8,13 +8,15 @@ import {
   Textarea,
 } from "@mantine/core";
 import { IconInfoCircle } from "@tabler/icons-react";
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useUserContext } from "../context/UserContext";
 import Banner from "../components/Banner";
 import bannerImage from "../assets/banner.png";
 
 export default function Contact() {
-  const { user } = useUserContext();
+  const navigate = useNavigate();
+  const { user, messageUser, setMessageUser, sendMail } = useUserContext();
   const [message, setMessage] = useState({
     title: "",
     text: "",
@@ -23,7 +25,7 @@ export default function Contact() {
   const handleChange = (e) => {
     if (e.target.name !== "text") {
       setMessage({ ...message, [e.target.name]: e.target.value });
-    } else if (e.target.value.length < 50) {
+    } else if (e.target.value.length < 255) {
       setMessage({ ...message, [e.target.name]: e.target.value });
       if (errorMessage) {
         setErrorMessage("");
@@ -32,6 +34,24 @@ export default function Contact() {
       setErrorMessage("vous avez atteint la longueur maximale du message");
     }
   };
+
+  const sendMessage = async () => {
+    if (message.text.length > 10 && message.title.length > 2) {
+      await sendMail(message);
+      setErrorMessage("Message envoyé");
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
+    } else {
+      setErrorMessage(
+        "Erreur de validation, veuillez remplir les champs manquant"
+      );
+    }
+  };
+
+  useEffect(() => {
+    setMessageUser("");
+  }, []);
   const icon = <IconInfoCircle />;
   return (
     <Container size="sm">
@@ -71,20 +91,13 @@ export default function Contact() {
 
         <Grid gutter={{ base: 5, xs: "md", md: "xl", xl: 50 }}>
           <Grid.Col span={12}>
-            <select
-              name="title"
-              id="title"
+            <Input
+              placeholder="Sujet"
               value={message.title}
+              type="text"
+              name="title"
               onChange={handleChange}
-              style={{ width: "100%", paddingLeft: "10px" }}
-            >
-              <option value="" disabled>
-                Choisissez votre sujet
-              </option>
-              <option value="reclamation">Réclamation</option>
-              <option value="suggestion">Suggestion</option>
-              <option value="other">Autre</option>
-            </select>
+            />
           </Grid.Col>
         </Grid>
         <Grid gutter={{ base: 5, xs: "md", md: "xl", xl: 50 }}>
@@ -109,7 +122,10 @@ export default function Contact() {
           </Alert>
         )}
       </Fieldset>
-      <Button className="invisible-button-with-border">Envoyer</Button>
+      <Button className="invisible-button-with-border" onClick={sendMessage}>
+        Envoyer
+      </Button>
+      <h2>{messageUser ?? ""}</h2>
     </Container>
   );
 }
