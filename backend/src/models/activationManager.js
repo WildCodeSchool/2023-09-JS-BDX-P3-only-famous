@@ -111,7 +111,7 @@ class ActivationManager {
       text: "",
       html: `
         <h3> Title   : ${title}</h3>
-        <h3> Sender  : ${firstname} ${lastname} (${sender}),/h3>
+        <h3> Sender  : ${firstname} ${lastname} (${sender})</h3>
         <h3> Message</h3>
         <pre>${text}</pre>
         `,
@@ -148,7 +148,7 @@ class ActivationManager {
       <p>Cordialement</p>
       <a href="${lien}">${lien}</a>
 
-        <h3> Message,</h3>
+        <h3> Message</h3>
         <h3> Title   : ${title}</h3>
         <h3> Sender  : ${sender}</h3>
    

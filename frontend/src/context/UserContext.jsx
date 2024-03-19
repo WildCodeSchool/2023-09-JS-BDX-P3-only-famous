@@ -55,22 +55,6 @@ export default function UserContextProvider({ children }) {
     }
   }
 
-  async function resetPassword(credentials) {
-    try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/reset`,
-        credentials
-      );
-
-      setMessageUser(data.message);
-      return true;
-    } catch (err) {
-      console.error(err);
-      setMessageUser("Erreur : ", err.response.data.message);
-      return false;
-    }
-  }
-
   function updateLocalStorage(userInfo) {
     localStorage.setItem("token", userInfo.token);
   }
@@ -177,7 +161,25 @@ export default function UserContextProvider({ children }) {
 
   function logout() {
     setUser({ admin: false, isConnected: false });
+    navigate("/");
     emptyStorage();
+  }
+
+  async function resetPassword(credentials) {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/reset`,
+        credentials
+      );
+      console.info(data);
+      setMessageUser("");
+      logout();
+      return true;
+    } catch (err) {
+      console.error(err);
+      setMessageUser("Erreur : ", err.response.data.message);
+      return false;
+    }
   }
 
   async function activateAccount(email, code) {

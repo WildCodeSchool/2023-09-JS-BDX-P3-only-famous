@@ -227,7 +227,7 @@ class UserManager {
         `select * from user where email = ?`,
         [email]
       );
-      const hashedPassword = await this.Hashing(password);
+      const hashedPassword = await UserManager.hashing(password);
       if (userdb[0]) {
         const [res] = await database.query(
           "update user set  password = ?  WHERE email = ?",

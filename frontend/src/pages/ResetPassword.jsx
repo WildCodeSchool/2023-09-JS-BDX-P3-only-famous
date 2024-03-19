@@ -31,6 +31,7 @@ export default function ResetPassword() {
         });
         if (res) {
           setMessage(res.message);
+          setMessage("");
           navigate("/connexion");
         }
       } else {
