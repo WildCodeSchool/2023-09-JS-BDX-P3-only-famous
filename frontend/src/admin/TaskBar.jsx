@@ -1,4 +1,4 @@
-import { Checkbox, Container, Input } from "@mantine/core";
+import { Container, Input } from "@mantine/core";
 
 // import PropTypes, { string } from "prop-types";
 import { useState } from "react";
@@ -7,7 +7,7 @@ import { useAdmin } from "../context/AdminContext";
 
 export default function TaskBar() {
   const [email, setEmail] = useState([]);
-  const { runSearch, admin, active, getUsersFiltered } = useAdmin();
+  const { runSearch } = useAdmin();
 
   const icon = (
     <FaSearch style={{ width: "25px", height: "25px" }} stroke={1.5} />
@@ -25,31 +25,6 @@ export default function TaskBar() {
           runSearch(e.target.value);
           setEmail(e.currentTarget.value);
         }}
-      />
-
-      <Checkbox
-        ml={10}
-        checked={admin.current}
-        onChange={() => {
-          admin.current = !admin.current;
-          getUsersFiltered();
-        }}
-        label="Admin?"
-        color="yellow.3"
-        iconColor="dark.8"
-        className="checkbox-navbar"
-      />
-      <Checkbox
-        ml={30}
-        checked={active.current}
-        onChange={() => {
-          active.current = !active.current;
-          getUsersFiltered();
-        }}
-        label="Active?"
-        color="yellow.3"
-        iconColor="dark.8"
-        className="checkbox-navbar"
       />
     </Container>
   );
