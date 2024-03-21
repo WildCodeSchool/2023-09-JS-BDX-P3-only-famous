@@ -122,7 +122,7 @@ export default function SingleLineVideo({
               style={{
                 width: "20px",
                 height: "20px",
-                color: `${isPublic ? "var(--secondary-me)" : "gray"}`,
+                color: `${!isPublic ? "var(--secondary-me)" : "gray"}`,
               }}
               stroke={1.5}
             />

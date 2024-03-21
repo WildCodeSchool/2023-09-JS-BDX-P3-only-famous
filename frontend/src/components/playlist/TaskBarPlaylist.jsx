@@ -16,7 +16,9 @@ export default function TaskBarPlaylist() {
 
   return (
     <Container h={40} size="fluid" className="taskbar" p={0}>
-      <h2 style={{ marginRight: `20px` }}>Playlistes</h2>
+      <h2 style={{ marginRight: `20px` }}>
+        {!category ? "Playlists" : "Playlists recherchées"}
+      </h2>
       <Input
         placeholder="categorie"
         type="text"
