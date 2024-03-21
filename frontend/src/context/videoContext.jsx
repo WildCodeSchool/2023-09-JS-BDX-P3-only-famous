@@ -7,6 +7,10 @@ export default function VideoContextProvider({ children }) {
   const [videos, setVideos] = useState([]);
   const [videoId, setVideoId] = useState("");
   const [searchedPlaylist, setSearchedPlaylist] = useState([]);
+  const [mustReload, setMustReload] = useState(false);
+  const videoPerPage = useRef(10);
+  const [activePage, setPage] = useState(1);
+  const [playlistTitle, setPlaylistTitle] = useState("");
 
   const [category, setCategory] = useState("");
 
@@ -23,14 +27,29 @@ export default function VideoContextProvider({ children }) {
 
   const video = useRef({});
 
-  async function getVideoListFromPlaylist(playlistId, start, offset) {
-    const { data } = await axios.get(
-      `${
-        import.meta.env.VITE_BACKEND_URL
-      }/api/videos/${playlistId}?start=${start}&offset=${offset}`
-    );
-    setVideos(data.rows);
+  // async function getVideoListFromPlaylist(playlistId, start, offset) {
+  //   const { data } = await axios.get(
+  //     `${
+  //       import.meta.env.VITE_BACKEND_URL
+  //     }/api/videos/${playlistId}?start=${start}&offset=${offset}`
+  //   );
+  //   setVideos(data.rows);
+  // }
+  async function getVideoListFromPlaylist(playlistid, start, offset) {
+    try {
+      const { data } = await axios.get(
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/api/videos/${playlistid}?start=${start}&offset=${offset}`
+      );
+      setVideos([...data.videos]);
+      setCountVideos(data.count);
+      setPlaylistTitle(data.title);
+    } catch (err) {
+      setVideos([]);
+    }
   }
+
   async function getAllVideos() {
     const { data } = await axios.get(
       `${import.meta.env.VITE_BACKEND_URL}/api/videos/20`
@@ -38,7 +57,10 @@ export default function VideoContextProvider({ children }) {
     setVideos(data);
   }
 
-  async function getAllVideosPagination(start, offset) {
+  async function getAllVideosPagination(
+    start = (activePage - 1) * videoPerPage.current,
+    offset = videoPerPage.current
+  ) {
     try {
       const { data } = await axios.get(
         `${
@@ -132,7 +154,6 @@ export default function VideoContextProvider({ children }) {
       `${import.meta.env.VITE_BACKEND_URL}/api/video/${ytId}`,
       { isHidden, isPublic }
     );
-
     return data;
   }
 
@@ -186,6 +207,13 @@ export default function VideoContextProvider({ children }) {
       setVideoId,
       getAllVideos,
       searchedPlaylist,
+      mustReload,
+      setMustReload,
+      activePage,
+      setPage,
+      videoPerPage,
+      playlistTitle,
+      setPlaylistTitle,
     }),
     [
       videos,

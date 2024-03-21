@@ -1,33 +1,17 @@
 import { Center, Container, Grid, Pagination, Progress } from "@mantine/core";
-import { useEffect, useRef, useState } from "react";
-import axios from "axios";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import SingleLineVideo from "../components/SingleLineVideo";
 import VideoBarPlaylist from "./VideoBarPlaylist";
+import { useVideoContext } from "../context/videoContext";
 
 export default function PlaylistVideos() {
-  const videoPerPage = useRef(10);
-  const [activePage, setPage] = useState(1);
-  const [videos, setVideos] = useState([]);
-  const [playlistTitle, setPlaylistTitle] = useState("");
-  const [countVideos, setCountVideos] = useState(1);
+  const { activePage, setPage, videoPerPage, videos, countVideos } =
+    useVideoContext();
+  const { mustReload, getVideoListFromPlaylist, playlistTitle } =
+    useVideoContext();
 
   const { playlistId } = useParams();
-
-  async function getVideoListFromPlaylist(playlistid, start, offset) {
-    try {
-      const { data } = await axios.get(
-        `${
-          import.meta.env.VITE_BACKEND_URL
-        }/api/videos/${playlistid}?start=${start}&offset=${offset}`
-      );
-      setVideos([...data.videos]);
-      setCountVideos(data.count);
-      setPlaylistTitle(data.title);
-    } catch (err) {
-      setVideos([]);
-    }
-  }
 
   useEffect(() => {
     async function getData() {
@@ -38,7 +22,10 @@ export default function PlaylistVideos() {
       );
     }
     getData();
-  }, [activePage]);
+  }, [activePage, mustReload]);
+  useEffect(() => {
+    setPage(1);
+  }, []);
 
   return (
     <Container size="fluid">
