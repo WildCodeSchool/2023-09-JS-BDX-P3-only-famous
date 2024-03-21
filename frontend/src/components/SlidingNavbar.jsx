@@ -43,7 +43,6 @@ export default function SlidingNavbar() {
                 onClick={() => {
                   navigate("/");
                   closeNav();
-                  // refLinks.current.classList.toggle("slide-left");
                 }}
               >
                 <span>Accueil</span>
@@ -58,6 +57,17 @@ export default function SlidingNavbar() {
               >
                 <span>{user.isConnected ? "Utilisateur" : "Connexion"}</span>
               </button>
+              {user.isConnected && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigate("/contact");
+                    closeNav();
+                  }}
+                >
+                  <span>Contact</span>
+                </button>
+              )}
               {user.isAdmin ? (
                 <button
                   type="button"
@@ -102,6 +112,13 @@ export default function SlidingNavbar() {
             <Link to={user.isConnected ? "/user" : "/connexion"}>
               <span>{user.isConnected ? "Utilisateur" : "Connexion"}</span>
             </Link>
+            {user.isConnected ? (
+              <Link to="/contact">
+                <span>Contact</span>
+              </Link>
+            ) : (
+              ""
+            )}
             {user.isAdmin ? (
               <Link to="/admin">
                 <span>Dashboard</span>
