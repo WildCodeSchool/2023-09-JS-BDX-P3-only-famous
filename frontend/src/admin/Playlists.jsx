@@ -25,33 +25,9 @@ export default function Playlists() {
     <div className="playlists">
       <TaskBarPlaylist />
       <PlaylistTopLine />
-      <div className="list-playlist">
-        <div
-          style={{ height: "300px", overflowY: "auto", overflowX: "hidden" }}
-        >
-          {playlists.map((ele, index) => (
-            <h2 key={ele.playlistId}>
-              <SingleLinePlaylist
-                playlistId={ele.playlistId}
-                playlistTitle={ele.playlistTitle}
-                category={ele.category}
-                index={index}
-              />
-            </h2>
-          ))}
-        </div>
-        {playListPerPage.current < count && (
-          <Pagination
-            total={count / playListPerPage.current + 1}
-            value={activePage}
-            onChange={setPage}
-            className="pages"
-          />
-        )}
-      </div>
       {searchedPlaylist && searchedPlaylist.length > 0 && (
         <div>
-          <h2 style={{ marginBottom: "20px" }}>Playlists recherchées</h2>
+          {/* <h2 style={{ marginBottom: "20px" }}>Playlists recherchées</h2> */}
           {searchedPlaylist.map((ele) => (
             <SingleLinePlaylist
               playlistId={ele.playlistId}
@@ -59,6 +35,32 @@ export default function Playlists() {
               category={ele.category}
             />
           ))}
+        </div>
+      )}
+      {searchedPlaylist.length === 0 && (
+        <div className="list-playlist">
+          <div
+            style={{ height: "300px", overflowY: "auto", overflowX: "hidden" }}
+          >
+            {playlists.map((ele, index) => (
+              <h2 key={ele.playlistId}>
+                <SingleLinePlaylist
+                  playlistId={ele.playlistId}
+                  playlistTitle={ele.playlistTitle}
+                  category={ele.category}
+                  index={index}
+                />
+              </h2>
+            ))}
+          </div>
+          {playListPerPage.current < count && (
+            <Pagination
+              total={count / playListPerPage.current + 1}
+              value={activePage}
+              onChange={setPage}
+              className="pages"
+            />
+          )}
         </div>
       )}
     </div>

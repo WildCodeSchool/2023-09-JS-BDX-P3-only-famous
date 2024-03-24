@@ -5,7 +5,7 @@
     "db:seed": "node seed.js",
     "build": "node migrate.js",
     "start": "node index.js",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "dependencies": {
     "axios": "^1.6.7",

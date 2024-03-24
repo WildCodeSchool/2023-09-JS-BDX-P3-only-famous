@@ -19,16 +19,15 @@ class UserManager {
     try {
       const randomCode = uuid();
       const [result] = await database.query(
-        `insert into user (firstname, lastname, email, password, birthday, isAdmin, imgUrl, activationCode) values (?,?,?,?,?,?,?,?)`,
+        `insert into user (firstname, lastname, email, password, birthday,activationCode, imgUrl ) values (?,?,?,?,?,?,?)`,
         [
           user.firstname,
           user.lastname,
           user.email,
           hashedPassword,
           user.birthday,
-          user.isAdmin,
-          user.imgUrl,
           randomCode,
+          user.imgUrl,
         ]
       );
 
@@ -124,20 +123,17 @@ class UserManager {
     return res.affectedRows;
   }
 
-  static async delete(email, password) {
+  static async delete(email) {
     try {
       const [user] = await database.query(
         "select * from user WHERE email = ?",
         [email]
       );
       if (user[0]) {
-        const comparison = await this.compare(password, user[0].password);
-        if (comparison) {
-          const res = await database.query("delete from user WHERE email = ?", [
-            email,
-          ]);
-          return res.affectedRows;
-        }
+        const res = await database.query("delete from user WHERE email = ?", [
+          email,
+        ]);
+        return res.affectedRows;
       }
       return 0;
     } catch (err) {
@@ -231,7 +227,7 @@ class UserManager {
         `select * from user where email = ?`,
         [email]
       );
-      const hashedPassword = await this.Hashing(password);
+      const hashedPassword = await UserManager.hashing(password);
       if (userdb[0]) {
         const [res] = await database.query(
           "update user set  password = ?  WHERE email = ?",

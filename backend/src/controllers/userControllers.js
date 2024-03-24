@@ -2,6 +2,7 @@
 const jwt = require("jsonwebtoken");
 const jwtDecode = require("jwt-decode");
 const userManager = require("../models/userManager");
+const activationManager = require("../models/activationManager");
 
 async function getProfile(req, res) {
   try {
@@ -38,19 +39,29 @@ const browseByEmail = async (req, res) => {
   }
 };
 
+function validatePassword(password) {
+  const regex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  return regex.test(password);
+}
+
 async function add(req, res) {
   try {
     const user = req.body;
+    if (!validatePassword(user.password)) {
+      return res
+        .status(401)
+        .json({ message: "password non-conforme", insertId: 0 });
+    }
     const { message, insertId } = await userManager.create(user);
 
     if (+insertId !== 0) {
-      res.status(201).json({ message, insertId });
-      return;
+      return res.status(201).json({ message, insertId });
     }
-    res.status(500).json({ message, insertId });
+    return res.status(500).json({ message, insertId });
   } catch (err) {
-    console.error("catch triggered ", err.message);
-    res.status(409).json({ message: "Email existant!!!", insertId: 0 });
+    // console.error("catch triggered ", err.message);
+    return res.status(409).json({ message: "Email existant!!!", insertId: 0 });
   }
 }
 async function check(req, res) {
@@ -89,10 +100,10 @@ async function check(req, res) {
 }
 async function destroy(req, res) {
   try {
-    const { email, password } = req.body;
-    const result = await userManager.delete(email, password);
+    const { email } = req.body;
+    const result = await userManager.delete(email);
     if (+result !== 0) {
-      res.status(200).json({ message: "Utilisateur supprimé" });
+      res.status(202).json({ message: "Utilisateur supprimé" });
     } else {
       res
         .status(404)
@@ -174,13 +185,13 @@ async function updatePassword(req, res) {
           .status(200)
           .json({ message: "Mot de passe actualisé!!!", result: true });
       } else {
-        res.status(200).json({ message: "Erreur coté serveur", result: false });
+        res.status(400).json({ message: "Erreur coté serveur", result: false });
       }
     } else {
-      res.status(200).json({ message: "Mauvais code", result: false });
+      res.status(400).json({ message: "Mauvais code", result: false });
     }
   } catch (err) {
-    res.status(409).json({ message: err.message, result: false });
+    res.status(400).json({ message: err.message, result: false });
   }
 }
 async function updateName(req, res) {
@@ -207,7 +218,6 @@ async function updateName(req, res) {
 
 async function updateDescription(req, res) {
   try {
-    // console.log("update Description");
     const { description, email } = req.body;
     const { affectedRows } = await userManager.update({
       description,
@@ -219,7 +229,7 @@ async function updateDescription(req, res) {
         .json({ message: "description actualisée!!!", result: true });
     } else {
       res
-        .status(404)
+        .status(400)
         .json({ message: "Utilisateur non existant", result: false });
     }
   } catch (err) {
@@ -285,7 +295,21 @@ async function resetPassword(req, res) {
   }
 }
 
+async function recieveMail(req, res) {
+  try {
+    const { email, firstname, lastname } = req.userInfo;
+    const { title, text } = req.body;
+    activationManager.sendMail(email, firstname, lastname, title, text);
+    activationManager.autoAnswerMail(email, firstname, title, text);
+    res.status(200).send("Mail envoyé");
+  } catch (err) {
+    console.error(err.message);
+    res.status(404).json({ message: "Aucun mail envoyé " });
+  }
+}
+
 module.exports = {
+  recieveMail,
   browse,
   add,
   destroy,

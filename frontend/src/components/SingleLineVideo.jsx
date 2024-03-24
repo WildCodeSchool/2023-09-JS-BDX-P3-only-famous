@@ -14,15 +14,29 @@ export default function SingleLineVideo({
   playList,
   playListId,
 }) {
-  const { deleteVideoBId, updateVideoById, getVideoListFromPlaylist } =
-    useVideoContext();
+  const {
+    deleteVideoBId,
+    updateVideoById,
+    getVideoListFromPlaylist,
+    setMustReload,
+    mustReload,
+    getAllVideosPagination,
+  } = useVideoContext();
 
   async function handlePublish() {
     await updateVideoById(ytId, {
       isHidden,
       isPublic: !isPublic,
     });
-    await getVideoListFromPlaylist(playListId);
+    if (
+      window.location.pathname.includes("/admin/videos") &&
+      window.location.pathname.length > "/admin/videos".length
+    ) {
+      await getVideoListFromPlaylist(playListId);
+    } else {
+      await getAllVideosPagination();
+    }
+    setMustReload(!mustReload);
   }
 
   async function handleEdit() {
@@ -39,7 +53,15 @@ export default function SingleLineVideo({
       });
       console.warn("Message", message);
     }
-    await getVideoListFromPlaylist(playListId);
+    if (
+      window.location.pathname.includes("/admin/videos") &&
+      window.location.pathname.length > "/admin/videos".length
+    ) {
+      await getVideoListFromPlaylist(playListId);
+    } else {
+      await getAllVideosPagination();
+    }
+    setMustReload(!mustReload);
   }
   return (
     <Grid justify="center" align="center">
@@ -100,7 +122,7 @@ export default function SingleLineVideo({
               style={{
                 width: "20px",
                 height: "20px",
-                color: `${isPublic ? "var(--secondary-me)" : "gray"}`,
+                color: `${!isPublic ? "var(--secondary-me)" : "gray"}`,
               }}
               stroke={1.5}
             />

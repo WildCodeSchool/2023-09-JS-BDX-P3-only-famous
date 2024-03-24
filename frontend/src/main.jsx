@@ -24,6 +24,7 @@ import Playlists from "./admin/Playlists";
 import VideoUpload from "./admin/VideoUpload";
 import AddPlaylist from "./admin/AddPlaylist";
 import PlaylistVideos from "./admin/PlaylistVideos";
+import Contact from "./pages/Contact";
 
 const router = createBrowserRouter([
   {
@@ -85,6 +86,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/contact",
+        element: <Contact />,
       },
       {
         element: (

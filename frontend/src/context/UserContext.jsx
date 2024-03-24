@@ -32,6 +32,11 @@ export default function UserContextProvider({ children }) {
     return regex.test(password);
   }
 
+  function validateEmail(email) {
+    const regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+    return regex.test(email);
+  }
+
   async function checkCredentials(credentials) {
     try {
       const { headers, data } = await axios.post(
@@ -47,22 +52,6 @@ export default function UserContextProvider({ children }) {
     } catch (err) {
       console.error(err);
       return { userdb: null, message: err.response.data.message };
-    }
-  }
-
-  async function resetPassword(credentials) {
-    try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/reset`,
-        credentials
-      );
-
-      setMessageUser(data.message);
-      return true;
-    } catch (err) {
-      console.error(err);
-      setMessageUser("Erreur : ", err.response.data.message);
-      return false;
     }
   }
 
@@ -100,6 +89,19 @@ export default function UserContextProvider({ children }) {
       console.error(err);
       setMessageUser("Erreur : ", err.response.data.message);
       return { message: err.response.data.message, result: false };
+    }
+  }
+
+  async function sendMail(message) {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/recievemail`,
+        message
+      );
+      setMessageUser(data);
+    } catch (err) {
+      console.error(err);
+      setMessageUser("Erreur : ", err.response.data.message);
     }
   }
 
@@ -159,7 +161,25 @@ export default function UserContextProvider({ children }) {
 
   function logout() {
     setUser({ admin: false, isConnected: false });
+    navigate("/");
     emptyStorage();
+  }
+
+  async function resetPassword(credentials) {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/reset`,
+        credentials
+      );
+      console.info(data);
+      setMessageUser("");
+      logout();
+      return true;
+    } catch (err) {
+      console.error(err);
+      setMessageUser("Erreur : ", err.response.data.message);
+      return false;
+    }
   }
 
   async function activateAccount(email, code) {
@@ -239,6 +259,8 @@ export default function UserContextProvider({ children }) {
       setFavoritePlaylist,
       getFavorite,
       toggleFavorite,
+      validateEmail,
+      sendMail,
     }),
     [
       user,

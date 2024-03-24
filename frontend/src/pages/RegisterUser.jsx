@@ -3,7 +3,7 @@ import { Button, Container, Fieldset, Input } from "@mantine/core";
 import { useUserContext } from "../context/UserContext";
 import RegisterCoord from "./RegisterCoord";
 import Banner from "../components/Banner";
-import bannerImage from "../assets/banner.png";
+import bannerImage from "../assets/connection.jpg";
 import MyAlert from "../components/MyAlert";
 
 export default function RegisterUser() {

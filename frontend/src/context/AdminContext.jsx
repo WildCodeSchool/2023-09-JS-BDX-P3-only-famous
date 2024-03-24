@@ -13,18 +13,14 @@ export default function AdminContextProvider({ children }) {
   const [addPlaylistDone, setAddPlaylistDone] = useState(true);
 
   const [users, setUsers] = useState([]);
+  const [usersSearched, setUsersSearched] = useState([]);
 
   async function getUsers() {
     try {
       const usersdb = await AdminService.getUsers();
       // console.log("users db", usersdb.users);
       const result = usersdb.users;
-      setUsers(
-        result.filter(
-          (ele) => !ele.isAdmin === !admin.current && !ele.isActive === !active
-        )
-        // && !ele.isActive === !active
-      );
+      setUsers(result);
     } catch (error) {
       throw new Error(error.message);
     }
@@ -32,7 +28,7 @@ export default function AdminContextProvider({ children }) {
 
   async function getUsersFiltered() {
     try {
-      setUsers(
+      setUsersSearched(
         users.filter(
           (ele) => !ele.isAdmin === !admin.current && !ele.isActive === !active
         )
@@ -48,9 +44,9 @@ export default function AdminContextProvider({ children }) {
       `${import.meta.env.VITE_BACKEND_URL}/api/users/${e}`
     );
     if (data && data.length > 0) {
-      setUsers([...data]);
+      setUsersSearched([...data]);
     } else {
-      setUsers([]);
+      setUsersSearched([]);
     }
   }
 
@@ -92,6 +88,7 @@ export default function AdminContextProvider({ children }) {
       );
       if (success) {
         await getUsers();
+        setUsersSearched([...usersSearched]);
         setMessageUser(message);
       } else {
         setMessageUser(" Problème amigo!!!");
@@ -116,6 +113,7 @@ export default function AdminContextProvider({ children }) {
       setAddPlaylistDone,
       addPlaylist,
       changeRole,
+      usersSearched,
     }),
     [
       admin,
@@ -130,6 +128,7 @@ export default function AdminContextProvider({ children }) {
       setAddPlaylistDone,
       addPlaylist,
       changeRole,
+      usersSearched,
     ]
   );
 

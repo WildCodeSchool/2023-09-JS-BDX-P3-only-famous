@@ -1,13 +1,13 @@
 import { Center, Container, Grid, Pagination, Progress } from "@mantine/core";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import VideoBar from "./VideoBar";
 import SingleLineVideo from "../components/SingleLineVideo";
 import { useVideoContext } from "../context/videoContext";
 
 export default function Videos() {
-  const { videos, getAllVideosPagination, countVideos } = useVideoContext();
+  const { videos, getAllVideosPagination, countVideos, activePage, setPage } =
+    useVideoContext();
   const videoPerPage = useRef(10);
-  const [activePage, setPage] = useState(1);
 
   useEffect(() => {
     async function getData() {
@@ -18,6 +18,9 @@ export default function Videos() {
     }
     getData();
   }, [activePage]);
+  useEffect(() => {
+    setPage(1);
+  }, []);
 
   return (
     <Container size="fluid">

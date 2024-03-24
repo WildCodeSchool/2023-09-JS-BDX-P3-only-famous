@@ -3,7 +3,7 @@ import { Button, Container, Fieldset, Input } from "@mantine/core";
 import { useUserContext } from "../context/UserContext";
 import Banner from "../components/Banner";
 import MyAlert from "../components/MyAlert";
-import bannerImage from "../assets/banner.png";
+import bannerImage from "../assets/connection.jpg";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -12,6 +12,7 @@ export default function ForgotPassword() {
 
   const { sendResetLink } = useUserContext();
   const [error, setError] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
 
   const validateEmail = (mail) => {
     return String(mail)
@@ -27,12 +28,15 @@ export default function ForgotPassword() {
       if (res.success) {
         setError(false);
         setMessageBack(res.message);
+        setShowMessage(true);
       } else {
         setError(true);
+        setShowMessage(false);
         setMessageBack(res.message);
       }
     } else {
       setError(true);
+      setShowMessage(false);
       setMessage("Email invalide");
     }
   }
@@ -46,23 +50,34 @@ export default function ForgotPassword() {
           <Input
             placeholder="Votre email"
             value={email}
-            onChange={(e) => setEmail(e.currentTarget.value)}
+            onChange={(e) => {
+              setMessage("");
+              setMessageBack("");
+              setEmail(e.currentTarget.value);
+              setError(false);
+              setShowMessage(false);
+            }}
             type="email"
           />
           {error && (
             <MyAlert color="var(--font-light-grey)" message={message} />
           )}
-          <MyAlert
-            color="var(--font-light-grey)"
-            message={messageBack}
-            title="Message"
-            variant="dark"
-          />
+          {showMessage && !error && (
+            <MyAlert
+              color="var(--font-light-grey)"
+              message={messageBack}
+              title="Message"
+              variant="dark"
+            />
+          )}
         </Fieldset>
         <Button
           type="button"
           className="invisible-button-with-border"
-          onClick={() => sendLink()}
+          onClick={() => {
+            sendLink();
+            setShowMessage(true);
+          }}
         >
           Réinitialiser
         </Button>
