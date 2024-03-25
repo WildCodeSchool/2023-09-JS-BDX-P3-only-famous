@@ -96,6 +96,28 @@ class VideoManager {
     return { rows, title: playlist[0].playlistTitle };
   }
 
+  // static async readPlaylist(playlistId) {
+  //   console.log(playlistId);
+  //   try {
+  //     const [result] = await database.query(
+  //       `
+  //       SELECT video.*, playlist.playlistTitle as title
+  //       FROM video
+  //       JOIN playlist ON video.playlistId = playlist.playlistId
+  //       WHERE video.playlistId = ?
+  //     `,
+  //       [playlistId]
+  //     );
+
+  //     const { title, ...videos } = result[0];
+  //     console.log(result[0]);
+  //     return { rows: videos, title };
+  //   } catch (error) {
+  //     console.log(error);
+  //     throw new Error(error.message);
+  //   }
+  // }
+
   static async readPlayListPagination(playListId, start, offset) {
     const [count] = await database.query(
       `select count(*) as length  from video where playlistId = ?`,
