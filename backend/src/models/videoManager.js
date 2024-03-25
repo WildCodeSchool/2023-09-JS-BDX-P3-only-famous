@@ -97,7 +97,6 @@ class VideoManager {
   }
 
   // static async readPlaylist(playlistId) {
-  //   console.log(playlistId);
   //   try {
   //     const [result] = await database.query(
   //       `
@@ -110,10 +109,8 @@ class VideoManager {
   //     );
 
   //     const { title, ...videos } = result[0];
-  //     console.log(result[0]);
   //     return { rows: videos, title };
   //   } catch (error) {
-  //     console.log(error);
   //     throw new Error(error.message);
   //   }
   // }

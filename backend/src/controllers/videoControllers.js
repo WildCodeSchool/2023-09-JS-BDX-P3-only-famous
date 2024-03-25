@@ -1,22 +1,16 @@
-// Import access to database tables
 const videoManager = require("../models/videoManager");
 
-// The B of BREAD - Browse (Read All) operation
 const browse = async (req, res, next) => {
   const { max } = req.params;
   try {
-    // Fetch all items from the database
     const items = await videoManager.readAll(max);
 
-    // Respond with the items in JSON format
     res.json(items);
   } catch (err) {
-    // Pass any errors to the error-handling middleware
     next(err);
   }
 };
 
-// The B of BREAD - Browse (Read All) operation
 async function browsePagination(req, res) {
   try {
     const { start, offset } = req.query;
@@ -33,22 +27,17 @@ async function browsePagination(req, res) {
 
 const browsePlaylists = async (req, res, next) => {
   try {
-    // Fetch all items from the database
     const items = await videoManager.readAllPlaylists();
 
-    // Respond with the items in JSON format
     res.json(items);
   } catch (err) {
-    // Pass any errors to the error-handling middleware
     next(err);
   }
 };
 
-// The R of BREAD - Read operation
 const read = async (req, res) => {
   try {
     const { ytId } = req.params;
-    // Fetch a specific item from the database based on the provided ID
     const rows = await videoManager.readAllById(ytId);
     res.status(200).json({ rows, message: "Vidéo reçue", success: true });
   } catch (err) {
@@ -59,7 +48,6 @@ const read = async (req, res) => {
 const readPlaylist = async (req, res) => {
   try {
     const { playlistId } = req.query;
-    // Fetch a specific item from the database based on the provided ID
     const { rows, title } = await videoManager.readPlayList(playlistId);
     if (rows == null) {
       res
@@ -100,24 +88,15 @@ const browseVideosFromPlaylist = async (req, res) => {
       });
     }
   } catch (err) {
-    // Pass any errors to the error-handling middleware
     res.status(404).json({ message: err.message, success: false });
   }
 };
-// The E of BREAD - Edit (Update) operation
-// This operation is not yet implemented
 async function edit(req, res) {
   try {
     const { ytId } = req.params;
     const video = req.body;
-
-    // console.log("user from body", user);
-    // Fetch a specific item from the database based on the provided ID
     const affectedRows = await videoManager.update(ytId, video);
 
-    // console.log("row affected ", affectedRow);
-    // If the item is not found, respond with HTTP 404 (Not Found)
-    // Otherwise, respond with the item in JSON format
     if (+affectedRows === 0) {
       res
         .status(500)
@@ -126,21 +105,14 @@ async function edit(req, res) {
       res.status(203).json({ message: "Video mise à jour!!!", affectedRow: 1 });
     }
   } catch (err) {
-    // Pass any errors to the error-handling middleware
     res.status(404).json({ message: "Erreur !!!", affectedRow: 0 });
   }
 }
-
-// The A of BREAD - Add (Create) operation
 async function add(req, res) {
-  // Extract the item data from the request body
   try {
     const video = req.body;
-    // console.log("user added : ", user);
-    // Insert the item into the database
     const { insertId, message } = await videoManager.create(video);
 
-    // Respond with HTTP 201 (Created) and the ID of the newly inserted item
     if (+insertId !== 0) {
       res.status(201).json({ message, insertId });
       return { message, insertId };
@@ -152,7 +124,6 @@ async function add(req, res) {
     return { message: "Video non ajoutée!!!", insertId: 0 };
   }
 }
-// check for existant user in the db
 async function check(req, res) {
   try {
     const { ytId } = req.body;
@@ -188,11 +159,8 @@ async function destroy(req, res) {
 async function addPlaylist(req, res) {
   try {
     const playlist = req.body;
-    // console.log("user added : ", user);
-    // Insert the item into the database
     const { insertId, message } = await videoManager.createPlaylist(playlist);
 
-    // Respond with HTTP 201 (Created) and the ID of the newly inserted item
     if (+insertId !== 0) {
       res.status(201).json({ message, insertId });
     } else {
@@ -230,8 +198,6 @@ async function editPlaylist(req, res) {
     const { playlistId } = req.params;
     const playlist = req.body;
 
-    // console.log("user from body", user);
-    // Fetch a specific item from the database based on the provided ID
     const affectedRows = await videoManager.updatePlaylist(
       playlistId,
       playlist
@@ -247,7 +213,6 @@ async function editPlaylist(req, res) {
         .json({ message: "Playliste mise à jour!!!", affectedRow: 1 });
     }
   } catch (err) {
-    // Pass any errors to the error-handling middleware
     res.status(404).json({ message: err.message, affectedRow: 0 });
   }
 }
