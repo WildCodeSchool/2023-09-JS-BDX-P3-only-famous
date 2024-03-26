@@ -47,6 +47,7 @@ class UserManager {
       if (rows[0]) {
         const res = await this.compare(password, rows[0].password);
         if (res) {
+          delete rows[0].password;
           return rows[0];
         }
         return null;
